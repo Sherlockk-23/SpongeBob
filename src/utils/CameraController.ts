@@ -57,7 +57,7 @@ class CameraController {
     }
 
     onMouseWheel(event: WheelEvent) {
-        const zoomSpeed = 0.1;
+        const zoomSpeed = 0.01;
         this.camera.camera.position.z += event.deltaY * zoomSpeed;
     }
 

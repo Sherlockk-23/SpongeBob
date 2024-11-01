@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Scene } from "./Scene";
-import { PerspectiveCamera } from "../utils/Camera";
+import { PerspectiveCamera } from "./Camera";
 
 class Renderer {
   renderer: THREE.WebGLRenderer;

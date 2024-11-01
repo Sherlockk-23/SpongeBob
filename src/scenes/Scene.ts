@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { BaseObject } from '../objects/BaseObject';
 
 class Scene {
     scene: THREE.Scene;
@@ -19,12 +20,16 @@ class Scene {
         this.scene.add(directionalLight);
     }
 
-    public add(object: THREE.Object3D){
-        this.scene.add(object);
+    add(object: BaseObject) {
+        if (object.mesh) {
+          this.scene.add(object.mesh);
+        }
     }
 
-    public remove(object: THREE.Object3D){
-        this.scene.remove(object);
+    remove(object: BaseObject) {
+        if (object.mesh) {
+          this.scene.remove(object.mesh);
+        }
     }
 
     public getScene(){

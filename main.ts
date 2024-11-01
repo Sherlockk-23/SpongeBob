@@ -1,7 +1,7 @@
 import { Game } from "./src/game";
 
 interface CustomWindow extends Window {
-  world: any;
+  game: any;
 }
 
 declare let window: CustomWindow;
