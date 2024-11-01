@@ -1,0 +1,11 @@
+Model Information:
+* title:	Sponge Bob Squarepants
+* source:	https://sketchfab.com/3d-models/sponge-bob-squarepants-58e7d14d09204df0b34467ffd3056c1c
+* author:	yanchido (https://sketchfab.com/yanchido)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Sponge Bob Squarepants" (https://sketchfab.com/3d-models/sponge-bob-squarepants-58e7d14d09204df0b34467ffd3056c1c) by yanchido (https://sketchfab.com/yanchido) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
