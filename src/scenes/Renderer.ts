@@ -1,4 +1,6 @@
 import * as THREE from "three";
+import { Scene } from "./Scene";
+import { PerspectiveCamera } from "../utils/Camera";
 
 class Renderer {
   renderer: THREE.WebGLRenderer;
@@ -9,8 +11,13 @@ class Renderer {
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   }
-  render(scene: THREE.Scene, camera: THREE.PerspectiveCamera) {
-    this.renderer.render(scene, camera);
+
+  get domElement(): HTMLCanvasElement {
+    return this.renderer.domElement;
+  }
+
+  render(scene: Scene, camera: PerspectiveCamera) {
+    this.renderer.render(scene.scene, camera.camera);
   }
 }
 

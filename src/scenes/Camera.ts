@@ -6,28 +6,20 @@ abstract class Camera {
   abstract get camera(): THREE.PerspectiveCamera;
 }
 
-
 class PerspectiveCamera extends Camera {
-  cameraDistance: number = 300;
-  cameraAngle: number = THREE.MathUtils.degToRad(50);
+  _camera: THREE.PerspectiveCamera;
 
-  constructor(aspect: number) {
+  constructor(aspectRatio: number) {
     super();
     this._camera = new THREE.PerspectiveCamera(
       75,
-      aspect,
+      aspectRatio,
       0.1,
       1000
     );
-    // add camera to the tank's local coordinate frame
-    let cameraX = 0;
-    let cameraY = -this.cameraDistance * Math.cos(this.cameraAngle);
-    let cameraZ = this.cameraDistance * Math.sin(this.cameraAngle);
-    this._camera.position.set(cameraX, cameraY, cameraZ);
-    this._camera.up.set(0, 0, 1);
   }
 
-  get camera() {
+  get camera(): THREE.PerspectiveCamera {
     return this._camera;
   }
 }
