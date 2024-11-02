@@ -97,15 +97,15 @@ class BaseCharactor extends MovableObject {
 
     tick(delta: number): void {
 
-        console.log(this.name, 'is ticking');
+        //console.log(this.name, 'is ticking');
         this.updateAcceleration(delta);
         this.updateVelocity(delta);
         this.updatePosition(delta);
         
         this.animate(delta);
-        console.log(this.name, 'position:', this.mesh.position);
-        console.log(this.name, 'velocity:', this.vel);
-        console.log(this.name, 'acceleration:', this.accel);
+        //console.log(this.name, 'position:', this.mesh.position);
+        //console.log(this.name, 'velocity:', this.vel);
+        //console.log(this.name, 'acceleration:', this.accel);
     }
 }
 

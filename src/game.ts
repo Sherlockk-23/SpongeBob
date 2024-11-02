@@ -30,8 +30,12 @@ class Game {
     }
 
     async init() {
+        await this.loadAssets();
+
         this.scene = new Scene();
-        this.camera = new PerspectiveCamera(window.innerWidth / window.innerHeight);
+        this.initCharactor();
+        this.initGround();
+        this.camera = new PerspectiveCamera(this.charactors[0], window.innerWidth / window.innerHeight);
         this.renderer = new Renderer();
         this.loop = new Loop(this.scene, this.camera, this.renderer);
 
@@ -39,23 +43,19 @@ class Game {
 
         this.cameraController = new CameraController(this.camera, this.renderer.domElement);
 
-        await this.loadAssets();
+        
 
         this.reset();
         this.start();
     }
 
     reset() {
-        this.charactors.forEach(charactor => {
-            this.scene.remove(charactor);
-        });
-        this.charactors = [];
-        this.initCharactor();
+        
 
         this.loop.updatableLists = [];
         this.loop.updatableLists.push(this.charactors);
 
-        this.initGround();
+        
     }
 
     start() {
