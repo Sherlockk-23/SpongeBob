@@ -17,6 +17,7 @@ class PerspectiveCamera extends Camera {
       0.1,
       1000
     );
+    this._camera.position.set(0, 1, 5);
   }
 
   get camera(): THREE.PerspectiveCamera {

@@ -1,25 +1,28 @@
-import * as THREE from "three";
-import { BaseObject, MovableObject } from "../BaseObject";
+import * as THREE from 'three';
+import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
+import { BaseObject, MovableObject } from '../BaseObject';
+import { InputHandler } from '../../utils/InputHandler';
 
 class BaseCharactor extends MovableObject {
+
     pos: THREE.Vector3;
     vel: THREE.Vector3;
     accel: THREE.Vector3;
 
+    defaultMaxVel: number = 1;
+    defaultMinVel: number = 0.05;
+    defaultDeaccel: number = 0.3;
+    defaultAccel: number = 1;
+
+
     mixer: THREE.AnimationMixer | null = null;
     animations: THREE.AnimationClip[] = [];
 
-    constructor(name: string, charactor_mesh: THREE.Object3D | null ) {
+    inputHandler: InputHandler;
+
+    constructor(name: string, charactor_gltf: GLTF) {
         super('charactor', name);
-        this.mesh = charactor_mesh;
-        if (this.mesh.animations && this.mesh.animations.length > 0) {
-            console.log('has animations');
-            this.mixer = new THREE.AnimationMixer(this.mesh);
-            this.animations = this.mesh.animations;
-            this.mixer.clipAction(this.animations[0]).play(); // 播放第一个动画
-        }
-        else
-            console.log('no animations');
+        this.gltf=charactor_gltf;
         this.init();
     }
 
@@ -27,21 +30,82 @@ class BaseCharactor extends MovableObject {
         this.pos = new THREE.Vector3(0, 0, 0);
         this.vel = new THREE.Vector3(0, 0, 0);
         this.accel = new THREE.Vector3(0, 0, 0);
+        this.inputHandler = new InputHandler();
+
+        this.mesh = this.gltf.scene;
+        if (this.gltf.animations && this.gltf.animations.length > 0) {
+            console.log(this.name, 'has animations');
+            this.mixer = new THREE.AnimationMixer(this.mesh);
+            this.animations = this.gltf.animations;
+            this.mixer.clipAction(this.animations[0]).play(); 
+        }
+        else
+            console.log(this.name, 'has no animations');
+    }
+
+    updateAcceleration(delta: number,acceleration: number = this.defaultAccel, deceleration: number = this.defaultDeaccel) {
+        {
+            if (this.inputHandler.isKeyPressed('w')) {
+                this.accel.z = -acceleration;
+            } else if (this.inputHandler.isKeyPressed('s')) {
+                this.accel.z = acceleration;
+            } else {
+                if (Math.abs(this.vel.z)< this.defaultMinVel ) {
+                    this.accel.z = 0;
+                    this.vel.z = 0;
+                }else if(this.vel.z > 0){
+                    this.accel.z = -deceleration;
+                }else {
+                    this.accel.z = deceleration;
+                }
+            }
+        }
+        {
+            if(this.inputHandler.isKeyPressed('a')){
+                this.accel.x = -acceleration;
+            }else if(this.inputHandler.isKeyPressed('d')){
+                this.accel.x = acceleration;
+            }
+            else {
+                if (Math.abs(this.vel.x)< this.defaultMinVel ) {
+                    this.accel.x = 0;
+                    this.vel.x = 0;
+                }else if(this.vel.x > 0){
+                    this.accel.x = -deceleration;
+                }else {
+                    this.accel.x = deceleration;
+                }
+            }
+        }
+    }
+
+    updateVelocity(delta: number): void {
+        this.vel.add(this.accel.clone().multiplyScalar(delta));
+        this.vel.clampLength(0, this.defaultMaxVel);
+
+    }
+
+    updatePosition(delta: number): void {
+        this.mesh.position.add(this.vel.clone().multiplyScalar(delta));
     }
 
     animate(delta: number): void {
-        console.log('animating');
         if (this.mixer) {
             this.mixer.update(delta);
         }
     }
 
     tick(delta: number): void {
-        //throw new Error("Method not implemented.");
-        console.log('ticking');
-        this.mesh.position.add(this.vel.clone().multiplyScalar(delta));
-        this.vel.add(this.accel.clone().multiplyScalar(delta));
+
+        console.log(this.name, 'is ticking');
+        this.updateAcceleration(delta);
+        this.updateVelocity(delta);
+        this.updatePosition(delta);
+        
         this.animate(delta);
+        console.log(this.name, 'position:', this.mesh.position);
+        console.log(this.name, 'velocity:', this.vel);
+        console.log(this.name, 'acceleration:', this.accel);
     }
 }
 

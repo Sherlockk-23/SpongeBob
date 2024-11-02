@@ -9,6 +9,8 @@ import { Loop } from './utils/Loop';
 import { BaseCharactor } from './objects/charactors/BaseCharactor';
 import { SpongeBob } from './objects/charactors/SpongeBob.ts';
 
+import { Ground } from './objects/Ground.ts';
+
 class Game {
     scene: Scene;
     camera: PerspectiveCamera;
@@ -16,11 +18,12 @@ class Game {
     cameraController: CameraController;
     loop: Loop;
 
-    meshDict: { [key: string]: THREE.Object3D } = {};
+    gltfDict: { [key: string]: THREE.Group | THREE.Object3D } = {};
     audioDict: { [key: string]: AudioBuffer } = {};
     textureDict: { [key: string]: { [key: string]: THREE.Texture } } = {};
 
     charactors: BaseCharactor[] = [];
+    ground: Ground | null = null;
 
     constructor() {
         this.init();
@@ -38,12 +41,11 @@ class Game {
 
         await this.loadAssets();
 
-
         this.reset();
         this.start();
     }
 
-    reset(){
+    reset() {
         this.charactors.forEach(charactor => {
             this.scene.remove(charactor);
         });
@@ -52,6 +54,8 @@ class Game {
 
         this.loop.updatableLists = [];
         this.loop.updatableLists.push(this.charactors);
+
+        this.initGround();
     }
 
     start() {
@@ -68,14 +72,18 @@ class Game {
         if (charactor_index === -1) this.loop.updatableLists.push(this.charactors);
     }
 
-
     initCharactor() {
-        const spongeBob = new SpongeBob('spongeBob', this.meshDict['spongeBobWalk']);
+        const spongeBob = new SpongeBob('spongeBob', this.gltfDict['spongeBobWalk']);
         this.charactors.push(spongeBob);
 
         this.charactors.forEach(charactor => {
             this.scene.add(charactor);
         });
+    }
+
+    initGround() {
+        this.ground = new Ground('firstGround');
+        this.scene.add(this.ground);
     }
 
     async loadAssets() {
@@ -87,7 +95,7 @@ class Game {
                 gltfLoader.load(
                     path,
                     (gltf) => {
-                        resolve(gltf.scene);
+                        resolve(gltf);
                     },
                     undefined,
                     (error) => {
@@ -97,9 +105,9 @@ class Game {
             });
         }
 
-        promises.push(gltfPromise('assets/models/spongeBobWalk/scene.gltf').then((mesh) => {
-            this.meshDict['spongeBobWalk'] = mesh;
-            console.log('Loaded GLTF model:', mesh);
+        promises.push(gltfPromise('assets/models/spongeBobWalk/scene.gltf').then((gltf) => {
+            this.gltfDict['spongeBobWalk'] = gltf;
+            console.log('Loaded GLTF model:', gltf);
         }).catch((error) => {
             console.error('Error loading GLTF model:', error);
         }));

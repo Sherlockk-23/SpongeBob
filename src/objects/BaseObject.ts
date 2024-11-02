@@ -1,9 +1,10 @@
 import * as THREE from "three";
+import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 
 abstract class BaseObject {
   type: string;
   name: string;
-  mesh: THREE.Object3D;
+  mesh: THREE.Object3D ;
 
   constructor(type: string, name: string) {
     this.type = type;
@@ -31,6 +32,8 @@ function disposeMeshes(obj: THREE.Object3D) {
   }
 
 abstract class MovableObject extends BaseObject {
+  gltf: GLTF;
+
   constructor(type: string, name: string) {
     super(type, name);
   }

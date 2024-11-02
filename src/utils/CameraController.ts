@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { PerspectiveCamera } from './Camera';
+import { PerspectiveCamera } from '../scenes/Camera';
 
 class CameraController {
     camera: PerspectiveCamera;

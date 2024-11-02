@@ -1,9 +1,10 @@
 import * as THREE from "three";
 import {BaseCharactor} from "./BaseCharactor";
+import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 
 class SpongeBob extends BaseCharactor{
-    constructor(name: string, charactor_mesh: THREE.Object3D | null ){
-        super(name, charactor_mesh);
+    constructor(name: string, charactor_gltf: GLTF){
+        super(name, charactor_gltf);
     }
 }
 
