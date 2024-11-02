@@ -39,7 +39,6 @@ class PerspectiveCamera extends Camera {
     this._camera.position.set(cameraX, cameraY, -cameraZ);
     this._camera.lookAt(this.charactor.mesh.position);
     this._camera.up.set(0, 0, 1);
-    //this._camera.rotation.z = 0;
     this.perspective = "thirdPerson";
   }
 
@@ -51,7 +50,6 @@ class PerspectiveCamera extends Camera {
     this._camera.lookAt(this.charactor.mesh.position);
     this._camera.position.set(0, 0.7, -0.9);
     this._camera.up.set(0, 0, 1);
-    this._camera.rotation.z = 0;
     this.perspective = "firstPerson";
   }
 

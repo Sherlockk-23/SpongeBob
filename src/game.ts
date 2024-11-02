@@ -9,6 +9,8 @@ import { Loop } from './utils/Loop';
 import { BaseCharactor } from './objects/charactors/BaseCharactor';
 import { SpongeBob } from './objects/charactors/SpongeBob.ts';
 
+import { BaseObstacle } from './objects/obstacles/BaseObstacle';
+
 import { Ground } from './objects/Ground.ts';
 
 class Game {
@@ -23,6 +25,7 @@ class Game {
     textureDict: { [key: string]: { [key: string]: THREE.Texture } } = {};
 
     charactors: BaseCharactor[] = [];
+    obstacles: BaseObstacle[] = [];
     ground: Ground | null = null;
 
     constructor() {
@@ -34,6 +37,7 @@ class Game {
 
         this.scene = new Scene();
         this.initCharactor();
+        this.initObstacles();
         this.initGround();
         this.camera = new PerspectiveCamera(this.charactors[0], window.innerWidth / window.innerHeight);
         this.renderer = new Renderer();
@@ -54,6 +58,7 @@ class Game {
 
         this.loop.updatableLists = [];
         this.loop.updatableLists.push(this.charactors);
+        this.loop.updatableLists.push(this.obstacles);
 
         
     }
@@ -78,6 +83,15 @@ class Game {
 
         this.charactors.forEach(charactor => {
             this.scene.add(charactor);
+        });
+    }
+
+    initObstacles() {
+        const parickHorse = new BaseObstacle('parickHorse', this.gltfDict['parickHorse']);
+        this.obstacles.push(parickHorse);
+
+        this.obstacles.forEach(obstacle => {
+            this.scene.add(obstacle);
         });
     }
 
@@ -108,8 +122,10 @@ class Game {
         promises.push(gltfPromise('assets/models/spongeBobWalk/scene.gltf').then((gltf) => {
             this.gltfDict['spongeBobWalk'] = gltf;
             console.log('Loaded GLTF model:', gltf);
-        }).catch((error) => {
-            console.error('Error loading GLTF model:', error);
+        }));
+        promises.push(gltfPromise('assets/models/parickHorse/scene.gltf').then((gltf) => {
+            this.gltfDict['parickHorse'] = gltf;
+            console.log('Loaded GLTF model:', gltf);
         }));
 
         await Promise.all(promises);
