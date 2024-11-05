@@ -6,8 +6,8 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { CameraController } from './utils/CameraController';
 import { Loop } from './utils/Loop';
 
-import { BaseCharactor } from './objects/charactors/BaseCharactor';
-import { SpongeBob } from './objects/charactors/SpongeBob.ts';
+import { BaseCharacter } from './objects/characters/BaseCharacter';
+import { SpongeBob } from './objects/characters/SpongeBob.ts';
 
 import { BaseObstacle } from './objects/obstacles/BaseObstacle';
 
@@ -24,7 +24,7 @@ class Game {
     audioDict: { [key: string]: AudioBuffer } = {};
     textureDict: { [key: string]: { [key: string]: THREE.Texture } } = {};
 
-    charactors: BaseCharactor[] = [];
+    Characters: BaseCharacter[] = [];
     obstacles: BaseObstacle[] = [];
     ground: Ground | null = null;
 
@@ -36,10 +36,10 @@ class Game {
         await this.loadAssets();
 
         this.scene = new Scene();
-        this.initCharactor();
+        this.initCharacter();
         this.initObstacles();
         this.initGround();
-        this.camera = new PerspectiveCamera(this.charactors[0], window.innerWidth / window.innerHeight);
+        this.camera = new PerspectiveCamera(this.Characters[0], window.innerWidth / window.innerHeight);
         this.renderer = new Renderer();
         this.loop = new Loop(this.scene, this.camera, this.renderer);
 
@@ -47,20 +47,20 @@ class Game {
 
         this.cameraController = new CameraController(this.camera, this.renderer.domElement);
 
-        
+
 
         this.reset();
         this.start();
     }
 
     reset() {
-        
+
 
         this.loop.updatableLists = [];
-        this.loop.updatableLists.push(this.charactors);
+        this.loop.updatableLists.push(this.Characters);
         this.loop.updatableLists.push(this.obstacles);
 
-        
+
     }
 
     start() {
@@ -68,21 +68,21 @@ class Game {
     }
 
     pause() {
-        const charactor_index = this.loop.updatableLists.indexOf(this.charactors);
-        if (charactor_index !== -1) this.loop.updatableLists.splice(charactor_index, 1);
+        const Character_index = this.loop.updatableLists.indexOf(this.Characters);
+        if (Character_index !== -1) this.loop.updatableLists.splice(Character_index, 1);
     }
 
     resume() {
-        const charactor_index = this.loop.updatableLists.indexOf(this.charactors);
-        if (charactor_index === -1) this.loop.updatableLists.push(this.charactors);
+        const Character_index = this.loop.updatableLists.indexOf(this.Characters);
+        if (Character_index === -1) this.loop.updatableLists.push(this.Characters);
     }
 
-    initCharactor() {
+    initCharacter() {
         const spongeBob = new SpongeBob('spongeBob', this.gltfDict['spongeBobWalk']);
-        this.charactors.push(spongeBob);
+        this.Characters.push(spongeBob);
 
-        this.charactors.forEach(charactor => {
-            this.scene.add(charactor);
+        this.Characters.forEach(Character => {
+            this.scene.add(Character);
         });
     }
 
