@@ -9,24 +9,30 @@ function checkCollisionCharacterWithObstacle(character: BaseCharacter, obstacle:
         return false;
     }
 
+    // 调试信息
     console.log("Checking collision between", character.name, "and", obstacle.name);
+    console.log("Character bbox:", character.bboxParameter);
+    console.log("Obstacle bbox:", obstacle.bboxParameter);
+
     const { width, height, depth } = character.bboxParameter;
     const characterOBB = new OBB(
         character.mesh.position,
         new THREE.Vector3(width / 2, height / 2, depth / 2),
-        new THREE.Matrix3().setFromMatrix4(character.mesh.matrix)
+        new THREE.Matrix3().setFromMatrix4(character.mesh.matrixWorld) // 使用 matrixWorld
     );
 
     const { width: obsWidth, height: obsHeight, depth: obsDepth } = obstacle.bboxParameter;
     const obstacleOBB = new OBB(
         obstacle.mesh.position,
         new THREE.Vector3(obsWidth / 2, obsHeight / 2, obsDepth / 2),
-        new THREE.Matrix3().setFromMatrix4(obstacle.mesh.matrix)
+        new THREE.Matrix3().setFromMatrix4(obstacle.mesh.matrixWorld) // 使用 matrixWorld
     );
-    console.log(characterOBB, obstacleOBB);
+
+    // 调试信息
+    console.log("Character OBB:", characterOBB);
+    console.log("Obstacle OBB:", obstacleOBB);
 
     return characterOBB.intersectsOBB(obstacleOBB);
 }
-
 
 export { checkCollisionCharacterWithObstacle };

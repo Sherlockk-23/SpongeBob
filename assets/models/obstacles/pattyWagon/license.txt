@@ -1,0 +1,11 @@
+Model Information:
+* title:	THE PATTY WAGON
+* source:	https://sketchfab.com/3d-models/the-patty-wagon-e1b5eca59a3643f39b8ca775ca521b63
+* author:	Alex Stover (https://sketchfab.com/Alex_Stover)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "THE PATTY WAGON" (https://sketchfab.com/3d-models/the-patty-wagon-e1b5eca59a3643f39b8ca775ca521b63) by Alex Stover (https://sketchfab.com/Alex_Stover) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

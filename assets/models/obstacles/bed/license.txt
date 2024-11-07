@@ -1,0 +1,11 @@
+Model Information:
+* title:	Spongebob's Bed
+* source:	https://sketchfab.com/3d-models/spongebobs-bed-b22453185dfd4cf6986cc22bc600d4fc
+* author:	Anthony Yanez (https://sketchfab.com/paulyanez)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Spongebob's Bed" (https://sketchfab.com/3d-models/spongebobs-bed-b22453185dfd4cf6986cc22bc600d4fc) by Anthony Yanez (https://sketchfab.com/paulyanez) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

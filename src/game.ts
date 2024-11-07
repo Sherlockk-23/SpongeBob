@@ -3,6 +3,7 @@ import { Scene } from './scenes/Scene';
 import { PerspectiveCamera } from './scenes/Camera';
 import { Renderer } from './scenes/Renderer';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { CameraController } from './utils/CameraController';
 import { Loop } from './utils/Loop';
 
@@ -13,6 +14,9 @@ import { BaseObstacle } from './objects/obstacles/BaseObstacle';
 
 import { Ground } from './objects/Ground.ts';
 
+import { loadAssets } from './utils/loadAssets';
+
+
 class Game {
     scene: Scene;
     camera: PerspectiveCamera;
@@ -20,7 +24,7 @@ class Game {
     cameraController: CameraController;
     loop: Loop;
 
-    gltfDict: { [key: string]: THREE.Group | THREE.Object3D } = {};
+    gltfDict: { [key: string]: GLTF } = {};
     audioDict: { [key: string]: AudioBuffer } = {};
     textureDict: { [key: string]: { [key: string]: THREE.Texture } } = {};
 
@@ -33,7 +37,9 @@ class Game {
     }
 
     async init() {
-        await this.loadAssets();
+        await loadAssets(this.gltfDict);
+
+        console.log('Loaded assets:', this.gltfDict);
 
         this.scene = new Scene();
         this.initCharacter();
@@ -90,6 +96,9 @@ class Game {
         const parickHorse = new BaseObstacle('parickHorse', this.gltfDict['parickHorse']);
         this.obstacles.push(parickHorse);
 
+        parickHorse.rescale(1,1,1);
+        parickHorse.mesh.position.set(0, 0, 3);
+
         this.obstacles.forEach(obstacle => {
             this.scene.add(obstacle);
         });
@@ -100,36 +109,6 @@ class Game {
         this.scene.add(this.ground);
     }
 
-    async loadAssets() {
-        let promises: Promise<any>[] = [];
-        const gltfLoader = new GLTFLoader();
-
-        function gltfPromise(path: string) {
-            return new Promise<THREE.Group>((resolve, reject) => {
-                gltfLoader.load(
-                    path,
-                    (gltf) => {
-                        resolve(gltf);
-                    },
-                    undefined,
-                    (error) => {
-                        reject(error);
-                    }
-                );
-            });
-        }
-
-        promises.push(gltfPromise('assets/models/spongeBobWalk/scene.gltf').then((gltf) => {
-            this.gltfDict['spongeBobWalk'] = gltf;
-            console.log('Loaded GLTF model:', gltf);
-        }));
-        promises.push(gltfPromise('assets/models/parickHorse/scene.gltf').then((gltf) => {
-            this.gltfDict['parickHorse'] = gltf;
-            console.log('Loaded GLTF model:', gltf);
-        }));
-
-        await Promise.all(promises);
-    }
 }
 
 export { Game };

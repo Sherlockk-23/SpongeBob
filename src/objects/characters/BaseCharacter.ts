@@ -5,8 +5,6 @@ import { InputHandler } from '../../utils/InputHandler';
 
 class BaseCharacter extends MovableObject {
 
-    bboxParameter: { width: number; height: number; depth: number; };
-
     pos: THREE.Vector3;
     vel: THREE.Vector3;
     accel: THREE.Vector3;
@@ -23,7 +21,7 @@ class BaseCharacter extends MovableObject {
     inputHandler: InputHandler;
 
     constructor(name: string, character_gltf: GLTF) {
-        super('character', name);
+        super('character', name, character_gltf.scene);
         this.gltf = character_gltf;
         this.init();
     }
@@ -33,13 +31,7 @@ class BaseCharacter extends MovableObject {
         this.vel = new THREE.Vector3(0, 0, 0);
         this.accel = new THREE.Vector3(0, 0, 0);
         this.inputHandler = new InputHandler();
-
-        this.mesh = this.gltf.scene;
-
-        const bbox = new THREE.Box3().setFromObject(this.mesh);
-        const size = bbox.getSize(new THREE.Vector3());
-        this.bboxParameter = { width: size.x, height: size.y, depth: size.z };
-        console.log(this.name, 'bboxParameter:', this.bboxParameter);
+        //console.log(this.name, 'bboxParameter:', this.bboxParameter);
 
         if (this.gltf.animations && this.gltf.animations.length > 0) {
             console.log(this.name, 'has animations');

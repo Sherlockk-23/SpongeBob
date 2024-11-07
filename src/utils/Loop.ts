@@ -32,21 +32,20 @@ class Loop {
   }
 
   tick() {
-    console.log('loop ticking');
+    //console.log('loop ticking');
     const delta = this.clock.getDelta();
     this.updatableLists.forEach(updatableList => { updatableList.forEach(updatable => updatable.tick(delta)) });
 
-    // check collision
-    // check if any two objects in the scene intersect
-    // for (let i = 0; i < this.updatableLists[0].length; i++) {
-    //   for (let j = 0; j < this.updatableLists[1].length; j++) {
-    //     console.log('checking collision', this.updatableLists[0][i].type, this.updatableLists[1][j].type);
-    //     console.log('checking collision', this.updatableLists[0][i], this.updatableLists[1][j]);
-    //     if (checkCollisionCharacterWithObstacle(this.updatableLists[0][i], this.updatableLists[1][j])) {
-    //       console.log('collision detected', this.updatableLists[0][i], this.updatableLists[1][j]);
-    //     }
-    //   }
-    // }
+    // check collision between characters and obstacles
+    for (let i = 0; i < this.updatableLists[0].length; i++) {
+      for (let j = 0; j < this.updatableLists[1].length; j++) {
+        //console.log('checking collision', this.updatableLists[0][i].type, this.updatableLists[1][j].type);
+        //console.log('checking collision', this.updatableLists[0][i], this.updatableLists[1][j]);
+        if (checkCollisionCharacterWithObstacle(this.updatableLists[0][i], this.updatableLists[1][j])) {
+          console.log('collision detected', this.updatableLists[0][i].name, this.updatableLists[1][j].name);
+        }
+      }
+    }
   }
 
   stop() {

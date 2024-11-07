@@ -1,0 +1,11 @@
+Model Information:
+* title:	Spongebob Bus Globs Of Doom
+* source:	https://sketchfab.com/3d-models/spongebob-bus-globs-of-doom-31fae162a6f449efacd8a51a0eb44047
+* author:	franiepack (https://sketchfab.com/franiepack)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Spongebob Bus Globs Of Doom" (https://sketchfab.com/3d-models/spongebob-bus-globs-of-doom-31fae162a6f449efacd8a51a0eb44047) by franiepack (https://sketchfab.com/franiepack) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
