@@ -96,7 +96,7 @@ class Game {
         const parickHorse = new BaseObstacle('parickHorse', this.gltfDict['parickHorse']);
         this.obstacles.push(parickHorse);
 
-        parickHorse.rescale(1,1,1);
+        parickHorse.rescale(2,2,2);
         parickHorse.mesh.position.set(0, 0, 3);
 
         this.obstacles.forEach(obstacle => {

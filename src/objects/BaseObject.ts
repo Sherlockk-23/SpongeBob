@@ -10,7 +10,7 @@ abstract class BaseObject {
   constructor(type: string, name: string, mesh?: THREE.Object3D) {
     this.type = type;
     this.name = name;
-    this.mesh=mesh;
+    this.mesh = mesh || new THREE.Object3D();
     const bbox = new THREE.Box3().setFromObject(this.mesh);
     const size = bbox.getSize(new THREE.Vector3());
     this.bboxParameter = { width: size.x, height: size.y, depth: size.z };

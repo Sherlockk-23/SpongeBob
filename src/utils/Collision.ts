@@ -18,14 +18,14 @@ function checkCollisionCharacterWithObstacle(character: BaseCharacter, obstacle:
     const characterOBB = new OBB(
         character.mesh.position,
         new THREE.Vector3(width / 2, height / 2, depth / 2),
-        new THREE.Matrix3().setFromMatrix4(character.mesh.matrixWorld) // 使用 matrixWorld
+        new THREE.Matrix3().identity() // 使用单位矩阵
     );
 
     const { width: obsWidth, height: obsHeight, depth: obsDepth } = obstacle.bboxParameter;
     const obstacleOBB = new OBB(
         obstacle.mesh.position,
         new THREE.Vector3(obsWidth / 2, obsHeight / 2, obsDepth / 2),
-        new THREE.Matrix3().setFromMatrix4(obstacle.mesh.matrixWorld) // 使用 matrixWorld
+        new THREE.Matrix3().identity() // 使用单位矩阵
     );
 
     // 调试信息
