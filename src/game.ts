@@ -89,18 +89,22 @@ class Game {
     initCharacter() {
         const spongeBob = new SpongeBob('spongeBob', this.gltfCharacterDict['spongeBobWalk']);
         this.Characters.push(spongeBob);
+        
 
         this.Characters.forEach(Character => {
             this.scene.add(Character);
         });
+        spongeBob.mesh.position.set(0, 0, 3);
     }
 
     initObstacles() {
-        for(let i=0; i<10; i++) {
-            const obstacle = this.obstacleGenerator.randomObstacle();
-            obstacle.mesh.position.set(0, 0, -i-1);
+        for(let i=0; i<5; i++) {
+            const obstacle = this.obstacleGenerator.randomObstacle(i);
+            obstacle.mesh.position.set(0, 0, i+1);
             this.obstacles.push(obstacle);
             this.scene.add(obstacle);
+            obstacle.mesh.position.set(0, 0, +i+1);
+            // well this works
         }
 
     }

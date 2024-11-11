@@ -10,9 +10,9 @@ function checkCollisionCharacterWithObstacle(character: BaseCharacter, obstacle:
     }
 
     // 调试信息
-    console.log("Checking collision between", character.name, "and", obstacle.name);
-    console.log("Character bbox:", character.bboxParameter);
-    console.log("Obstacle bbox:", obstacle.bboxParameter);
+    // console.log("Checking collision between", character.name, "and", obstacle.name);
+    // console.log("Character bbox:", character.bboxParameter);
+    // console.log("Obstacle bbox:", obstacle.bboxParameter);
 
     const { width, height, depth } = character.bboxParameter;
     const characterOBB = new OBB(
@@ -29,8 +29,8 @@ function checkCollisionCharacterWithObstacle(character: BaseCharacter, obstacle:
     );
 
     // 调试信息
-    console.log("Character OBB:", characterOBB);
-    console.log("Obstacle OBB:", obstacleOBB);
+    // console.log("Character OBB:", characterOBB);
+    // console.log("Obstacle OBB:", obstacleOBB);
 
     return characterOBB.intersectsOBB(obstacleOBB);
 }

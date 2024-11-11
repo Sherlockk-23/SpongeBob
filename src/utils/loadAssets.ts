@@ -43,10 +43,10 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
             gltfObstacleDict['bus'] = gltf;
             console.log('Loaded GLTF model:', 'bus', gltf);
         }),
-        gltfPromise('assets/models/obstacles/car1/scene.gltf').then((gltf) => {
-            gltfObstacleDict['car1'] = gltf;
-            console.log('Loaded GLTF model:', 'car1', gltf);
-        }),
+        // gltfPromise('assets/models/obstacles/car1/scene.gltf').then((gltf) => {
+        //     gltfObstacleDict['car1'] = gltf;
+        //     console.log('Loaded GLTF model:', 'car1', gltf);
+        // }),  // this has some bugs
         gltfPromise('assets/models/obstacles/pattyWagon/scene.gltf').then((gltf) => {
             gltfObstacleDict['pattyWagon'] = gltf;
             console.log('Loaded GLTF model:', 'pattyWagon', gltf);

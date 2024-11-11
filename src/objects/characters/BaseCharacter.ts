@@ -5,7 +5,6 @@ import { InputHandler } from '../../utils/InputHandler';
 import { cloneGLTF } from '../../utils/mesh';
 
 class BaseCharacter extends MovableObject {
-
     pos: THREE.Vector3;
     vel: THREE.Vector3;
     accel: THREE.Vector3;
@@ -15,16 +14,16 @@ class BaseCharacter extends MovableObject {
     defaultDeaccel: number = 0.3;
     defaultAccel: number = 1;
 
-
     mixer: THREE.AnimationMixer | null = null;
     animations: THREE.AnimationClip[] = [];
 
     inputHandler: InputHandler;
 
     constructor(name: string, character_gltf: GLTF) {
-        const clonedGLTF = cloneGLTF(character_gltf);
-        super('character', name, clonedGLTF.scene);
-        this.gltf = clonedGLTF
+        // const clonedGLTF = cloneGLTF(character_gltf);
+        // dunno why, but this dont work
+        super('character', name, character_gltf.scene);
+        this.gltf = character_gltf;
         this.init();
     }
 
@@ -40,43 +39,42 @@ class BaseCharacter extends MovableObject {
             this.mixer = new THREE.AnimationMixer(this.mesh);
             this.animations = this.gltf.animations;
             this.mixer.clipAction(this.animations[0]).play();
-        }
-        else
+        } else {
             console.log(this.name, 'has no animations');
+        }
+
+        // 更新克隆对象的世界矩阵
+        this.mesh.updateMatrixWorld(true);
     }
 
     updateAcceleration(delta: number, acceleration: number = this.defaultAccel, deceleration: number = this.defaultDeaccel) {
-        {
-            if (this.inputHandler.isKeyPressed('w')) {
-                this.accel.z = -acceleration;
-            } else if (this.inputHandler.isKeyPressed('s')) {
-                this.accel.z = acceleration;
+        if (this.inputHandler.isKeyPressed('w')) {
+            this.accel.z = -acceleration;
+        } else if (this.inputHandler.isKeyPressed('s')) {
+            this.accel.z = acceleration;
+        } else {
+            if (Math.abs(this.vel.z) < this.defaultMinVel) {
+                this.accel.z = 0;
+                this.vel.z = 0;
+            } else if (this.vel.z > 0) {
+                this.accel.z = -deceleration;
             } else {
-                if (Math.abs(this.vel.z) < this.defaultMinVel) {
-                    this.accel.z = 0;
-                    this.vel.z = 0;
-                } else if (this.vel.z > 0) {
-                    this.accel.z = -deceleration;
-                } else {
-                    this.accel.z = deceleration;
-                }
+                this.accel.z = deceleration;
             }
         }
-        {
-            if (this.inputHandler.isKeyPressed('a')) {
-                this.accel.x = -acceleration;
-            } else if (this.inputHandler.isKeyPressed('d')) {
-                this.accel.x = acceleration;
-            }
-            else {
-                if (Math.abs(this.vel.x) < this.defaultMinVel) {
-                    this.accel.x = 0;
-                    this.vel.x = 0;
-                } else if (this.vel.x > 0) {
-                    this.accel.x = -deceleration;
-                } else {
-                    this.accel.x = deceleration;
-                }
+
+        if (this.inputHandler.isKeyPressed('a')) {
+            this.accel.x = -acceleration;
+        } else if (this.inputHandler.isKeyPressed('d')) {
+            this.accel.x = acceleration;
+        } else {
+            if (Math.abs(this.vel.x) < this.defaultMinVel) {
+                this.accel.x = 0;
+                this.vel.x = 0;
+            } else if (this.vel.x > 0) {
+                this.accel.x = -deceleration;
+            } else {
+                this.accel.x = deceleration;
             }
         }
     }
@@ -105,9 +103,9 @@ class BaseCharacter extends MovableObject {
         this.updatePosition(delta);
 
         this.animate(delta);
-        //console.log(this.name, 'position:', this.mesh.position);
-        //console.log(this.name, 'velocity:', this.vel);
-        //console.log(this.name, 'acceleration:', this.accel);
+        // console.log(this.name, 'position:', this.mesh.position);
+        // console.log(this.name, 'velocity:', this.vel);
+        // console.log(this.name, 'acceleration:', this.accel);
     }
 }
 

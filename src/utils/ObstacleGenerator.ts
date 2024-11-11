@@ -16,8 +16,8 @@ class ObstacleGenerator {
         this.init();
     }
     init () {
-        // this.seed = Date.now();
-        this.seed=0;
+        //this.seed = Date.now();
+         this.seed=0;
         this.themes.forEach(theme => {
             this.themeDict[theme] = [];
         });
