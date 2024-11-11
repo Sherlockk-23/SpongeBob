@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { MovableObject } from '../BaseObject';
+import {cloneGLTF} from '../../utils/mesh';
 
 class BaseObstacle extends MovableObject {
 
@@ -9,8 +10,9 @@ class BaseObstacle extends MovableObject {
     animations: THREE.AnimationClip[] = [];
 
     constructor(name: string, obstacle_gltf: GLTF) {
-        super('obstacle', name, obstacle_gltf.scene);
-        this.gltf = obstacle_gltf;
+        const clonedGLTF = cloneGLTF(obstacle_gltf);
+        super('obstacle', name, clonedGLTF.scene);
+        this.gltf = clonedGLTF;
         this.init();
     }
 

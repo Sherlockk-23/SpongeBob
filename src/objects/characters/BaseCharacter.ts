@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { BaseObject, MovableObject } from '../BaseObject';
 import { InputHandler } from '../../utils/InputHandler';
+import { cloneGLTF } from '../../utils/mesh';
 
 class BaseCharacter extends MovableObject {
 
@@ -21,8 +22,9 @@ class BaseCharacter extends MovableObject {
     inputHandler: InputHandler;
 
     constructor(name: string, character_gltf: GLTF) {
-        super('character', name, character_gltf.scene);
-        this.gltf = character_gltf;
+        const clonedGLTF = cloneGLTF(character_gltf);
+        super('character', name, clonedGLTF.scene);
+        this.gltf = clonedGLTF
         this.init();
     }
 
