@@ -31,7 +31,7 @@ class ObstacleGenerator {
         //TODO : add more themes
     }
 
-    randomObstacle(theme: string = 'normal', size: THREE.Vector3 = NaN): BaseObstacle {
+    randomObstacle(id:number = -1, theme: string = 'normal', size: THREE.Vector3 = NaN): BaseObstacle {
         let obstacle: BaseObstacle;
         let name: string;
         if(!(theme in this.themes)) {
@@ -39,7 +39,7 @@ class ObstacleGenerator {
         }
         //name pick randomly from themeDict[theme]
         name = this.themeDict[theme][Math.floor(Math.random() * this.themeDict[theme].length)];
-        obstacle = new BaseObstacle(name, this.gltfDict[name]);
+        obstacle = new BaseObstacle(name+id, this.gltfDict[name]);
 
         if ( isNaN(size.x) || isNaN(size.y) || isNaN(size.z)) {
             size = this.sizeDict[name];
