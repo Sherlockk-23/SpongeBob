@@ -8,9 +8,9 @@ class BaseObstacle extends MovableObject {
     mixer: THREE.AnimationMixer | null = null;
     animations: THREE.AnimationClip[] = [];
 
-    constructor(name: string, character_gltf: GLTF) {
-        super('obstacle', name, character_gltf.scene);
-        this.gltf = character_gltf;
+    constructor(name: string, obstacle_gltf: GLTF) {
+        super('obstacle', name, obstacle_gltf.scene);
+        this.gltf = obstacle_gltf;
         this.init();
     }
 
