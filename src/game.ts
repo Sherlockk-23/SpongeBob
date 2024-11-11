@@ -6,6 +6,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { CameraController } from './utils/CameraController';
 import { Loop } from './utils/Loop';
+import { loadAssets } from './utils/loadAssets';
 
 import { BaseCharacter } from './objects/characters/BaseCharacter';
 import { SpongeBob } from './objects/characters/SpongeBob.ts';
@@ -13,8 +14,6 @@ import { SpongeBob } from './objects/characters/SpongeBob.ts';
 import { BaseObstacle } from './objects/obstacles/BaseObstacle';
 
 import { Ground } from './objects/Ground.ts';
-
-import { loadAssets } from './utils/loadAssets';
 
 
 class Game {
@@ -24,7 +23,8 @@ class Game {
     cameraController: CameraController;
     loop: Loop;
 
-    gltfDict: { [key: string]: GLTF } = {};
+    gltfCharacterDict: { [key: string]: GLTF } = {};
+    gltfObstacleDict: { [key: string]: GLTF } = {};
     audioDict: { [key: string]: AudioBuffer } = {};
     textureDict: { [key: string]: { [key: string]: THREE.Texture } } = {};
 
@@ -37,9 +37,7 @@ class Game {
     }
 
     async init() {
-        await loadAssets(this.gltfDict);
-
-        console.log('Loaded assets:', this.gltfDict);
+        await loadAssets(this.gltfCharacterDict, this.gltfObstacleDict);
 
         this.scene = new Scene();
         this.initCharacter();
@@ -60,13 +58,11 @@ class Game {
     }
 
     reset() {
-
-
         this.loop.updatableLists = [];
         this.loop.updatableLists.push(this.Characters);
         this.loop.updatableLists.push(this.obstacles);
 
-
+        
     }
 
     start() {
@@ -84,7 +80,7 @@ class Game {
     }
 
     initCharacter() {
-        const spongeBob = new SpongeBob('spongeBob', this.gltfDict['spongeBobWalk']);
+        const spongeBob = new SpongeBob('spongeBob', this.gltfCharacterDict['spongeBobWalk']);
         this.Characters.push(spongeBob);
 
         this.Characters.forEach(Character => {
@@ -99,9 +95,6 @@ class Game {
         parickHorse.rescale(2,2,2);
         parickHorse.mesh.position.set(0, 0, 3);
 
-        this.obstacles.forEach(obstacle => {
-            this.scene.add(obstacle);
-        });
     }
 
     initGround() {
