@@ -29,9 +29,9 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
             gltfObstacleDict['parickHorse'] = gltf;
             console.log('Loaded GLTF model:', 'parickHorse', gltf);
         }),
-        gltfPromise('assets/models/obstatcles/table/scene.gltf').then((gltf) => {
-            gltfObstacleDict['table'] = gltf;
-            console.log('Loaded GLTF model:', 'table', gltf);
+        gltfPromise('assets/models/obstacles/hat/scene.gltf').then((gltf) => {
+            gltfObstacleDict['hat'] = gltf;
+            console.log('Loaded GLTF model:', 'hat', gltf);
         })
         ,
         gltfPromise('assets/models/obstacles/bed/scene.gltf').then((gltf) => {

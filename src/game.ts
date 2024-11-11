@@ -15,6 +15,8 @@ import { BaseObstacle } from './objects/obstacles/BaseObstacle';
 
 import { Ground } from './objects/Ground.ts';
 
+import { ObstacleGenerator } from './utils/ObstacleGenerator';
+
 
 class Game {
     scene: Scene;
@@ -32,6 +34,8 @@ class Game {
     obstacles: BaseObstacle[] = [];
     ground: Ground | null = null;
 
+    obstacleGenerator: ObstacleGenerator;
+
     constructor() {
         this.init();
     }
@@ -39,7 +43,10 @@ class Game {
     async init() {
         await loadAssets(this.gltfCharacterDict, this.gltfObstacleDict);
 
+
+
         this.scene = new Scene();
+        this.obstacleGenerator = new ObstacleGenerator(this.gltfObstacleDict);
         this.initCharacter();
         this.initObstacles();
         this.initGround();
@@ -51,7 +58,7 @@ class Game {
 
         this.cameraController = new CameraController(this.camera, this.renderer.domElement);
 
-
+        
 
         this.reset();
         this.start();
@@ -89,11 +96,12 @@ class Game {
     }
 
     initObstacles() {
-        const parickHorse = new BaseObstacle('parickHorse', this.gltfDict['parickHorse']);
-        this.obstacles.push(parickHorse);
-
-        parickHorse.rescale(2,2,2);
-        parickHorse.mesh.position.set(0, 0, 3);
+        for(let i=0; i<10; i++) {
+            const obstacle = this.obstacleGenerator.randomObstacle();
+            obstacle.mesh.position.set(0, 0, -i-1);
+            this.obstacles.push(obstacle);
+            this.scene.add(obstacle);
+        }
 
     }
 

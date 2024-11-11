@@ -8,28 +8,47 @@ class ObstacleGenerator {
     gltfDict: { [key: string]: GLTF } = {};
     themes: string[] = ['normal', 'food','scary'];
     themeDict: { [key: string]: string[] } = {};
+    sizeDict: { [key: string]: THREE.Vector3 } = {};
 
     constructor(gltfDict: { [key: string]: GLTF }) {
+        console.log('generator created');
         this.gltfDict = gltfDict;
         this.init();
     }
     init () {
         // this.seed = Date.now();
         this.seed=0;
+        this.themes.forEach(theme => {
+            this.themeDict[theme] = [];
+        });
         for (let key in this.gltfDict) {
             this.themeDict['normal'].push(key);
         }
+        this.themeDict['normal'].forEach(name => {
+            this.sizeDict[name]=new THREE.Vector3(1,1,1);
+        });
+        console.log('generator initialized',this.themeDict);
+        //TODO : add more themes
     }
 
-    randomObstacle(themes: string = 'normal', size: THREE.Vector3 = NaN): BaseObstacle {
+    randomObstacle(theme: string = 'normal', size: THREE.Vector3 = NaN): BaseObstacle {
         let obstacle: BaseObstacle;
-        obstacle = new BaseObstacle('anyname', this.gltfDict['obstacle']);
-        if (!isNaN(size.x) && !isNaN(size.y) && !isNaN(size.z)) {
-            obstacle.mesh.scale.set(size.x, size.y, size.z);
-        }else {
-            obstacle.mesh.scale.set(1, 1, 1);
+        let name: string;
+        if(!(theme in this.themes)) {
+            theme = 'normal';
         }
+        //name pick randomly from themeDict[theme]
+        name = this.themeDict[theme][Math.floor(Math.random() * this.themeDict[theme].length)];
+        obstacle = new BaseObstacle(name, this.gltfDict[name]);
+
+        if ( isNaN(size.x) || isNaN(size.y) || isNaN(size.z)) {
+            size = this.sizeDict[name];
+        }
+        obstacle.rescale(size.x, size.y, size.z);
+        
         return obstacle;
         
     }
 }
+
+export { ObstacleGenerator };
