@@ -49,9 +49,9 @@ class BaseCharacter extends MovableObject {
 
     updateAcceleration(delta: number, acceleration: number = this.defaultAccel, deceleration: number = this.defaultDeaccel) {
         if (this.inputHandler.isKeyPressed('w')) {
-            this.accel.z = -acceleration;
-        } else if (this.inputHandler.isKeyPressed('s')) {
             this.accel.z = acceleration;
+        } else if (this.inputHandler.isKeyPressed('s')) {
+            this.accel.z = -acceleration;
         } else {
             if (Math.abs(this.vel.z) < this.defaultMinVel) {
                 this.accel.z = 0;
@@ -64,9 +64,9 @@ class BaseCharacter extends MovableObject {
         }
 
         if (this.inputHandler.isKeyPressed('a')) {
-            this.accel.x = -acceleration;
-        } else if (this.inputHandler.isKeyPressed('d')) {
             this.accel.x = acceleration;
+        } else if (this.inputHandler.isKeyPressed('d')) {
+            this.accel.x = -acceleration;
         } else {
             if (Math.abs(this.vel.x) < this.defaultMinVel) {
                 this.accel.x = 0;
