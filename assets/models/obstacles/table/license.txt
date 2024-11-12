@@ -1,0 +1,11 @@
+Model Information:
+* title:	Krusty Krab table (free) Spongebob
+* source:	https://sketchfab.com/3d-models/krusty-krab-table-free-spongebob-7e9f3f0e556e4c77b45d4a97bc854978
+* author:	Avmifi (https://sketchfab.com/Avmifi)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Krusty Krab table (free) Spongebob" (https://sketchfab.com/3d-models/krusty-krab-table-free-spongebob-7e9f3f0e556e4c77b45d4a97bc854978) by Avmifi (https://sketchfab.com/Avmifi) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
