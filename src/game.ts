@@ -100,12 +100,11 @@ class Game {
     }
 
     initObstacles() {
-        for(let i=0; i<5; i++) {
+        for(let i=0; i<10; i++) {
             const obstacle = this.obstacleGenerator.randomObstacle(i);
-            obstacle.mesh.position.set(0, 0, i+1);
             this.obstacles.push(obstacle);
             this.scene.add(obstacle);
-            obstacle.mesh.position.set(0, 0, 2*i+1);
+            obstacle.setPosition(0, 0, 2*i+1);
             obstacle.addBoundingBoxHelper(this.scene.getScene());
             // well this works
         }

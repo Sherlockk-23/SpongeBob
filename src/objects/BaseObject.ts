@@ -32,7 +32,7 @@ abstract class BaseObject {
     const scaleX = targetWidth / size.x;
     const scaleY = targetHeight / size.y;
     const scaleZ = targetDepth / size.z;
-    console.log(this.name, size.x, size.y, size.z, scaleX, scaleY, scaleZ);
+    // console.log(this.name, size.x, size.y, size.z, scaleX, scaleY, scaleZ);
 
     // 应用缩放
     this.mesh.scale.set(scaleX, scaleY, scaleZ);
@@ -49,6 +49,26 @@ abstract class BaseObject {
 
   addBoundingBoxHelper(scene: THREE.Scene) {
     scene.add(this.boundingBoxHelper);
+  }
+
+  setPosition(x: number, y: number, z: number) {
+    // 计算当前包围盒
+    const bbox = new THREE.Box3().setFromObject(this.mesh);
+    const size = bbox.getSize(new THREE.Vector3());
+    const center = bbox.getCenter(new THREE.Vector3());
+
+    // 计算底面中心点
+    const bottomCenter = new THREE.Vector3(center.x, bbox.min.y, center.z);
+
+    // 计算偏移量
+    const offset = new THREE.Vector3(x, y, z).sub(bottomCenter);
+
+    // 应用偏移量
+    this.mesh.position.add(offset);
+
+    // 更新包围盒
+    this.updateBoundingBox();
+    console.log(this.name, center, bottomCenter, offset);
   }
 }
 
