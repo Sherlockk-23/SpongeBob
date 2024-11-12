@@ -88,11 +88,13 @@ class Game {
 
     initCharacter() {
         const spongeBob = new SpongeBob('spongeBob', this.gltfCharacterDict['spongeBobWalk']);
+        spongeBob.rescale(1, 1, 1);
         this.Characters.push(spongeBob);
         
 
         this.Characters.forEach(Character => {
             this.scene.add(Character);
+            Character.addBoundingBoxHelper(this.scene.getScene());
         });
         spongeBob.mesh.position.set(0, 0, 3);
     }
@@ -103,7 +105,8 @@ class Game {
             obstacle.mesh.position.set(0, 0, i+1);
             this.obstacles.push(obstacle);
             this.scene.add(obstacle);
-            obstacle.mesh.position.set(0, 0, +i+1);
+            obstacle.mesh.position.set(0, 0, 2*i+1);
+            obstacle.addBoundingBoxHelper(this.scene.getScene());
             // well this works
         }
 
