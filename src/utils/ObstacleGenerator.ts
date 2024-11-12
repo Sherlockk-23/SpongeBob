@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { BaseObstacle } from '../objects/obstacles/BaseObstacle';
+import { seededRandom } from './MathUtils';
+
 
 class ObstacleGenerator {
     seed: number = 0;
@@ -17,7 +19,7 @@ class ObstacleGenerator {
     }
     init () {
         //this.seed = Date.now();
-         this.seed=0;
+        this.seed=0;
         this.themes.forEach(theme => {
             this.themeDict[theme] = [];
         });
@@ -37,8 +39,10 @@ class ObstacleGenerator {
         if(!(theme in this.themes)) {
             theme = 'normal';
         }
-        //name pick randomly from themeDict[theme]
-        name = this.themeDict[theme][Math.floor(Math.random() * this.themeDict[theme].length)];
+        //name pick randomly from themeDict[theme] by this.seed()
+        const { random, newSeed } = seededRandom(this.seed);
+        this.seed = newSeed;
+        name = this.themeDict[theme][Math.floor(random * this.themeDict[theme].length)];
         obstacle = new BaseObstacle(name+id, this.gltfDict[name]);
 
         if ( isNaN(size.x) || isNaN(size.y) || isNaN(size.z)) {
