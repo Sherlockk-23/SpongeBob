@@ -22,10 +22,11 @@ class BaseCharacter extends MovableObject {
     condition : string = 'normal'; 
 
 
-    defaultMaxVel: number = 1;
-    defaultMinVel: number = 0.05;
-    defaultDeaccel: number = 0.3;
-    defaultAccel: number = 1;
+    defaultMaxVel: number = 2;
+    defaultMinVel: number = 0.1;
+    defaultDeaccel: number = 0.8;
+    defaultAccel: number = 1.5;
+    defaultGravity: number = 2;
 
     mixer: THREE.AnimationMixer | null = null;
     animations: THREE.AnimationClip[] = [];
@@ -95,15 +96,29 @@ class BaseCharacter extends MovableObject {
                 this.accel.x = deceleration;
             }
         }
-        this.accel.y = -acceleration;
+        // if(this.inputHandler.isKeyPressed(' ') && this.onGround()){
+        //     this.vel.y = 10;
+        //     this.accel.y = acceleration;
+        // }else{
+        //     if (Math.abs(this.vel.y) < this.defaultMinVel) {
+        //         this.accel.y = 0;
+        //         this.vel.y = 0;
+        //     } else if (this.vel.y > 0) {
+        //         this.accel.y = -deceleration;
+        //     } else {
+        //         this.accel.y = deceleration;
+        //     }
+        // }
+        if(this.inputHandler.isKeyPressed(' ') && this.onGround()){
+            this.vel.y = this.defaultMaxVel;
+        }
+        this.accel.y = -this.defaultGravity;
+        
     }
 
     updateVelocity(delta: number): void {
         this.vel.add(this.accel.clone().multiplyScalar(delta));
         this.vel.clampLength(0, this.defaultMaxVel);
-        if(this.inputHandler.isKeyPressed(' ') && this.onGround()){
-            this.vel.y = 30;
-        }
     }
 
     updatePosition(delta: number): void {
@@ -152,7 +167,7 @@ class BaseCharacter extends MovableObject {
 
         this.updateBoundingBox();
         // console.log(this.name, 'position:', this.mesh.position);
-        // console.log(this.name, 'velocity:', this.vel);
+         console.log(this.name, 'velocity:', this.vel);
         // console.log(this.name, 'acceleration:', this.accel);
     }
 }
