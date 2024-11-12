@@ -16,6 +16,7 @@ import { BaseObstacle } from './objects/obstacles/BaseObstacle';
 import { Ground } from './objects/Ground.ts';
 
 import { ObstacleGenerator } from './utils/ObstacleGenerator';
+import { Controller } from './controller.ts';
 
 
 class Game {
@@ -25,6 +26,8 @@ class Game {
     cameraController: CameraController;
     loop: Loop;
 
+    controller: Controller
+
     gltfCharacterDict: { [key: string]: GLTF } = {};
     gltfObstacleDict: { [key: string]: GLTF } = {};
     audioDict: { [key: string]: AudioBuffer } = {};
@@ -32,7 +35,7 @@ class Game {
 
     Characters: BaseCharacter[] = [];
     obstacles: BaseObstacle[] = [];
-    ground: Ground | null = null;
+    ground: Ground ;
 
     obstacleGenerator: ObstacleGenerator;
 
@@ -50,6 +53,9 @@ class Game {
         this.initCharacter();
         this.initObstacles();
         this.initGround();
+        this.controller = new Controller(this.obstacles, this.ground, this.Characters[0]);
+       
+
         this.camera = new PerspectiveCamera(this.Characters[0], window.innerWidth / window.innerHeight);
         this.renderer = new Renderer();
         this.loop = new Loop(this.scene, this.camera, this.renderer);
@@ -68,6 +74,7 @@ class Game {
         this.loop.updatableLists = [];
         this.loop.updatableLists.push(this.Characters);
         this.loop.updatableLists.push(this.obstacles);
+        this.loop.updatableLists.push([this.controller]);
 
         
     }
@@ -100,11 +107,11 @@ class Game {
     }
 
     initObstacles() {
-        for(let i=0; i<10; i++) {
+        for(let i=0; i<20; i++) {
             const obstacle = this.obstacleGenerator.randomObstacle(i);
             this.obstacles.push(obstacle);
             this.scene.add(obstacle);
-            obstacle.setPosition(0, 0, 2*i+1);
+            obstacle.setPosition(i, 0, 2*i+1);
             obstacle.addBoundingBoxHelper(this.scene.getScene());
             // well this works
         }

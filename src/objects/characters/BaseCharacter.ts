@@ -8,6 +8,19 @@ class BaseCharacter extends MovableObject {
     pos: THREE.Vector3;
     vel: THREE.Vector3;
     accel: THREE.Vector3;
+    // used to tell the 6 boundary of the character for position update
+    movableBoundary: { [key: string]: number } = {
+        'forward': 1000,
+        'backward': -1000,
+        'left': -1000,
+        'right': 1000,
+        'up': 1000,
+        'down': 0
+    };
+
+    //condition can be normal, robotic, highjump, scary
+    condition : string = 'normal'; 
+
 
     defaultMaxVel: number = 1;
     defaultMinVel: number = 0.05;
@@ -47,6 +60,11 @@ class BaseCharacter extends MovableObject {
         this.mesh.updateMatrixWorld(true);
     }
 
+    onGround(): boolean{
+        const bbox = new THREE.Box3().setFromObject(this.mesh);
+        return this.movableBoundary['down'] == bbox.min.y;
+    }
+
     updateAcceleration(delta: number, acceleration: number = this.defaultAccel, deceleration: number = this.defaultDeaccel) {
         if (this.inputHandler.isKeyPressed('w')) {
             this.accel.z = acceleration;
@@ -77,16 +95,44 @@ class BaseCharacter extends MovableObject {
                 this.accel.x = deceleration;
             }
         }
+        this.accel.y = -acceleration;
     }
 
     updateVelocity(delta: number): void {
         this.vel.add(this.accel.clone().multiplyScalar(delta));
         this.vel.clampLength(0, this.defaultMaxVel);
-
+        if(this.inputHandler.isKeyPressed(' ') && this.onGround()){
+            this.vel.y = 30;
+        }
     }
 
     updatePosition(delta: number): void {
         this.mesh.position.add(this.vel.clone().multiplyScalar(delta));
+        // to check if the character touching any boundary
+        // if so, set the velocity to 0 and set the most position to the boundary
+        const bbox = new THREE.Box3().setFromObject(this.mesh);
+        for (const direction in this.movableBoundary) {
+            const boundary = this.movableBoundary[direction];
+            if (direction == 'forward' && bbox.max.z > boundary) {
+                if(this.vel.z>0)this.vel.z = 0;
+                this.mesh.position.z -= bbox.max.z - boundary;
+            } else if (direction == 'backward' && bbox.min.z < boundary) {
+                if(this.vel.z<0)this.vel.z = 0;
+                this.mesh.position.z += boundary - bbox.min.z;
+            } else if (direction == 'left' && bbox.min.x < boundary) {
+                if(this.vel.x<0)this.vel.x = 0;
+                this.mesh.position.x += boundary - bbox.min.x;
+            } else if (direction == 'right' && bbox.max.x > boundary) {
+                if(this.vel.x>0)this.vel.x = 0;
+                this.mesh.position.x -= bbox.max.x - boundary;
+            } else if (direction == 'up' && bbox.max.y > boundary) {
+                if(this.vel.y>0)this.vel.y = 0;
+                this.mesh.position.y -= bbox.max.y - boundary;
+            } else if (direction == 'down' && bbox.min.y < boundary) {
+                if(this.vel.y<0)this.vel.y = 0;
+                this.mesh.position.y += boundary - bbox.min.y;
+            }
+        }
     }
 
     animate(delta: number): void {

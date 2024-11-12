@@ -2,7 +2,7 @@ import { Clock } from "three";
 import { Camera } from "../scenes/Camera";
 import { Renderer } from "../scenes/Renderer";
 import { Scene } from "../scenes/Scene";
-import { checkCollision } from './Collision';
+import { checkCollision, checkCollisionMesh } from './Collision';
 
 class Loop {
   scene: Scene;
