@@ -2,7 +2,7 @@ import { Clock } from "three";
 import { Camera } from "../scenes/Camera";
 import { Renderer } from "../scenes/Renderer";
 import { Scene } from "../scenes/Scene";
-import { checkCollisionCharacterWithObstacle } from './Collision';
+import { checkCollision } from './Collision';
 
 class Loop {
   scene: Scene;
@@ -41,7 +41,9 @@ class Loop {
       for (let j = 0; j < this.updatableLists[1].length; j++) {
         //console.log('checking collision', this.updatableLists[0][i].type, this.updatableLists[1][j].type);
         //console.log('checking collision', this.updatableLists[0][i], this.updatableLists[1][j]);
-        if (checkCollisionCharacterWithObstacle(this.updatableLists[0][i], this.updatableLists[1][j])) {
+        if (checkCollision(this.updatableLists[0][i], this.updatableLists[1][j])) {
+          // console.log('checking collision', this.updatableLists[0][i].type, this.updatableLists[1][j].type);
+          // console.log('checking collision', this.updatableLists[0][i], this.updatableLists[1][j]);
           console.log('collision detected', this.updatableLists[0][i].name, this.updatableLists[1][j].name);
         }
       }

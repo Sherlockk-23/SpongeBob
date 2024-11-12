@@ -1,38 +1,13 @@
 import * as THREE from "three";
-import { OBB } from "./OBB";
-import { BaseCharacter } from "../objects/characters/BaseCharacter";
-import { BaseObstacle } from "../objects/obstacles/BaseObstacle";
+import { BaseObject } from "../objects/BaseObject";
 
-function checkCollisionCharacterWithObstacle(character: BaseCharacter, obstacle: BaseObstacle) {
-    if (!character.bboxParameter || !obstacle.bboxParameter) {
-        console.error("Bounding box parameter not found");
-        return false;
-    }
+function checkCollision(object1: BaseObject, object2: BaseObject): boolean {
+    // 获取更新后的包围盒
+    const bbox1 = new THREE.Box3().setFromObject(object1.mesh);
+    const bbox2 = new THREE.Box3().setFromObject(object2.mesh);
 
-    // 调试信息
-    // console.log("Checking collision between", character.name, "and", obstacle.name);
-    // console.log("Character bbox:", character.bboxParameter);
-    // console.log("Obstacle bbox:", obstacle.bboxParameter);
-
-    const { width, height, depth } = character.bboxParameter;
-    const characterOBB = new OBB(
-        character.mesh.position,
-        new THREE.Vector3(width / 2, height / 2, depth / 2),
-        new THREE.Matrix3().identity() // 使用单位矩阵
-    );
-
-    const { width: obsWidth, height: obsHeight, depth: obsDepth } = obstacle.bboxParameter;
-    const obstacleOBB = new OBB(
-        obstacle.mesh.position,
-        new THREE.Vector3(obsWidth / 2, obsHeight / 2, obsDepth / 2),
-        new THREE.Matrix3().identity() // 使用单位矩阵
-    );
-
-    // 调试信息
-    // console.log("Character OBB:", characterOBB);
-    // console.log("Obstacle OBB:", obstacleOBB);
-
-    return characterOBB.intersectsOBB(obstacleOBB);
+    // 检测碰撞
+    return bbox1.intersectsBox(bbox2);
 }
 
-export { checkCollisionCharacterWithObstacle };
+export { checkCollision };

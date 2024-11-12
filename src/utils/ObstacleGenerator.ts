@@ -29,6 +29,10 @@ class ObstacleGenerator {
         this.themeDict['normal'].forEach(name => {
             this.sizeDict[name]=new THREE.Vector3(1,1,1);
         });
+        this.sizeDict['hat']=new THREE.Vector3(0.2,0.5,0.2);
+        this.sizeDict['spatula']=new THREE.Vector3(0.3,1,0.3);
+        this.sizeDict['pineappleHouse']=new THREE.Vector3(1.5,2,1.5);
+        this.sizeDict['bus']=new THREE.Vector3(1,1,2);
         console.log('generator initialized',this.themeDict);
         //TODO : add more themes
     }

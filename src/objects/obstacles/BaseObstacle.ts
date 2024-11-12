@@ -38,6 +38,7 @@ class BaseObstacle extends MovableObject {
         //console.log(this.name, 'is ticking');
 
         this.animate(delta);
+        this.updateBoundingBox();
     }
 }
 

@@ -70,18 +70,24 @@ class CameraController {
             case 'ArrowDown':
                 this.camera.camera.position.z += moveSpeed;
                 break;
+            // case 'ArrowLeft':
+            //     if(this.camera.perspective === "thirdPerson") {
+            //         this.camera.firstPersonPerspective();
+            //     }else if(this.camera.perspective === "firstPerson") {
+            //         this.camera.secondPersonPerspective();
+            //     }
+            //     else {
+            //         this.camera.thirdPersonPerspective();
+            //     }
+            //     break;
+            // case 'ArrowRight':
+            //     this.camera.secondPersonPerspective();
+            //     break;
             case 'ArrowLeft':
-                if(this.camera.perspective === "thirdPerson") {
-                    this.camera.firstPersonPerspective();
-                }else if(this.camera.perspective === "firstPerson") {
-                    this.camera.secondPersonPerspective();
-                }
-                else {
-                    this.camera.thirdPersonPerspective();
-                }
+                this.camera.camera.position.x -= moveSpeed;
                 break;
             case 'ArrowRight':
-                this.camera.secondPersonPerspective();
+                this.camera.camera.position.x += moveSpeed;
                 break;
         }
         console.log(this.camera.perspective);

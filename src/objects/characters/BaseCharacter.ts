@@ -103,6 +103,8 @@ class BaseCharacter extends MovableObject {
         this.updatePosition(delta);
 
         this.animate(delta);
+
+        this.updateBoundingBox();
         // console.log(this.name, 'position:', this.mesh.position);
         // console.log(this.name, 'velocity:', this.vel);
         // console.log(this.name, 'acceleration:', this.accel);

@@ -5,7 +5,7 @@ abstract class BaseObject {
   type: string;
   name: string;
   mesh: THREE.Object3D;
-  bboxParameter: { width: number; height: number; depth: number; };
+  boundingBoxHelper: THREE.BoxHelper | null = null;
 
   constructor(type: string, name: string, mesh?: THREE.Object3D) {
     this.type = type;
@@ -13,7 +13,7 @@ abstract class BaseObject {
     this.mesh = mesh || new THREE.Object3D();
     const bbox = new THREE.Box3().setFromObject(this.mesh);
     const size = bbox.getSize(new THREE.Vector3());
-    this.bboxParameter = { width: size.x, height: size.y, depth: size.z };
+    this.boundingBoxHelper = new THREE.BoxHelper(this.mesh, 0xff0000);
   }
 
   destruct() {
@@ -36,9 +36,19 @@ abstract class BaseObject {
 
     // 应用缩放
     this.mesh.scale.set(scaleX, scaleY, scaleZ);
+    this.updateBoundingBox();
 
-    // 更新包围盒参数
-    this.bboxParameter = { width: targetWidth, height: targetHeight, depth: targetDepth };
+  }
+
+  updateBoundingBox() {
+    if (this.boundingBoxHelper) {
+      this.boundingBoxHelper.update();
+    }
+    // update bboxparemeter according to boundingBoxHelper
+  }
+
+  addBoundingBoxHelper(scene: THREE.Scene) {
+    scene.add(this.boundingBoxHelper);
   }
 }
 
