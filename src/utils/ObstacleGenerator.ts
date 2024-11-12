@@ -33,6 +33,10 @@ class ObstacleGenerator {
         this.sizeDict['spatula']=new THREE.Vector3(0.3,1,0.3);
         this.sizeDict['pineappleHouse']=new THREE.Vector3(1.5,2,1.5);
         this.sizeDict['bus']=new THREE.Vector3(1,1,2);
+        this.sizeDict['bottom']=new THREE.Vector3(2,0.3,2);
+        this.sizeDict['karen']=new THREE.Vector3(0.4,1,0.4);
+        this.sizeDict['car2']=new THREE.Vector3(0.4,0.4,1);
+        this.sizeDict['snailClock']=new THREE.Vector3(0.4,1,0.4);
         console.log('generator initialized',this.themeDict);
         //TODO : add more themes
     }
