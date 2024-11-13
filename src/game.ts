@@ -38,7 +38,7 @@ class Game {
     Characters: BaseCharacter[] = [];
     obstacles: BaseObstacle[] = [];
     ground: Ground;
-    stage: Stage;
+    stages: Stage[] = [];
 
     obstacleGenerator: ObstacleGenerator;
 
@@ -54,7 +54,7 @@ class Game {
         this.scene = new Scene();
         this.obstacleGenerator = new ObstacleGenerator(this.gltfObstacleDict);
         this.initCharacter();
-        this.initObstacles();
+        // this.initObstacles();
         this.initGround();
         this.initStage();
         this.controller = new Controller(this.obstacles, this.ground, this.Characters[0]);
@@ -79,7 +79,7 @@ class Game {
         this.loop.updatableLists.push(this.Characters);
         this.loop.updatableLists.push(this.obstacles);
         this.loop.updatableLists.push([this.controller]);
-
+        this.loop.updatableLists.push(this.stages);
 
     }
 
@@ -110,17 +110,17 @@ class Game {
         spongeBob.mesh.position.set(0, 0, 3);
     }
 
-    initObstacles() {
-        for (let i = 0; i < 20; i++) {
-            const obstacle = this.obstacleGenerator.randomObstacle(i);
-            this.obstacles.push(obstacle);
-            this.scene.add(obstacle);
-            obstacle.setPosition(i, 0, 2 * i + 1);
-            obstacle.addBoundingBoxHelper(this.scene.getScene());
-            // well this works
-        }
+    // initObstacles() {
+    //     for (let i = 0; i < 20; i++) {
+    //         const obstacle = this.obstacleGenerator.randomObstacle(i);
+    //         this.obstacles.push(obstacle);
+    //         this.scene.add(obstacle);
+    //         obstacle.setPosition(i, 0, 2 * i + 1);
+    //         obstacle.addBoundingBoxHelper(this.scene.getScene());
+    //         // well this works
+    //     }
 
-    }
+    // }
 
     initGround() {
         this.ground = new Ground('firstGround');
@@ -128,8 +128,8 @@ class Game {
     }
 
     initStage() {
-        this.stage = new Stage('firstStage', 0);
-        this.scene.add(this.stage);
+        this.stages[0] = new Stage('firstStage', 0, this.obstacleGenerator);
+        this.scene.add(this.stages[0]);
     }
 
 }

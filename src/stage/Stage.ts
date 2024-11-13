@@ -1,24 +1,26 @@
 import * as THREE from 'three';
-import { BaseObject } from '../objects/BaseObject';
+import { BaseObject, MovableObject } from '../objects/BaseObject';
 import { Wall } from '../objects/Wall';
 import { Ground } from '../objects/Ground';
 import { Ceiling } from "../objects/Ceiling";
 import { BaseObstacle } from '../objects/obstacles/BaseObstacle';
+import { ObstacleGenerator } from '../utils/ObstacleGenerator';
 
-class Stage extends BaseObject {
+class Stage extends MovableObject {
 
     ground: Ground;
     leftWall: Wall;
     rightWall: Wall;
     ceiling: Ceiling;
     obstacles: BaseObstacle[] = [];
+    obstacleGenerator: ObstacleGenerator;
 
     static readonly LENGHT = 1000;
     static readonly WIDTH = 10;
     static readonly HEIGHT = 10;
     static readonly START_Z = 0;
 
-    constructor(name: string, stageNumber: number) {
+    constructor(name: string, stageNumber: number, obstacleGenerator: ObstacleGenerator) {
         const stageGroup = new THREE.Group();
         super('stage', name, stageGroup);
 
@@ -28,6 +30,7 @@ class Stage extends BaseObject {
         this.leftWall = new Wall('leftWall', Stage.HEIGHT, Stage.WIDTH);
         this.rightWall = new Wall('rightWall', Stage.HEIGHT, Stage.WIDTH);
         this.ceiling = new Ceiling('ceiling', Stage.WIDTH, Stage.LENGHT);
+        this.obstacleGenerator = obstacleGenerator;
 
         this.ground.mesh.position.z = stagePosition;
         this.leftWall.mesh.position.z = stagePosition;
@@ -44,12 +47,22 @@ class Stage extends BaseObject {
         this.mesh.add(this.ceiling.mesh);
 
         this.initStage();
+        this.initObstacles();
     }
 
     initStage() {
     }
 
-    generateObstacles() {
+    initObstacles() {
+        for (let i = 0; i < 20; i++) {
+            const obstacle = this.obstacleGenerator.randomObstacle(i);
+            this.obstacles.push(obstacle);
+            this.mesh.add(obstacle.mesh);
+            obstacle.setPosition(0, 0, i * 2 + 1);
+            console.log(obstacle);
+            // obstacle.addBoundingBoxHelper(this.scene.getScene());
+            // well this works
+        }
     }
 
     destruct() {
@@ -63,6 +76,12 @@ class Stage extends BaseObject {
         });
 
         super.destruct();
+    }
+
+    tick(delta: number) {
+        this.obstacles.forEach((obstacle) => {
+            obstacle.tick(delta);
+        });
     }
 }
 
