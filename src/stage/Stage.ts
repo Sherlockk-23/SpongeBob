@@ -15,7 +15,7 @@ class Stage extends MovableObject {
     obstacles: BaseObstacle[] = [];
     obstacleGenerator: ObstacleGenerator;
 
-    static readonly LENGHT = 1000;
+    static readonly LENGTH = 1000;
     static readonly WIDTH = 10;
     static readonly HEIGHT = 10;
     static readonly START_Z = 0;
@@ -24,12 +24,12 @@ class Stage extends MovableObject {
         const stageGroup = new THREE.Group();
         super('stage', name, stageGroup);
 
-        const stagePosition = Stage.LENGHT * stageNumber;
+        const stagePosition = Stage.LENGTH * stageNumber;
 
-        this.ground = new Ground('ground', Stage.WIDTH, Stage.LENGHT);
-        this.leftWall = new Wall('leftWall', Stage.HEIGHT, Stage.WIDTH);
-        this.rightWall = new Wall('rightWall', Stage.HEIGHT, Stage.WIDTH);
-        this.ceiling = new Ceiling('ceiling', Stage.WIDTH, Stage.LENGHT);
+        this.ground = new Ground('ground', Stage.WIDTH, Stage.LENGTH);
+        this.leftWall = new Wall('leftWall', Stage.LENGTH, Stage.HEIGHT);
+        this.rightWall = new Wall('rightWall', Stage.LENGTH, Stage.HEIGHT);
+        this.ceiling = new Ceiling('ceiling', Stage.WIDTH, Stage.LENGTH);
         this.obstacleGenerator = obstacleGenerator;
 
         this.ground.mesh.position.z = stagePosition;

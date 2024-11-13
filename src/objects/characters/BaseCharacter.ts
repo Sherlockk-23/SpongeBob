@@ -19,7 +19,7 @@ class BaseCharacter extends MovableObject {
     };
 
     //condition can be normal, robotic, highjump, scary
-    condition : string = 'normal'; 
+    condition: string = 'normal';
 
 
     defaultMaxVel: number = 2;
@@ -61,7 +61,7 @@ class BaseCharacter extends MovableObject {
         this.mesh.updateMatrixWorld(true);
     }
 
-    onGround(): boolean{
+    onGround(): boolean {
         const bbox = new THREE.Box3().setFromObject(this.mesh);
         return this.movableBoundary['down'] == bbox.min.y;
     }
@@ -109,11 +109,11 @@ class BaseCharacter extends MovableObject {
         //         this.accel.y = deceleration;
         //     }
         // }
-        if(this.inputHandler.isKeyPressed(' ') && this.onGround()){
+        if (this.inputHandler.isKeyPressed(' ') && this.onGround()) {
             this.vel.y = this.defaultMaxVel;
         }
         this.accel.y = -this.defaultGravity;
-        
+
     }
 
     updateVelocity(delta: number): void {
@@ -129,22 +129,22 @@ class BaseCharacter extends MovableObject {
         for (const direction in this.movableBoundary) {
             const boundary = this.movableBoundary[direction];
             if (direction == 'forward' && bbox.max.z > boundary) {
-                if(this.vel.z>0)this.vel.z = 0;
+                if (this.vel.z > 0) this.vel.z = 0;
                 this.mesh.position.z -= bbox.max.z - boundary;
             } else if (direction == 'backward' && bbox.min.z < boundary) {
-                if(this.vel.z<0)this.vel.z = 0;
+                if (this.vel.z < 0) this.vel.z = 0;
                 this.mesh.position.z += boundary - bbox.min.z;
             } else if (direction == 'left' && bbox.min.x < boundary) {
-                if(this.vel.x<0)this.vel.x = 0;
+                if (this.vel.x < 0) this.vel.x = 0;
                 this.mesh.position.x += boundary - bbox.min.x;
             } else if (direction == 'right' && bbox.max.x > boundary) {
-                if(this.vel.x>0)this.vel.x = 0;
+                if (this.vel.x > 0) this.vel.x = 0;
                 this.mesh.position.x -= bbox.max.x - boundary;
             } else if (direction == 'up' && bbox.max.y > boundary) {
-                if(this.vel.y>0)this.vel.y = 0;
+                if (this.vel.y > 0) this.vel.y = 0;
                 this.mesh.position.y -= bbox.max.y - boundary;
             } else if (direction == 'down' && bbox.min.y < boundary) {
-                if(this.vel.y<0)this.vel.y = 0;
+                if (this.vel.y < 0) this.vel.y = 0;
                 this.mesh.position.y += boundary - bbox.min.y;
             }
         }
@@ -167,7 +167,7 @@ class BaseCharacter extends MovableObject {
 
         this.updateBoundingBox();
         // console.log(this.name, 'position:', this.mesh.position);
-         console.log(this.name, 'velocity:', this.vel);
+        console.log(this.name, 'velocity:', this.vel);
         // console.log(this.name, 'acceleration:', this.accel);
     }
 }
