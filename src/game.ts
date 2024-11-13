@@ -57,7 +57,7 @@ class Game {
         // this.initObstacles();
         this.initGround();
         this.initStage();
-        this.controller = new Controller(this.obstacles, this.ground, this.Characters[0]);
+        this.controller = new Controller(this.stages[0], this.Characters[0]);
 
 
         this.camera = new PerspectiveCamera(this.Characters[0], window.innerWidth / window.innerHeight);
