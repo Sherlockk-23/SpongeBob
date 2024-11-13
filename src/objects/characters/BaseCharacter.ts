@@ -18,7 +18,7 @@ class BaseCharacter extends MovableObject {
         'down': 0
     };
 
-    //condition can be normal, robotic, highjump, scary
+    //condition can be normal, robotic, highjump, scary, dead
     condition: string = 'normal';
 
     delta: number = 0.05;
@@ -28,16 +28,12 @@ class BaseCharacter extends MovableObject {
     defaultAccel: number = 1.5;
     defaultGravity: number = 2;
 
-    mixer: THREE.AnimationMixer | null = null;
-    animations: THREE.AnimationClip[] = [];
-
     inputHandler: InputHandler;
 
     constructor(name: string, character_gltf: GLTF) {
         // const clonedGLTF = cloneGLTF(character_gltf);
         // dunno why, but this dont work
-        super('character', name, character_gltf.scene);
-        this.gltf = character_gltf;
+        super('character', name, character_gltf);
         this.init();
     }
 
@@ -46,16 +42,6 @@ class BaseCharacter extends MovableObject {
         this.vel = new THREE.Vector3(0, 0, 0);
         this.accel = new THREE.Vector3(0, 0, 0);
         this.inputHandler = new InputHandler();
-        //console.log(this.name, 'bboxParameter:', this.bboxParameter);
-
-        if (this.gltf.animations && this.gltf.animations.length > 0) {
-            console.log(this.name, 'has animations');
-            this.mixer = new THREE.AnimationMixer(this.mesh);
-            this.animations = this.gltf.animations;
-            this.mixer.clipAction(this.animations[0]).play();
-        } else {
-            console.log(this.name, 'has no animations');
-        }
 
         // 更新克隆对象的世界矩阵
         this.mesh.updateMatrixWorld(true);
@@ -96,19 +82,6 @@ class BaseCharacter extends MovableObject {
                 this.accel.x = deceleration;
             }
         }
-        // if(this.inputHandler.isKeyPressed(' ') && this.onGround()){
-        //     this.vel.y = 10;
-        //     this.accel.y = acceleration;
-        // }else{
-        //     if (Math.abs(this.vel.y) < this.defaultMinVel) {
-        //         this.accel.y = 0;
-        //         this.vel.y = 0;
-        //     } else if (this.vel.y > 0) {
-        //         this.accel.y = -deceleration;
-        //     } else {
-        //         this.accel.y = deceleration;
-        //     }
-        // }
         if (this.inputHandler.isKeyPressed(' ') && this.onGround()) {
             this.vel.y = this.defaultMaxVel;
         }
@@ -150,21 +123,20 @@ class BaseCharacter extends MovableObject {
         }
     }
 
-    animate(delta: number): void {
-        if (this.mixer) {
-            this.mixer.update(delta);
+    updateCondition(condition: string): void {
+        this.condition = condition;
+        if(this.condition == 'dead'){
+            // this.mixer?.clipAction(this.animations[1]).play();
         }
     }
 
     tick(delta: number): void {
 
         //console.log(this.name, 'is ticking');
+        this.animate(delta);
         this.updateAcceleration(delta);
         this.updateVelocity(delta);
         this.updatePosition(delta);
-
-        this.animate(delta);
-
         this.updateBoundingBox();
         console.log(this.name, 'position:', this.mesh.position);
         console.log(this.name, 'velocity:', this.vel);

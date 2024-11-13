@@ -14,6 +14,7 @@ abstract class BaseObject {
     const bbox = new THREE.Box3().setFromObject(this.mesh);
     const size = bbox.getSize(new THREE.Vector3());
     this.boundingBoxHelper = new THREE.BoxHelper(this.mesh, 0xff0000);
+    // this.mesh.add(this.boundingBoxHelper);
   }
 
   destruct() {
@@ -89,10 +90,36 @@ function disposeMeshes(obj: THREE.Object3D) {
 
 abstract class MovableObject extends BaseObject {
   gltf: GLTF;
+  mixer: THREE.AnimationMixer | null = null;
+  animations: THREE.AnimationClip[] = [];
 
-  constructor(type: string, name: string, mesh?: THREE.Object3D) {
-    super(type, name, mesh);
+  constructor(type: string, name: string, gltf: GLTF) {
+    super(type, name, gltf.scene);
+    this.gltf = gltf;
+    this.initAnimation();
   }
+
+  initAnimation() {
+    if (this.gltf.animations && this.gltf.animations.length > 0) {
+      console.log(this.name, 'has animations');
+      this.mixer = new THREE.AnimationMixer(this.mesh);
+      this.animations = this.gltf.animations;
+      this.mixer.clipAction(this.animations[0]).play();
+      console.log(this.name, this.animations, this.mixer);
+    }
+    else
+      console.log(this.name, 'has no animations');
+  }
+
+  changeGLFT(gltf: GLTF) {}
+
+  animate(delta: number): void {
+    if (this.mixer) {
+        console.log(this.name, 'is animating');
+        this.mixer.update(delta);
+    }
+  }
+
 
   abstract tick(delta: number): void;
 }
