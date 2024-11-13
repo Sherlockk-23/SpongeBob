@@ -18,6 +18,8 @@ import { Ground } from './objects/Ground.ts';
 import { ObstacleGenerator } from './utils/ObstacleGenerator';
 import { Controller } from './controller.ts';
 
+import { Stage } from './stage/Stage.ts';
+
 
 class Game {
     scene: Scene;
@@ -35,7 +37,8 @@ class Game {
 
     Characters: BaseCharacter[] = [];
     obstacles: BaseObstacle[] = [];
-    ground: Ground ;
+    ground: Ground;
+    stage: Stage;
 
     obstacleGenerator: ObstacleGenerator;
 
@@ -53,8 +56,9 @@ class Game {
         this.initCharacter();
         this.initObstacles();
         this.initGround();
+        this.initStage();
         this.controller = new Controller(this.obstacles, this.ground, this.Characters[0]);
-       
+
 
         this.camera = new PerspectiveCamera(this.Characters[0], window.innerWidth / window.innerHeight);
         this.renderer = new Renderer();
@@ -64,7 +68,7 @@ class Game {
 
         this.cameraController = new CameraController(this.camera, this.renderer.domElement);
 
-        
+
 
         this.reset();
         this.start();
@@ -76,7 +80,7 @@ class Game {
         this.loop.updatableLists.push(this.obstacles);
         this.loop.updatableLists.push([this.controller]);
 
-        
+
     }
 
     start() {
@@ -97,7 +101,7 @@ class Game {
         const spongeBob = new SpongeBob('spongeBob', this.gltfCharacterDict['spongeBobWalk']);
         spongeBob.rescale(1, 1, 1);
         this.Characters.push(spongeBob);
-        
+
 
         this.Characters.forEach(Character => {
             this.scene.add(Character);
@@ -107,11 +111,11 @@ class Game {
     }
 
     initObstacles() {
-        for(let i=0; i<20; i++) {
+        for (let i = 0; i < 20; i++) {
             const obstacle = this.obstacleGenerator.randomObstacle(i);
             this.obstacles.push(obstacle);
             this.scene.add(obstacle);
-            obstacle.setPosition(i, 0, 2*i+1);
+            obstacle.setPosition(i, 0, 2 * i + 1);
             obstacle.addBoundingBoxHelper(this.scene.getScene());
             // well this works
         }
@@ -121,6 +125,11 @@ class Game {
     initGround() {
         this.ground = new Ground('firstGround');
         this.scene.add(this.ground);
+    }
+
+    initStage() {
+        this.stage = new Stage('firstStage', 0);
+        this.scene.add(this.stage);
     }
 
 }

@@ -24,10 +24,10 @@ class Stage extends BaseObject {
 
         const stagePosition = Stage.LENGHT * stageNumber;
 
-        this.ground = new Ground('ground', Stage.LENGHT, Stage.WIDTH);
+        this.ground = new Ground('ground', Stage.WIDTH, Stage.LENGHT);
         this.leftWall = new Wall('leftWall', Stage.HEIGHT, Stage.WIDTH);
         this.rightWall = new Wall('rightWall', Stage.HEIGHT, Stage.WIDTH);
-        this.ceiling = new Ceiling('ceiling', Stage.LENGHT, Stage.WIDTH);
+        this.ceiling = new Ceiling('ceiling', Stage.WIDTH, Stage.LENGHT);
 
         this.ground.mesh.position.z = stagePosition;
         this.leftWall.mesh.position.z = stagePosition;

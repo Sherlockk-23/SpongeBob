@@ -2,10 +2,10 @@ import * as THREE from 'three';
 import { BaseObject } from './BaseObject';
 
 class Wall extends BaseObject {
-    constructor(name: string, width: number = 1000, height: number = 10) {
+    constructor(name: string, width: number = 10, height: number = 10) {
         console.log('createWall');
         const geometry = new THREE.PlaneGeometry(width, height);
-        const material = new THREE.MeshStandardMaterial({ color: 0xa0a0a0, side: THREE.DoubleSide });
+        const material = new THREE.MeshStandardMaterial({ color: "red", side: THREE.DoubleSide });
         const wall = new THREE.Mesh(geometry, material);
         wall.receiveShadow = true; // 接收阴影
         super('wall', name, wall);

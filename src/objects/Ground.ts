@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { BaseObject } from './BaseObject';
 
 class Ground extends BaseObject {
-    constructor(name: string, width: number = 1000, height: number = 1000) {
+    constructor(name: string, width: number = 10, height: number = 1000) {
         console.log('createGround');
         const geometry = new THREE.PlaneGeometry(width, height);
         const material = new THREE.MeshStandardMaterial({ color: 0x808080 });
@@ -13,8 +13,8 @@ class Ground extends BaseObject {
         this.createGround(width, height);
     }
 
-    createGround(width: number = 1000, height: number = 1000) {
-        
+    createGround(width: number = 10, height: number = 1000) {
+
     }
 }
 
