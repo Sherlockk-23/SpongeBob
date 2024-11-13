@@ -21,7 +21,7 @@ class BaseCharacter extends MovableObject {
     //condition can be normal, robotic, highjump, scary
     condition: string = 'normal';
 
-
+    delta: number = 0.05;
     defaultMaxVel: number = 2;
     defaultMinVel: number = 0.1;
     defaultDeaccel: number = 0.8;
@@ -63,7 +63,7 @@ class BaseCharacter extends MovableObject {
 
     onGround(): boolean {
         const bbox = new THREE.Box3().setFromObject(this.mesh);
-        return this.movableBoundary['down'] == bbox.min.y;
+        return Math.abs(this.movableBoundary['down']-bbox.min.y)<this.delta;
     }
 
     updateAcceleration(delta: number, acceleration: number = this.defaultAccel, deceleration: number = this.defaultDeaccel) {
@@ -166,7 +166,7 @@ class BaseCharacter extends MovableObject {
         this.animate(delta);
 
         this.updateBoundingBox();
-        // console.log(this.name, 'position:', this.mesh.position);
+        console.log(this.name, 'position:', this.mesh.position);
         console.log(this.name, 'velocity:', this.vel);
         // console.log(this.name, 'acceleration:', this.accel);
     }

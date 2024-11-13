@@ -16,25 +16,25 @@ import { Ground } from './objects/Ground.ts';
 import { updateMovableBoundary } from './utils/Collision.ts';
 
 class Controller{
-    // when we have realize Stage
-    // stage: Stage;
-    // character : BaseCharacter;
-    // constructor(stage: Stage, character: BaseCharacter){
-    //     this.stage = stage;
-    //     this.character = character;
-    //     this.init();
-    // }
-
-    // fisrt use obstacles directly
-    obstacles: BaseObstacle[];
-    ground: Ground;
-    character: BaseCharacter;
-    constructor(obstacles: BaseObstacle[], ground:Ground, character: BaseCharacter){
-        this.obstacles = obstacles;
+    //when we have realize Stage
+    stage: Stage;
+    character : BaseCharacter;
+    constructor(stage: Stage, character: BaseCharacter){
+        this.stage = stage;
         this.character = character;
-        this.ground = ground;
         this.init();
     }
+
+    // // fisrt use obstacles directly
+    // obstacles: BaseObstacle[];
+    // ground: Ground;
+    // character: BaseCharacter;
+    // constructor(obstacles: BaseObstacle[], ground:Ground, character: BaseCharacter){
+    //     this.obstacles = obstacles;
+    //     this.character = character;
+    //     this.ground = ground;
+    //     this.init();
+    // }
 
     
     init(){
@@ -50,10 +50,13 @@ class Controller{
             'up': 1000,
             'down': 0
         };
-        for(let obstacle of this.obstacles){
+        for(let obstacle of this.stage.obstacles){
             updateMovableBoundary(this.character, obstacle, movableBoundary);
         }
-        updateMovableBoundary(this.character, this.ground, movableBoundary);
+        movableBoundary['up']=Math.min(movableBoundary['up'], this.stage.ceiling.mesh.position.y);
+        movableBoundary['down']=Math.max(movableBoundary['down'], this.stage.ground.mesh.position.y);
+        movableBoundary['left']=Math.max(movableBoundary['left'], this.stage.leftWall.mesh.position.x);
+        movableBoundary['right']=Math.min(movableBoundary['right'], this.stage.rightWall.mesh.position.x);
         this.character.movableBoundary = movableBoundary;
         console.log(this.character.movableBoundary);
     }

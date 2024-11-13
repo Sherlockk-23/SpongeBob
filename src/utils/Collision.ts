@@ -13,7 +13,7 @@ function checkCollision(object1: BaseObject, object2: BaseObject): boolean {
 
 function updateMovableBoundary(character: BaseCharacter, obstacle: BaseObject, movableBoundary: { [key: string]: number }): void {
     const obstacleBbox = new THREE.Box3().setFromObject(obstacle.mesh);
-    const delta = 0.05;
+    const delta = 0.1;
     for (const direction in movableBoundary) {
         const boundary = movableBoundary[direction];
         // to check if the obstacle will give a tighter boundary
@@ -21,21 +21,21 @@ function updateMovableBoundary(character: BaseCharacter, obstacle: BaseObject, m
         // if so, set the boundary to the obstacle's boundary alone this direction
         const bbox = new THREE.Box3().setFromObject(character.mesh);
         if (direction == 'forward') {
-            if( obstacleBbox.min.z < bbox.max.z )continue;
+            if( obstacleBbox.min.z + delta < bbox.max.z )continue;
             bbox.max.z += obstacleBbox.min.z - bbox.max.z + delta;
             bbox.min.z += obstacleBbox.min.z - bbox.min.z + delta;
             if(bbox.intersectsBox(obstacleBbox)){
                 movableBoundary[direction] = Math.min(obstacleBbox.min.z, movableBoundary[direction]);
             }
         } else if (direction == 'backward') {
-            if( obstacleBbox.max.z > bbox.min.z )continue;
+            if( obstacleBbox.max.z - delta > bbox.min.z )continue;
             bbox.max.z += obstacleBbox.max.z - bbox.max.z - delta;
             bbox.min.z += obstacleBbox.max.z - bbox.min.z - delta;
             if(bbox.intersectsBox(obstacleBbox)){
                 movableBoundary[direction] = Math.max(obstacleBbox.max.z, movableBoundary[direction]);
             }
         } else if (direction == 'left') {
-            if( obstacleBbox.max.x > bbox.min.x )continue;
+            if( obstacleBbox.max.x - delta > bbox.min.x )continue;
             bbox.max.x += obstacleBbox.max.x - bbox.max.x - delta;
             bbox.min.x += obstacleBbox.max.x - bbox.min.x - delta;
             if(bbox.intersectsBox(obstacleBbox)){
@@ -43,21 +43,21 @@ function updateMovableBoundary(character: BaseCharacter, obstacle: BaseObject, m
             }
         }
         else if (direction == 'right') {
-            if( obstacleBbox.min.x < bbox.max.x )continue;
+            if( obstacleBbox.min.x + delta < bbox.max.x )continue;
             bbox.max.x += obstacleBbox.min.x - bbox.max.x + delta;
             bbox.min.x += obstacleBbox.min.x - bbox.min.x + delta;
             if(bbox.intersectsBox(obstacleBbox)){
                 movableBoundary[direction] = Math.min(obstacleBbox.min.x, movableBoundary[direction]);
             }
         } else if (direction == 'up') {
-            if( obstacleBbox.min.y < bbox.max.y )continue;
+            if( obstacleBbox.min.y + delta < bbox.max.y )continue;
             bbox.max.y += obstacleBbox.min.y - bbox.max.y + delta;
             bbox.min.y += obstacleBbox.min.y - bbox.min.y + delta;
             if(bbox.intersectsBox(obstacleBbox)){
                 movableBoundary[direction] = Math.min(obstacleBbox.min.y, movableBoundary[direction]);
             }
         } else if (direction == 'down') {
-            if( obstacleBbox.max.y > bbox.min.y )continue;
+            if( obstacleBbox.max.y - delta > bbox.min.y )continue;
             bbox.max.y += obstacleBbox.max.y - bbox.max.y - delta;
             bbox.min.y += obstacleBbox.max.y - bbox.min.y - delta;
             if(bbox.intersectsBox(obstacleBbox)){
