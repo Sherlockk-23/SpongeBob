@@ -47,21 +47,28 @@ class Stage extends MovableObject {
         this.mesh.add(this.ceiling.mesh);
 
         this.initStage();
-        this.initObstacles();
+        this.initObstacles(Stage.LENGTH, Stage.WIDTH);
     }
 
     initStage() {
     }
 
-    initObstacles() {
-        for (let i = 0; i < 20; i++) {
+    initObstacles(trackLength: number, trackWidth: number) {
+        const obstacleSpacing = 2; // Change this to change density
+        const numObstacles = Math.floor(trackLength / obstacleSpacing);
+
+        for (let i = 0; i < numObstacles; i++) {
             const obstacle = this.obstacleGenerator.randomObstacle(i);
             this.obstacles.push(obstacle);
             this.mesh.add(obstacle.mesh);
-            obstacle.setPosition(0, 0, i * 2 + 1);
+
+            const x = Math.random() * trackWidth - trackWidth / 2;
+            const y = 0; // For ground objects
+            const z = i * obstacleSpacing + Math.random() * obstacleSpacing;
+
+            obstacle.setPosition(x, y, z);
             console.log(obstacle);
             // obstacle.addBoundingBoxHelper(this.scene.getScene());
-            // well this works
         }
     }
 
