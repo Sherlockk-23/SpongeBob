@@ -2,12 +2,13 @@ import * as THREE from 'three';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { BaseObject, MovableObject } from '../BaseObject';
 import { InputHandler } from '../../utils/InputHandler';
-import { cloneGLTF } from '../../utils/mesh';
+import { PerspectiveCamera } from '../../scenes/Camera';
 
 abstract class BaseCharacter extends MovableObject {
     pos: THREE.Vector3;
     vel: THREE.Vector3;
     accel: THREE.Vector3;
+    camera: PerspectiveCamera;
     // used to tell the 6 boundary of the character for position update
     movableBoundary: { [key: string]: number } = {
         'forward': 1000,
@@ -34,14 +35,11 @@ abstract class BaseCharacter extends MovableObject {
 
     inputHandler: InputHandler;
 
-    // gltfDict: {[key:string]: GLTF};
-
     constructor(name: string, characterGLTF: GLTF) {
-        // const clonedGLTF = cloneGLTF(character_gltf);
-        // dunno why, but this dont work
         super('character', name, characterGLTF);
         this.rescale(1,1,1);
-        // this.init();  hanled by child class
+        this.camera = new PerspectiveCamera(this);
+        // this.init();  handled by child class
     }
 
     init() {
@@ -105,7 +103,6 @@ abstract class BaseCharacter extends MovableObject {
             this.vel.y = this.defaultMaxVel;
         }
         this.accel.y = -this.defaultGravity;
-
     }
 
     updateVelocity(delta: number): void {
@@ -140,51 +137,53 @@ abstract class BaseCharacter extends MovableObject {
                 this.mesh.position.y += boundary - bbox.min.y;
             }
         }
-        if(!this.onGround()){
+        if (!this.onGround()) {
             this.updateMovementTmp('jumping');
         }
     }
 
     updateCondition(condition: string): void {
-        if(this.condition==condition) return;
+        if (this.condition == condition) return;
         this.condition = condition;
         const newgltf = this.updateConditionMesh(condition);
         console.log('newgltf:', newgltf);
         this.changeGLTF(newgltf);
         this.initAnimation();
-        if(this.condition == 'dead'){
-            this.rescale(0.5,0.5,0.5);
-        }else if(this.condition == 'robotic'){
-            this.rescale(1,1.5,1);
+        if (this.condition == 'dead') {
+            this.rescale(0.5, 0.5, 0.5);
+        } else if (this.condition == 'robotic') {
+            this.rescale(1, 1.5, 1);
         }
+        this.cameraShake(1, 200);
     }
 
     updateMovement(): void {
-        if(this.movement==this.newMovement) return;
+        if (this.movement == this.newMovement) return;
         this.movement = this.newMovement;
-        let {animationId} = this.updateMovementAnimation(this.movement);
+        let { animationId } = this.updateMovementAnimation(this.movement);
         this.initAnimation(animationId);
     }
 
     tick(delta: number): void {
-
-        //console.log(this.name, 'is ticking');
         this.updateAcceleration(delta);
         this.updateVelocity(delta);
         this.updatePosition(delta);
         this.updateBoundingBox();
+        this.camera.update();
         console.log(this.name, 'position:', this.mesh.position);
         console.log(this.name, 'velocity:', this.vel);
-        // console.log(this.name, 'acceleration:', this.accel);
         this.updateMovement();
         console.log(this.name, 'is', this.movement);
         this.animate(delta);
-        
     }
 
-    abstract updateMovementAnimation(movement: string): {animationId: number};
+    cameraShake(intensity: number, duration: number) {
+        this.camera.shake(intensity, duration);
+    }
 
-    abstract updateConditionMesh(condition: string): {newgltf: GLTF};
+    abstract updateMovementAnimation(movement: string): { animationId: number };
+
+    abstract updateConditionMesh(condition: string): { newgltf: GLTF };
 }
 
 export { BaseCharacter };

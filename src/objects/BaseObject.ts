@@ -24,45 +24,17 @@ abstract class BaseObject {
     this.mesh.parent?.remove(this.mesh);
     disposeMeshes(this.mesh);
   }
-
-  characterRescale(targetWidth: number, targetHeight: number, targetDepth: number) {
-    // 计算当前包围盒
-    const children = this.mesh.children;
-    children.forEach(child => {
-      if(child instanceof THREE.Camera){
-      
-      }else{
-          child.scale.set(1, 1, 1);
-          const bbox = new THREE.Box3().setFromObject(child);
-          const size = new THREE.Vector3();
-          const center = bbox.getCenter(new THREE.Vector3());
-          const bottomCenter = new THREE.Vector3(center.x, bbox.min.y, center.z);
-          bbox.getSize(size);
-
-          // 计算缩放比例
-          const scaleX = targetWidth / size.x;
-          const scaleY = targetHeight / size.y;
-          const scaleZ = targetDepth / size.z;
-          child.scale.set(scaleX, scaleY, scaleZ);
-          
-          // const newBbox = new THREE.Box3().setFromObject(child);
-          // const newCenter = newBbox.getCenter(new THREE.Vector3());
-          // const newBottomCenter = new THREE.Vector3(newCenter.x, newBbox.min.y, newCenter.z);
-          // const offset = new THREE.Vector3().subVectors(newBottomCenter, bottomCenter);
-          // // 应用偏移量
-          // child.position.add(offset);
-          }
-        });
-        this.updateBoundingBox();
-  }
   
   rescale(targetWidth: number, targetHeight: number, targetDepth: number) {
-    if(this.type === 'character'){
-      this.characterRescale(targetWidth, targetHeight, targetDepth);
-      return;
-    }
+    // if(this.type === 'character'){
+    //   this.characterRescale(targetWidth, targetHeight, targetDepth);
+    //   return;
+    // }
+    this.mesh.scale.set(1, 1, 1);
     const bbox = new THREE.Box3().setFromObject(this.mesh);
     const size = bbox.getSize(new THREE.Vector3());
+    const center = bbox.getCenter(new THREE.Vector3());
+    const bottomCenter = new THREE.Vector3(center.x, bbox.min.y, center.z);
 
     // 计算缩放比例
     const scaleX = targetWidth / size.x;
@@ -71,19 +43,20 @@ abstract class BaseObject {
 
     // 应用缩放
     this.mesh.scale.set(scaleX, scaleY, scaleZ);
+    // this.setPosition(bottomCenter.x, bottomCenter.y, bottomCenter.z);
 
     // 重新计算包围盒
     this.updateBoundingBox();
 
-    // 更新位置以确保包围盒正确包围角色
-    const newBbox = new THREE.Box3().setFromObject(this.mesh);
-    const newCenter = newBbox.getCenter(new THREE.Vector3());
-    const newBottomCenter = new THREE.Vector3(newCenter.x, newBbox.min.y, newCenter.z);
-    const offset = new THREE.Vector3().subVectors(newBottomCenter, this.mesh.position);
-    this.mesh.position.sub(offset);
+    // // 更新位置以确保包围盒正确包围角色
+    // const newBbox = new THREE.Box3().setFromObject(this.mesh);
+    // const newCenter = newBbox.getCenter(new THREE.Vector3());
+    // const newBottomCenter = new THREE.Vector3(newCenter.x, newBbox.min.y, newCenter.z);
+    // const offset = new THREE.Vector3().subVectors(newBottomCenter, this.mesh.position);
+    // this.mesh.position.sub(offset);
 
-    // 更新包围盒
-    this.updateBoundingBox();
+    // // 更新包围盒
+    // this.updateBoundingBox();
 
   }
 

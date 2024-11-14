@@ -37,7 +37,7 @@ class Game {
     audioDict: { [key: string]: AudioBuffer } = {};
     textureDict: { [key: string]: { [key: string]: THREE.Texture } } = {};
 
-    Characters: BaseCharacter[] = [];
+    Character: BaseCharacter;
     obstacles: BaseObstacle[] = [];
     ground: Ground;
     stages: Stage[] = [];
@@ -60,10 +60,10 @@ class Game {
         // this.initObstacles();
         this.initGround();
         this.initStage();
-        this.controller = new Controller(this.stages[0], this.Characters[0]);
+        this.controller = new Controller(this.stages[0], this.Character);
 
 
-        this.camera = new PerspectiveCamera(this.Characters[0], window.innerWidth / window.innerHeight);
+        this.camera = this.Character.camera
         this.renderer = new Renderer();
         this.loop = new Loop(this.scene, this.camera, this.renderer);
 
@@ -79,7 +79,7 @@ class Game {
 
     reset() {
         this.loop.updatableLists = [];
-        this.loop.updatableLists.push(this.Characters);
+        this.loop.updatableLists.push([this.Character]);
         this.loop.updatableLists.push(this.obstacles);
         this.loop.updatableLists.push([this.controller]);
         this.loop.updatableLists.push(this.stages);
@@ -93,26 +93,26 @@ class Game {
 
     pause() {
         this.status = 'paused';
-        const Character_index = this.loop.updatableLists.indexOf(this.Characters);
+        const Character_index = this.loop.updatableLists.indexOf([this.Character]);
         if (Character_index !== -1) this.loop.updatableLists.splice(Character_index, 1);
     }
 
     resume() {
         this.status = 'playing';
-        const Character_index = this.loop.updatableLists.indexOf(this.Characters);
-        if (Character_index === -1) this.loop.updatableLists.push(this.Characters);
+        const Character_index = this.loop.updatableLists.indexOf([this.Character]);
+        if (Character_index === -1) this.loop.updatableLists.push([this.Character]);
     }
 
     initCharacter() {
         const spongeBob = new SpongeBob('spongeBob', this.gltfCharacterDict);
         spongeBob.rescale(1, 1, 1);
-        this.Characters.push(spongeBob);
+        this.Character=spongeBob;
 
 
-        this.Characters.forEach(Character => {
-            this.scene.add(Character);
-            Character.addBoundingBoxHelper(this.scene.getScene());
-        });
+        
+        this.scene.add(this.Character);
+        this.Character.addBoundingBoxHelper(this.scene.getScene());
+        
         spongeBob.mesh.position.set(0, 0, 3);
     }
 
