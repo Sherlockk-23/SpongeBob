@@ -8,7 +8,7 @@ class Wall extends BaseObject {
         const material = new THREE.MeshStandardMaterial({ color: "red", side: THREE.DoubleSide });
         const wall = new THREE.Mesh(geometry, material);
         wall.receiveShadow = true; // 接收阴影
-        super('wall', name, wall);
+        super('ground', name, wall);
     }
 
     setAsLeftWall() {

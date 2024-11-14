@@ -4,7 +4,7 @@ import { BaseObject, MovableObject } from '../BaseObject';
 import { InputHandler } from '../../utils/InputHandler';
 import { cloneGLTF } from '../../utils/mesh';
 
-class BaseCharacter extends MovableObject {
+abstract class BaseCharacter extends MovableObject {
     pos: THREE.Vector3;
     vel: THREE.Vector3;
     accel: THREE.Vector3;
@@ -20,6 +20,10 @@ class BaseCharacter extends MovableObject {
 
     //condition can be normal, robotic, highjump, scary, dead
     condition: string = 'normal';
+    //movement can be walking, running, jumping, idle
+    movement: string ;
+    movementUpdated: boolean = false;
+    newMovement: string ;    
 
     delta: number = 0.05;
     defaultMaxVel: number = 2;
@@ -30,11 +34,14 @@ class BaseCharacter extends MovableObject {
 
     inputHandler: InputHandler;
 
-    constructor(name: string, character_gltf: GLTF) {
+    // gltfDict: {[key:string]: GLTF};
+
+    constructor(name: string, characterGLTF: GLTF) {
         // const clonedGLTF = cloneGLTF(character_gltf);
         // dunno why, but this dont work
-        super('character', name, character_gltf);
-        this.init();
+        super('character', name, characterGLTF);
+        this.rescale(1,1,1);
+        // this.init();  hanled by child class
     }
 
     init() {
@@ -43,8 +50,10 @@ class BaseCharacter extends MovableObject {
         this.accel = new THREE.Vector3(0, 0, 0);
         this.inputHandler = new InputHandler();
 
-        // 更新克隆对象的世界矩阵
-        this.mesh.updateMatrixWorld(true);
+        this.condition = 'normal';
+        this.newMovement = 'idle';
+        this.updateCondition(this.condition);
+        this.updateMovement();
     }
 
     onGround(): boolean {
@@ -52,11 +61,17 @@ class BaseCharacter extends MovableObject {
         return Math.abs(this.movableBoundary['down']-bbox.min.y)<this.delta;
     }
 
+    updateMovementTmp(movement: string): void {
+        this.newMovement = movement;
+    }
+
     updateAcceleration(delta: number, acceleration: number = this.defaultAccel, deceleration: number = this.defaultDeaccel) {
         if (this.inputHandler.isKeyPressed('w')) {
             this.accel.z = acceleration;
+            this.updateMovementTmp('running');
         } else if (this.inputHandler.isKeyPressed('s')) {
             this.accel.z = -acceleration;
+            this.updateMovementTmp('running');
         } else {
             if (Math.abs(this.vel.z) < this.defaultMinVel) {
                 this.accel.z = 0;
@@ -66,12 +81,15 @@ class BaseCharacter extends MovableObject {
             } else {
                 this.accel.z = deceleration;
             }
+            this.updateMovementTmp('walking');
         }
 
         if (this.inputHandler.isKeyPressed('a')) {
             this.accel.x = acceleration;
+            this.updateMovementTmp('running');
         } else if (this.inputHandler.isKeyPressed('d')) {
             this.accel.x = -acceleration;
+            this.updateMovementTmp('running');
         } else {
             if (Math.abs(this.vel.x) < this.defaultMinVel) {
                 this.accel.x = 0;
@@ -81,6 +99,7 @@ class BaseCharacter extends MovableObject {
             } else {
                 this.accel.x = deceleration;
             }
+            this.updateMovementTmp('walking');
         }
         if (this.inputHandler.isKeyPressed(' ') && this.onGround()) {
             this.vel.y = this.defaultMaxVel;
@@ -121,19 +140,35 @@ class BaseCharacter extends MovableObject {
                 this.mesh.position.y += boundary - bbox.min.y;
             }
         }
+        if(!this.onGround()){
+            this.updateMovementTmp('jumping');
+        }
     }
 
     updateCondition(condition: string): void {
+        if(this.condition==condition) return;
         this.condition = condition;
+        const newgltf = this.updateConditionMesh(condition);
+        console.log('newgltf:', newgltf);
+        this.changeGLTF(newgltf);
+        this.initAnimation();
         if(this.condition == 'dead'){
-            // this.mixer?.clipAction(this.animations[1]).play();
+            this.rescale(0.5,0.5,0.5);
+        }else if(this.condition == 'robotic'){
+            this.rescale(1,1.5,1);
         }
+    }
+
+    updateMovement(): void {
+        if(this.movement==this.newMovement) return;
+        this.movement = this.newMovement;
+        let {animationId} = this.updateMovementAnimation(this.movement);
+        this.initAnimation(animationId);
     }
 
     tick(delta: number): void {
 
         //console.log(this.name, 'is ticking');
-        this.animate(delta);
         this.updateAcceleration(delta);
         this.updateVelocity(delta);
         this.updatePosition(delta);
@@ -141,7 +176,15 @@ class BaseCharacter extends MovableObject {
         console.log(this.name, 'position:', this.mesh.position);
         console.log(this.name, 'velocity:', this.vel);
         // console.log(this.name, 'acceleration:', this.accel);
+        this.updateMovement();
+        console.log(this.name, 'is', this.movement);
+        this.animate(delta);
+        
     }
+
+    abstract updateMovementAnimation(movement: string): {animationId: number};
+
+    abstract updateConditionMesh(condition: string): {newgltf: GLTF};
 }
 
 export { BaseCharacter };

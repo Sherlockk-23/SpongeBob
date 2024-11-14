@@ -55,7 +55,8 @@ class Stage extends MovableObject {
 
     initObstacles(trackLength: number, trackWidth: number) {
         const obstacleSpacing = 2; // Change this to change density
-        const numObstacles = Math.floor(trackLength / obstacleSpacing);
+        // const numObstacles = Math.floor(trackLength / obstacleSpacing);
+        const numObstacles = 20;
 
         for (let i = 0; i < numObstacles; i++) {
             const obstacle = this.obstacleGenerator.randomObstacle(i);
@@ -67,7 +68,7 @@ class Stage extends MovableObject {
             const z = i * obstacleSpacing + Math.random() * obstacleSpacing;
 
             obstacle.setPosition(x, y, z);
-            console.log(obstacle);
+            // console.log('new obstacle generated', obstacle);
             // obstacle.addBoundingBoxHelper(this.scene.getScene());
         }
     }

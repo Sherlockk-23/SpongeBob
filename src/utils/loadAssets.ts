@@ -69,16 +69,34 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'table'
     ];
 
+    const characterPaths = [
+        'spongeBobWalk',
+        'roboBob1',
+        'roboBob2',
+        'doodleBob',
+        'spongeBobDraw',
+        'phantomBob',
+        'realBob',
+        'scaryBob1',
+        'scaryBob2',
+        'spongeBobAll'
+    ];
+
     const promises: Promise<void>[] = [
-        gltfPromise('assets/models/Bobs/spongeBobWalk/scene.gltf').then((gltf) => {
-            gltfCharactorDict['spongeBobWalk'] = gltf;
-            console.log('Loaded GLTF model:', 'spongeBobWalk', gltf);
-        }),
         gltfPromise('assets/models/creatures/parickHorse/scene.gltf').then((gltf) => {
             gltfObstacleDict['parickHorse'] = gltf;
             console.log('Loaded GLTF model:', 'parickHorse', gltf);
         })
     ];
+
+    characterPaths.forEach((path) => {
+        promises.push(
+            gltfPromise(`assets/models/Bobs/${path}/scene.gltf`).then((gltf) => {
+                gltfCharactorDict[path] = gltf;
+                console.log('Loaded GLTF model:', path, gltf);
+            })
+        );
+    });
 
     obstaclePaths.forEach((path) => {
         promises.push(

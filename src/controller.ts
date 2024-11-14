@@ -13,7 +13,7 @@ import{ Stage } from './stage/Stage.ts';
 
 import { Ground } from './objects/Ground.ts';
 
-import { updateMovableBoundary } from './utils/Collision.ts';
+import { updateMovableBoundary, checkCollision } from './utils/Collision.ts';
 
 class Controller{
     //when we have realize Stage
@@ -24,17 +24,6 @@ class Controller{
         this.character = character;
         this.init();
     }
-
-    // // fisrt use obstacles directly
-    // obstacles: BaseObstacle[];
-    // ground: Ground;
-    // character: BaseCharacter;
-    // constructor(obstacles: BaseObstacle[], ground:Ground, character: BaseCharacter){
-    //     this.obstacles = obstacles;
-    //     this.character = character;
-    //     this.ground = ground;
-    //     this.init();
-    // }
 
     
     init(){
@@ -58,13 +47,31 @@ class Controller{
         movableBoundary['left']=Math.max(movableBoundary['left'], this.stage.leftWall.mesh.position.x);
         movableBoundary['right']=Math.min(movableBoundary['right'], this.stage.rightWall.mesh.position.x);
         this.character.movableBoundary = movableBoundary;
-        console.log(this.character.movableBoundary);
+        // console.log(this.character.movableBoundary);
     }
+    checkCollision(){
+        for(let obstacle of this.stage.obstacles){
+            if(checkCollision(this.character, obstacle)){
+                // document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by '+ obstacle.name } }));
+                console.log('killed by '+ obstacle.name);
+                if(obstacle.name.includes('TSCP')){
+                    this.character.updateCondition('dead');
+                }else if(obstacle.name.includes('b')){
+                    this.character.updateCondition('robotic');
+                }else if(obstacle.name.includes('c')){
+                    this.character.updateCondition('scary');
+                }else
+                    this.character.updateCondition('normal');
+            }
+        }
+    }   
+
 
     tick(delta: number){
         // 1. check if the character is colliding with any of the items, this may cause logic to change
         // 2. check if the character is colliding with any of the obstacles, this may cause logic to change
         // 3. check if the character is to be colliding with ground, and use this to update the character's movable direction
+        this.checkCollision();
         this.updateCharactorMovableBoundary();
     
     }

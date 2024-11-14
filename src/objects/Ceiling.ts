@@ -9,7 +9,7 @@ class Ceiling extends BaseObject {
         const ceiling = new THREE.Mesh(geometry, material);
         ceiling.rotation.x = Math.PI / 2; // 使平面水平放置
         ceiling.receiveShadow = true; // 接收阴影
-        super('ceiling', name, ceiling);
+        super('ground', name, ceiling);
         this.setCeiling(height);
     }
 

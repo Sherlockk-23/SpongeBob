@@ -67,6 +67,11 @@ class ObstacleGenerator {
             size = this.sizeDict[name];
         }
         obstacle.rescale(size.x, size.y, size.z);
+        {
+            const bbox3 = new THREE.Box3().setFromObject(obstacle.mesh);
+            const size = bbox3.getSize(new THREE.Vector3());
+            console.log('new obstacle generated', obstacle.name, bbox3);
+        }
         
         return obstacle;
         

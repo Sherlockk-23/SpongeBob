@@ -13,6 +13,7 @@ class PerspectiveCamera extends Camera {
   cameraAngle: number = THREE.MathUtils.degToRad(20);
   character: BaseCharacter;
   perspective: "thirdPerson" | "firstPerson" | "secondPerson" | null;
+  _isCustomCamera: boolean = true;
 
   constructor(character_: BaseCharacter, aspectRatio: number) {
     super();
@@ -25,7 +26,6 @@ class PerspectiveCamera extends Camera {
     this.character = character_;
     this.character.mesh.add(this._camera);
     this.thirdPersonPerspective();
-    //this._camera.position.set(0, 0, 0);
   }
 
   get camera(): THREE.PerspectiveCamera {
@@ -66,6 +66,25 @@ class PerspectiveCamera extends Camera {
 
     this.perspective = "secondPerson";
   }
+
+  update() {
+    // 根据当前的视角重新设置相机的位置和方向
+    switch (this.perspective) {
+      case "thirdPerson":
+        this.thirdPersonPerspective();
+        break;
+      case "firstPerson":
+        this.firstPersonPerspective();
+        break;
+      case "secondPerson":
+        this.secondPersonPerspective();
+        break;
+      default:
+        this.thirdPersonPerspective();
+        break;
+    }
+  }
 }
 
 export { Camera, PerspectiveCamera };
+

@@ -1,5 +1,7 @@
 import * as THREE from "three";
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
+import { PerspectiveCamera } from "../scenes/Camera";
+import { cloneGLTF } from '../utils/mesh';
 
 abstract class BaseObject {
   type: string;
@@ -10,7 +12,8 @@ abstract class BaseObject {
   constructor(type: string, name: string, mesh?: THREE.Object3D) {
     this.type = type;
     this.name = name;
-    this.mesh = mesh || new THREE.Object3D();
+    this.mesh = new THREE.Object3D();
+    this.mesh.add(mesh);
     const bbox = new THREE.Box3().setFromObject(this.mesh);
     const size = bbox.getSize(new THREE.Vector3());
     this.boundingBoxHelper = new THREE.BoxHelper(this.mesh, 0xff0000);
@@ -22,21 +25,64 @@ abstract class BaseObject {
     disposeMeshes(this.mesh);
   }
 
-  rescale(targetWidth: number, targetHeight: number, targetDepth: number) {
+  characterRescale(targetWidth: number, targetHeight: number, targetDepth: number) {
     // 计算当前包围盒
-    this.mesh.scale.set(1, 1, 1);
+    const children = this.mesh.children;
+    children.forEach(child => {
+      if(child instanceof THREE.Camera){
+      
+      }else{
+          child.scale.set(1, 1, 1);
+          const bbox = new THREE.Box3().setFromObject(child);
+          const size = new THREE.Vector3();
+          const center = bbox.getCenter(new THREE.Vector3());
+          const bottomCenter = new THREE.Vector3(center.x, bbox.min.y, center.z);
+          bbox.getSize(size);
+
+          // 计算缩放比例
+          const scaleX = targetWidth / size.x;
+          const scaleY = targetHeight / size.y;
+          const scaleZ = targetDepth / size.z;
+          child.scale.set(scaleX, scaleY, scaleZ);
+          
+          // const newBbox = new THREE.Box3().setFromObject(child);
+          // const newCenter = newBbox.getCenter(new THREE.Vector3());
+          // const newBottomCenter = new THREE.Vector3(newCenter.x, newBbox.min.y, newCenter.z);
+          // const offset = new THREE.Vector3().subVectors(newBottomCenter, bottomCenter);
+          // // 应用偏移量
+          // child.position.add(offset);
+          }
+        });
+        this.updateBoundingBox();
+  }
+  
+  rescale(targetWidth: number, targetHeight: number, targetDepth: number) {
+    if(this.type === 'character'){
+      this.characterRescale(targetWidth, targetHeight, targetDepth);
+      return;
+    }
     const bbox = new THREE.Box3().setFromObject(this.mesh);
-    const size = new THREE.Vector3();
-    bbox.getSize(size);
+    const size = bbox.getSize(new THREE.Vector3());
 
     // 计算缩放比例
     const scaleX = targetWidth / size.x;
     const scaleY = targetHeight / size.y;
     const scaleZ = targetDepth / size.z;
-    // console.log(this.name, size.x, size.y, size.z, scaleX, scaleY, scaleZ);
 
     // 应用缩放
     this.mesh.scale.set(scaleX, scaleY, scaleZ);
+
+    // 重新计算包围盒
+    this.updateBoundingBox();
+
+    // 更新位置以确保包围盒正确包围角色
+    const newBbox = new THREE.Box3().setFromObject(this.mesh);
+    const newCenter = newBbox.getCenter(new THREE.Vector3());
+    const newBottomCenter = new THREE.Vector3(newCenter.x, newBbox.min.y, newCenter.z);
+    const offset = new THREE.Vector3().subVectors(newBottomCenter, this.mesh.position);
+    this.mesh.position.sub(offset);
+
+    // 更新包围盒
     this.updateBoundingBox();
 
   }
@@ -73,20 +119,6 @@ abstract class BaseObject {
   }
 }
 
-function disposeMeshes(obj: THREE.Object3D) {
-  if (obj instanceof THREE.Mesh) {
-    obj.geometry.dispose();
-    if (obj.material instanceof THREE.Material) {
-      obj.material.dispose();
-    }
-  }
-
-  if (obj.children) {
-    for (let child of obj.children) {
-      disposeMeshes(child);
-    }
-  }
-}
 
 abstract class MovableObject extends BaseObject {
   gltf: GLTF;
@@ -99,19 +131,63 @@ abstract class MovableObject extends BaseObject {
     this.initAnimation();
   }
 
-  initAnimation() {
-    if (this.gltf.animations && this.gltf.animations.length > 0) {
+  initAnimation(animationId:number=0) {
+    console.log(this.name, 'is initializing animation', animationId);
+    if (this.gltf.animations && this.gltf.animations.length > animationId) {
       console.log(this.name, 'has animations');
       this.mixer = new THREE.AnimationMixer(this.mesh);
       this.animations = this.gltf.animations;
-      this.mixer.clipAction(this.animations[0]).play();
+      this.mixer.clipAction(this.animations[animationId]).play();
       console.log(this.name, this.animations, this.mixer);
     }
     else
       console.log(this.name, 'has no animations');
   }
+  changeGLTF(gltf: GLTF, animationId: number = 0) {
+    // 获取当前mesh的包围盒信息
+    // const clonedGLTF = cloneGLTF(gltf);
+    const bbox = new THREE.Box3().setFromObject(this.mesh);
+    const size = bbox.getSize(new THREE.Vector3());
+    const center = bbox.getCenter(new THREE.Vector3());
+    const bottomCenter = new THREE.Vector3(center.x, bbox.min.y, center.z);
 
-  changeGLFT(gltf: GLTF) {}
+    // 保存当前mesh的相机子对象
+    // console.log("Ochildren:",this.mesh.children);
+    // const cameras : THREE.PerspectiveCamera[] = this.mesh.children.filter(child => child.constructor.name === 'PerspectiveCamera');
+    // console.log(this.name, 'is changing to', gltf, cameras);
+
+    // // 清空当前mesh的所有子对象，保留相机
+    // while (this.mesh.children.length > 0) {
+    //     const child = this.mesh.children[0];
+    //     this.mesh.remove(child);
+    // }
+
+    const children = this.mesh.children;
+    children.forEach(child => {
+      if(child instanceof THREE.Camera){
+        
+      }else{
+        this.mesh.remove(child);
+      }
+    });
+
+    // 释放当前mesh的几何体和材质
+    disposeMeshes(this.mesh);
+
+    this.mesh.add(gltf.scene);
+    this.rescale(1,1,1);
+
+    // 更新动画混合器和动画剪辑
+    this.mixer = null;
+    this.animations = [];
+    this.gltf = gltf;
+    this.setPosition(bottomCenter.x, bottomCenter.y, bottomCenter.z);
+    this.initAnimation(animationId);
+
+    console.log(this.name, 'is changed to', gltf);
+}
+
+
 
   animate(delta: number): void {
     if (this.mixer) {
@@ -123,5 +199,20 @@ abstract class MovableObject extends BaseObject {
 
   abstract tick(delta: number): void;
 }
+function disposeMeshes(obj: THREE.Object3D) {
+    if (obj instanceof THREE.Mesh) {
+        obj.geometry.dispose();
+        if (Array.isArray(obj.material)) {
+            obj.material.forEach(material => material.dispose());
+        } else if (obj.material) {
+            obj.material.dispose();
+        }
+    }
 
+    if (obj.children) {
+        for (let child of obj.children) {
+            disposeMeshes(child);
+        }
+    }
+}
 export { BaseObject, MovableObject };

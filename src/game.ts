@@ -22,6 +22,8 @@ import { Stage } from './stage/Stage.ts';
 
 
 class Game {
+    status: string;
+
     scene: Scene;
     camera: PerspectiveCamera;
     renderer: Renderer;
@@ -47,6 +49,7 @@ class Game {
     }
 
     async init() {
+        this.status = 'paused';
         await loadAssets(this.gltfCharacterDict, this.gltfObstacleDict);
 
 
@@ -68,7 +71,7 @@ class Game {
 
         this.cameraController = new CameraController(this.camera, this.renderer.domElement);
 
-
+        this.registerEventHandlers();
 
         this.reset();
         this.start();
@@ -84,21 +87,24 @@ class Game {
     }
 
     start() {
+        this.status = 'playing';
         this.loop.start();
     }
 
     pause() {
+        this.status = 'paused';
         const Character_index = this.loop.updatableLists.indexOf(this.Characters);
         if (Character_index !== -1) this.loop.updatableLists.splice(Character_index, 1);
     }
 
     resume() {
+        this.status = 'playing';
         const Character_index = this.loop.updatableLists.indexOf(this.Characters);
         if (Character_index === -1) this.loop.updatableLists.push(this.Characters);
     }
 
     initCharacter() {
-        const spongeBob = new SpongeBob('spongeBob', this.gltfCharacterDict['spongeBobWalk']);
+        const spongeBob = new SpongeBob('spongeBob', this.gltfCharacterDict);
         spongeBob.rescale(1, 1, 1);
         this.Characters.push(spongeBob);
 
@@ -110,18 +116,6 @@ class Game {
         spongeBob.mesh.position.set(0, 0, 3);
     }
 
-    // initObstacles() {
-    //     for (let i = 0; i < 20; i++) {
-    //         const obstacle = this.obstacleGenerator.randomObstacle(i);
-    //         this.obstacles.push(obstacle);
-    //         this.scene.add(obstacle);
-    //         obstacle.setPosition(i, 0, 2 * i + 1);
-    //         obstacle.addBoundingBoxHelper(this.scene.getScene());
-    //         // well this works
-    //     }
-
-    // }
-
     initGround() {
         this.ground = new Ground('firstGround');
         this.scene.add(this.ground);
@@ -130,6 +124,15 @@ class Game {
     initStage() {
         this.stages[0] = new Stage('firstStage', 0, this.obstacleGenerator);
         this.scene.add(this.stages[0]);
+    }
+
+    registerEventHandlers() {
+        document.addEventListener("gameover", (e) => {
+            if (!(e instanceof CustomEvent)) return;
+            // this.pause();
+            this.status = "gameover";
+            console.log("gameover", e.detail.obstacle);
+        })
     }
 
 }
