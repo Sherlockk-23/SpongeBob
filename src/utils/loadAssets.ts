@@ -2,7 +2,8 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 
-async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstacleDict: { [key: string]: GLTF }) {
+async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstacleDict: { [key: string]: GLTF }, 
+    gltfItemDict: { [key: string]: GLTF }) {
     const gltfLoader = new GLTFLoader();
 
     function gltfPromise(path: string): Promise<GLTF> {
@@ -82,6 +83,15 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'spongeBobAll'
     ];
 
+    const itemPaths = [
+        'burger',
+        'checkpoint',
+        'infoSign',
+        'sauceTSCP',
+        'sodaTSCP'
+    ];
+
+
     const promises: Promise<void>[] = [
         gltfPromise('assets/models/creatures/parickHorse/scene.gltf').then((gltf) => {
             gltfObstacleDict['parickHorse'] = gltf;
@@ -102,6 +112,15 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         promises.push(
             gltfPromise(`assets/models/obstacles/${path}/scene.gltf`).then((gltf) => {
                 gltfObstacleDict[path] = gltf;
+                console.log('Loaded GLTF model:', path, gltf);
+            })
+        );
+    });
+
+    itemPaths.forEach((path) => {
+        promises.push(
+            gltfPromise(`assets/models/items/${path}/scene.gltf`).then((gltf) => {
+                gltfItemDict[path] = gltf;
                 console.log('Loaded GLTF model:', path, gltf);
             })
         );

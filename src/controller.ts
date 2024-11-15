@@ -49,11 +49,24 @@ class Controller{
         this.character.movableBoundary = movableBoundary;
         // console.log(this.character.movableBoundary);
     }
-    checkCollision(){
+    checkCollisionItems(){
+        for(let item of this.stage.items){
+            if(checkCollision(this.character, item)){
+                console.log('collision with item', item.name);
+                item.applyEffect(this.character);
+                this.stage.removeItem(item);
+            }
+        }
+    }
+
+    checkCollisionObstacles(){
         for(let obstacle of this.stage.obstacles){
             if(checkCollision(this.character, obstacle)){
                 // document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by '+ obstacle.name } }));
-                console.log('killed by '+ obstacle.name);
+                console.log('collide with '+ obstacle.name);
+                if(this.character.condition=='robotic'){
+                    this.stage.removeObstacle(obstacle);
+                }
                 if(obstacle.name.includes('TSCP')){
                     this.character.updateCondition('dead');
                 }else if(obstacle.name.includes('b')){
@@ -71,7 +84,8 @@ class Controller{
         // 1. check if the character is colliding with any of the items, this may cause logic to change
         // 2. check if the character is colliding with any of the obstacles, this may cause logic to change
         // 3. check if the character is to be colliding with ground, and use this to update the character's movable direction
-        this.checkCollision();
+        this.checkCollisionObstacles();
+        this.checkCollisionItems();
         this.updateCharactorMovableBoundary();
     
     }

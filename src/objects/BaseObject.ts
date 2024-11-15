@@ -3,6 +3,8 @@ import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { PerspectiveCamera } from "../scenes/Camera";
 import { cloneGLTF } from '../utils/mesh';
 
+import { ParticleSystem } from "../utils/ParticleSystem";
+
 abstract class BaseObject {
   type: string;
   name: string;
@@ -14,16 +16,40 @@ abstract class BaseObject {
     this.name = name;
     this.mesh = new THREE.Object3D();
     this.mesh.add(mesh);
+    this.mesh.castShadow = true;
     const bbox = new THREE.Box3().setFromObject(this.mesh);
     const size = bbox.getSize(new THREE.Vector3());
     this.boundingBoxHelper = new THREE.BoxHelper(this.mesh, 0xff0000);
     // this.mesh.add(this.boundingBoxHelper);
   }
 
-  destruct() {
-    this.mesh.parent?.remove(this.mesh);
-    disposeMeshes(this.mesh);
-  }
+  destruct(scene: THREE.Scene=NaN) {
+    if (scene && (this.type === 'item' || this.type === 'obstacle')) {
+        console.log(this.name, 'is destructing');
+        // 创建粒子系统
+        const particleSystem = new ParticleSystem(this.mesh.position.clone());
+        scene.add(particleSystem.particles);
+
+        // 移除对象并释放资源
+        this.mesh.parent?.remove(this.mesh);
+        disposeMeshes(this.mesh);
+
+        // 更新粒子系统
+        const clock = new THREE.Clock();
+        const animate = () => {
+            requestAnimationFrame(animate);
+            const delta = clock.getDelta();
+            if (!particleSystem.update(delta)) {
+                scene.remove(particleSystem.particles);
+            }
+        };
+        animate();
+    } else {
+        // 如果类型不是 'item' 或 'obstacle'，直接移除并释放资源
+        this.mesh.parent?.remove(this.mesh);
+        disposeMeshes(this.mesh);
+    }
+}
   
   rescale(targetWidth: number, targetHeight: number, targetDepth: number) {
     // if(this.type === 'character'){

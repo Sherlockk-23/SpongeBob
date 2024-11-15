@@ -16,6 +16,7 @@ import { BaseObstacle } from './objects/obstacles/BaseObstacle';
 import { Ground } from './objects/Ground.ts';
 
 import { ObstacleGenerator } from './utils/ObstacleGenerator';
+import { ItemGenerator } from './utils/ItemGenerator';
 import { Controller } from './controller.ts';
 
 import { Stage } from './stage/Stage.ts';
@@ -34,6 +35,7 @@ class Game {
 
     gltfCharacterDict: { [key: string]: GLTF } = {};
     gltfObstacleDict: { [key: string]: GLTF } = {};
+    gltfItemDict: { [key: string]: GLTF } = {};
     audioDict: { [key: string]: AudioBuffer } = {};
     textureDict: { [key: string]: { [key: string]: THREE.Texture } } = {};
 
@@ -43,6 +45,7 @@ class Game {
     stages: Stage[] = [];
 
     obstacleGenerator: ObstacleGenerator;
+    itemGenerator: ItemGenerator;
 
     constructor() {
         this.init();
@@ -50,12 +53,13 @@ class Game {
 
     async init() {
         this.status = 'paused';
-        await loadAssets(this.gltfCharacterDict, this.gltfObstacleDict);
+        await loadAssets(this.gltfCharacterDict, this.gltfObstacleDict,this.gltfItemDict);
 
 
 
         this.scene = new Scene();
         this.obstacleGenerator = new ObstacleGenerator(this.gltfObstacleDict);
+        this.itemGenerator = new ItemGenerator(this.gltfItemDict);
         this.initCharacter();
         // this.initObstacles();
         this.initGround();
@@ -122,7 +126,7 @@ class Game {
     }
 
     initStage() {
-        this.stages[0] = new Stage('firstStage', 0, this.obstacleGenerator);
+        this.stages[0] = new Stage(this.scene,'firstStage', 0, this.obstacleGenerator, this.itemGenerator);
         this.scene.add(this.stages[0]);
     }
 

@@ -1,10 +1,13 @@
 import * as THREE from 'three';
 import { BaseObject, MovableObject } from '../objects/BaseObject';
+import { Scene } from '../scenes/Scene';
 import { Wall } from '../objects/Wall';
 import { Ground } from '../objects/Ground';
 import { Ceiling } from "../objects/Ceiling";
 import { BaseObstacle } from '../objects/obstacles/BaseObstacle';
+import { BaseItem } from '../objects/items/BaseItem';
 import { ObstacleGenerator } from '../utils/ObstacleGenerator';
+import { ItemGenerator } from '../utils/ItemGenerator';
 
 class Stage extends MovableObject {
 
@@ -14,23 +17,29 @@ class Stage extends MovableObject {
     ceiling: Ceiling;
     obstacles: BaseObstacle[] = [];
     obstacleGenerator: ObstacleGenerator;
+    items: BaseItem[] = [];
+    itemGenerator: ItemGenerator;
+
+    scene: THREE.Scene;
 
     static readonly LENGTH = 1000;
     static readonly WIDTH = 10;
     static readonly HEIGHT = 10;
     static readonly START_Z = 0;
 
-    constructor(name: string, stageNumber: number, obstacleGenerator: ObstacleGenerator) {
+    constructor(scene: Scene, name: string, stageNumber: number, obstacleGenerator: ObstacleGenerator, itemGenerator: ItemGenerator) {
         const stageGroup = new THREE.Group();
         super('stage', name, stageGroup);
 
         const stagePosition = Stage.LENGTH * stageNumber;
+        this.scene = scene.getScene();
 
         this.ground = new Ground('ground', Stage.WIDTH, Stage.LENGTH);
         this.leftWall = new Wall('leftWall', Stage.LENGTH, Stage.HEIGHT);
         this.rightWall = new Wall('rightWall', Stage.LENGTH, Stage.HEIGHT);
         this.ceiling = new Ceiling('ceiling', Stage.WIDTH, Stage.LENGTH);
         this.obstacleGenerator = obstacleGenerator;
+        this.itemGenerator = itemGenerator;
 
         this.ground.mesh.position.z = stagePosition;
         this.leftWall.mesh.position.z = stagePosition;
@@ -48,6 +57,7 @@ class Stage extends MovableObject {
 
         this.initStage();
         this.initObstacles(Stage.LENGTH, Stage.WIDTH);
+        this.initItems(Stage.LENGTH, Stage.WIDTH);
     }
 
     initStage() {
@@ -73,6 +83,33 @@ class Stage extends MovableObject {
         }
     }
 
+    initItems(trackLength: number, trackWidth: number) {
+        const itemSpacing = 5; // Change this to change density
+        // const numItems = Math.floor(trackLength / itemSpacing);
+        const numItems = 20;
+
+        for (let i = 0; i < numItems; i++) {
+            const item = this.itemGenerator.randomItem(i);
+            this.items.push(item);
+            this.mesh.add(item.mesh);
+
+            const x = Math.random() * trackWidth - trackWidth / 2;
+            const y = 0; // For ground objects
+            const z = i * itemSpacing + Math.random() * itemSpacing;
+
+            item.setPosition(x, y, z);
+        }
+    }
+
+    removeItem(item: BaseItem) {
+        this.items = this.items.filter((i) => i !== item);
+        item.destruct(this.scene);
+    }
+    removeObstacle(obstacle: BaseObstacle) {
+        this.obstacles = this.obstacles.filter((i) => i !== obstacle);
+        obstacle.destruct(this.scene);
+    }
+
     destruct() {
         this.ground.destruct();
         this.leftWall.destruct();
@@ -82,6 +119,9 @@ class Stage extends MovableObject {
         this.obstacles.forEach((obstacle) => {
             obstacle.destruct();
         });
+        this.items.forEach((item) => {
+            item.destruct();
+        });
 
         super.destruct();
     }
@@ -89,6 +129,9 @@ class Stage extends MovableObject {
     tick(delta: number) {
         this.obstacles.forEach((obstacle) => {
             obstacle.tick(delta);
+        });
+        this.items.forEach((item) => {
+            item.tick(delta);
         });
     }
 }

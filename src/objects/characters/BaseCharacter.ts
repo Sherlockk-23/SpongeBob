@@ -3,12 +3,22 @@ import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { BaseObject, MovableObject } from '../BaseObject';
 import { InputHandler } from '../../utils/InputHandler';
 import { PerspectiveCamera } from '../../scenes/Camera';
+import { Scene } from '../../scenes/Scene';
+import { Renderer } from '../../scenes/Renderer';
+
+interface Effect {
+    duration: number;
+    apply: (character: BaseCharacter) => void;
+    remove: (character: BaseCharacter) => void;
+}
 
 abstract class BaseCharacter extends MovableObject {
     pos: THREE.Vector3;
     vel: THREE.Vector3;
     accel: THREE.Vector3;
     camera: PerspectiveCamera;
+    effects: { [key: string]: Effect } = {};
+
     // used to tell the 6 boundary of the character for position update
     movableBoundary: { [key: string]: number } = {
         'forward': 1000,
@@ -29,6 +39,7 @@ abstract class BaseCharacter extends MovableObject {
     delta: number = 0.05;
     defaultMaxVel: number = 2;
     defaultMinVel: number = 0.1;
+    defaultMaxJumpVel: number = 2;
     defaultDeaccel: number = 0.8;
     defaultAccel: number = 1.5;
     defaultGravity: number = 2;
@@ -100,14 +111,20 @@ abstract class BaseCharacter extends MovableObject {
             this.updateMovementTmp('walking');
         }
         if (this.inputHandler.isKeyPressed(' ') && this.onGround()) {
-            this.vel.y = this.defaultMaxVel;
+            this.vel.y = this.defaultMaxJumpVel;
+        }
+        if(this.inputHandler.isKeyPressed('c') && !this.onGround()){
+            this.vel.y = -2*this.defaultMaxJumpVel;
         }
         this.accel.y = -this.defaultGravity;
     }
 
     updateVelocity(delta: number): void {
         this.vel.add(this.accel.clone().multiplyScalar(delta));
-        this.vel.clampLength(0, this.defaultMaxVel);
+        // this.vel.clampLength(0, this.defaultMaxVel);
+        this.vel.x = Math.min(Math.max(this.vel.x, -this.defaultMaxVel), this.defaultMaxVel);
+        this.vel.y = Math.min(Math.max(this.vel.y, -this.defaultMaxJumpVel), this.defaultMaxJumpVel);
+        this.vel.z = Math.min(Math.max(this.vel.z, -this.defaultMaxVel), this.defaultMaxVel);
     }
 
     updatePosition(delta: number): void {
@@ -164,11 +181,31 @@ abstract class BaseCharacter extends MovableObject {
         this.initAnimation(animationId);
     }
 
+    applyEffect(effectName: string, effect: Effect) {
+        if (this.effects[effectName]) {
+            this.effects[effectName].remove(this);
+        }
+        this.effects[effectName] = effect;
+        effect.apply(this);
+    }
+
+    updateEffects(delta: number) {
+        for (const effectName in this.effects) {
+            const effect = this.effects[effectName];
+            effect.duration -= delta;
+            if (effect.duration <= 0) {
+                effect.remove(this);
+                delete this.effects[effectName];
+            }
+        }
+    }
+
     tick(delta: number): void {
         this.updateAcceleration(delta);
         this.updateVelocity(delta);
         this.updatePosition(delta);
         this.updateBoundingBox();
+        this.updateEffects(delta);
         this.camera.update();
         console.log(this.name, 'position:', this.mesh.position);
         console.log(this.name, 'velocity:', this.vel);

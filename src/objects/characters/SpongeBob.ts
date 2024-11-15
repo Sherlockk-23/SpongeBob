@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import { BaseCharacter } from "./BaseCharacter";
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
+import { Renderer } from "../../scenes/Renderer";
+import { Scene } from "../../scenes/Scene";
 
 class SpongeBob extends BaseCharacter {
     gltfDict: {[key:string]: GLTF};
