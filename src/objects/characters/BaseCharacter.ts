@@ -32,15 +32,15 @@ abstract class BaseCharacter extends MovableObject {
     //condition can be normal, robotic, highjump, scary, dead
     condition: string = 'normal';
     //movement can be walking, running, jumping, idle
-    movement: string ;
+    movement: string;
     movementUpdated: boolean = false;
-    newMovement: string ;    
+    newMovement: string;
 
     delta: number = 0.05;
-    defaultMaxVel: number = 2;
+    defaultMaxVel: number = 20;
     defaultMinVel: number = 0.1;
     defaultMaxJumpVel: number = 2;
-    defaultDeaccel: number = 0.8;
+    defaultDeaccel: number = 5;
     defaultAccel: number = 1.5;
     defaultGravity: number = 2;
 
@@ -48,7 +48,7 @@ abstract class BaseCharacter extends MovableObject {
 
     constructor(name: string, characterGLTF: GLTF) {
         super('character', name, characterGLTF);
-        this.rescale(1,1,1);
+        this.rescale(1, 1, 1);
         this.camera = new PerspectiveCamera(this);
         // this.init();  handled by child class
     }
@@ -67,7 +67,7 @@ abstract class BaseCharacter extends MovableObject {
 
     onGround(): boolean {
         const bbox = new THREE.Box3().setFromObject(this.mesh);
-        return Math.abs(this.movableBoundary['down']-bbox.min.y)<this.delta;
+        return Math.abs(this.movableBoundary['down'] - bbox.min.y) < this.delta;
     }
 
     updateMovementTmp(movement: string): void {
@@ -113,8 +113,8 @@ abstract class BaseCharacter extends MovableObject {
         if (this.inputHandler.isKeyPressed(' ') && this.onGround()) {
             this.vel.y = this.defaultMaxJumpVel;
         }
-        if(this.inputHandler.isKeyPressed('c') && !this.onGround()){
-            this.vel.y = -2*this.defaultMaxJumpVel;
+        if (this.inputHandler.isKeyPressed('c') && !this.onGround()) {
+            this.vel.y = -2 * this.defaultMaxJumpVel;
         }
         this.accel.y = -this.defaultGravity;
     }

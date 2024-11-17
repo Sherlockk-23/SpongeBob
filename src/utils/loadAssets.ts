@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 
-async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstacleDict: { [key: string]: GLTF }, 
+async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstacleDict: { [key: string]: GLTF },
     gltfItemDict: { [key: string]: GLTF }) {
     const gltfLoader = new GLTFLoader();
 
@@ -44,30 +44,33 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
     }
 
     const obstaclePaths = [
-        'bed',
-        'boatTSCP',
-        'bottom',
-        'building1TSCP',
-        'building2TSCP',
+        // 'bed',
+        // 'boatTSCP',
+        // 'bottom',
+        // 'building1TSCP',
+        // 'building2TSCP',
         'bus',
-        'busTSCP',
+        // 'busTSCP',
         // 'car1',
-        'car2',
-        'chair1',
+        'train',
+        'burger',
+        // 'car2',
+        // 'chair1',
         'clock',
-        'hat',
-        'house1',
-        'karen',
-        'krabTSCP',
-        'lightHouseTSCP',
-        'patrickStatue',
-        'pattyWagon',
-        'pineappleHouse',
-        'pineappleHouseTSCP',
-        'snailClock',
-        'spatula',
-        'squidwardHouseTSCP',
-        'table'
+        // 'hat',
+        // 'house1',
+        // 'karen',
+        // 'krabTSCP',
+        // 'lightHouseTSCP',
+        // 'patrickStatue',
+        // 'pattyWagon',
+        // 'pineappleHouse',
+        // 'pineappleHouseTSCP',
+        // 'snailClock',
+        // 'spatula',
+        // 'squidwardHouseTSCP',
+        // 'table'
+        'wooden_fence'
     ];
 
     const characterPaths = [
@@ -84,7 +87,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
     ];
 
     const itemPaths = [
-        'burger',
+        // 'burger',
         'checkpoint',
         'infoSign',
         'sauceTSCP',

@@ -13,7 +13,7 @@ class Ground extends BaseObject {
         this.createGround(width, height);
     }
 
-    createGround(width: number = 10, height: number = 1000) {
+    createGround(width: number = 5, height: number = 1000) {
 
     }
 }

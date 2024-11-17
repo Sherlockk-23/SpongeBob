@@ -23,34 +23,34 @@ abstract class BaseObject {
     // this.mesh.add(this.boundingBoxHelper);
   }
 
-  destruct(scene: THREE.Scene=NaN) {
+  destruct(scene: THREE.Scene = NaN) {
     if (scene && (this.type === 'item' || this.type === 'obstacle')) {
-        console.log(this.name, 'is destructing');
-        // 创建粒子系统
-        const particleSystem = new ParticleSystem(this.mesh.position.clone());
-        scene.add(particleSystem.particles);
+      console.log(this.name, 'is destructing');
+      // 创建粒子系统
+      const particleSystem = new ParticleSystem(this.mesh.position.clone());
+      scene.add(particleSystem.particles);
 
-        // 移除对象并释放资源
-        this.mesh.parent?.remove(this.mesh);
-        disposeMeshes(this.mesh);
+      // 移除对象并释放资源
+      this.mesh.parent?.remove(this.mesh);
+      disposeMeshes(this.mesh);
 
-        // 更新粒子系统
-        const clock = new THREE.Clock();
-        const animate = () => {
-            requestAnimationFrame(animate);
-            const delta = clock.getDelta();
-            if (!particleSystem.update(delta)) {
-                scene.remove(particleSystem.particles);
-            }
-        };
-        animate();
+      // 更新粒子系统
+      const clock = new THREE.Clock();
+      const animate = () => {
+        requestAnimationFrame(animate);
+        const delta = clock.getDelta();
+        if (!particleSystem.update(delta)) {
+          scene.remove(particleSystem.particles);
+        }
+      };
+      animate();
     } else {
-        // 如果类型不是 'item' 或 'obstacle'，直接移除并释放资源
-        this.mesh.parent?.remove(this.mesh);
-        disposeMeshes(this.mesh);
+      // 如果类型不是 'item' 或 'obstacle'，直接移除并释放资源
+      this.mesh.parent?.remove(this.mesh);
+      disposeMeshes(this.mesh);
     }
-}
-  
+  }
+
   rescale(targetWidth: number, targetHeight: number, targetDepth: number) {
     // if(this.type === 'character'){
     //   this.characterRescale(targetWidth, targetHeight, targetDepth);
@@ -116,6 +116,35 @@ abstract class BaseObject {
     this.updateBoundingBox();
     console.log(this.name, center, bottomCenter, offset);
   }
+
+  rotate(axis: 'x' | 'y' | 'z', angle: number) {
+    this.mesh.rotation[axis] += angle;
+    this.updateBoundingBox();
+  }
+
+  // Set absolute rotation in radians
+  setRotation(x: number, y: number, z: number) {
+    this.mesh.rotation.set(x, y, z);
+    this.updateBoundingBox();
+  }
+
+  // Rotate to face a specific point
+  lookAt(x: number, y: number, z: number) {
+    this.mesh.lookAt(new THREE.Vector3(x, y, z));
+    this.updateBoundingBox();
+  }
+
+  // Set rotation using Euler angles (in radians)
+  setEulerRotation(x: number, y: number, z: number, order: 'XYZ' | 'YXZ' | 'ZXY' | 'ZYX' | 'YZX' | 'XZY' = 'XYZ') {
+    this.mesh.rotation.set(x, y, z, order);
+    this.updateBoundingBox();
+  }
+
+  // Rotate around a specific axis by a quaternion
+  rotateOnAxis(axis: THREE.Vector3, angle: number) {
+    this.mesh.rotateOnAxis(axis.normalize(), angle);
+    this.updateBoundingBox();
+  }
 }
 
 
@@ -130,7 +159,7 @@ abstract class MovableObject extends BaseObject {
     this.initAnimation();
   }
 
-  initAnimation(animationId:number=0) {
+  initAnimation(animationId: number = 0) {
     console.log(this.name, 'is initializing animation', animationId);
     if (this.gltf.animations && this.gltf.animations.length > animationId) {
       console.log(this.name, 'has animations');
@@ -163,9 +192,9 @@ abstract class MovableObject extends BaseObject {
 
     const children = this.mesh.children;
     children.forEach(child => {
-      if(child instanceof THREE.Camera){
-        
-      }else{
+      if (child instanceof THREE.Camera) {
+
+      } else {
         this.mesh.remove(child);
       }
     });
@@ -174,7 +203,7 @@ abstract class MovableObject extends BaseObject {
     disposeMeshes(this.mesh);
 
     this.mesh.add(gltf.scene);
-    this.rescale(1,1,1);
+    this.rescale(1, 1, 1);
 
     // 更新动画混合器和动画剪辑
     this.mixer = null;
@@ -184,14 +213,14 @@ abstract class MovableObject extends BaseObject {
     this.initAnimation(animationId);
 
     console.log(this.name, 'is changed to', gltf);
-}
+  }
 
 
 
   animate(delta: number): void {
     if (this.mixer) {
-        console.log(this.name, 'is animating');
-        this.mixer.update(delta);
+      console.log(this.name, 'is animating');
+      this.mixer.update(delta);
     }
   }
 
@@ -199,19 +228,19 @@ abstract class MovableObject extends BaseObject {
   abstract tick(delta: number): void;
 }
 function disposeMeshes(obj: THREE.Object3D) {
-    if (obj instanceof THREE.Mesh) {
-        obj.geometry.dispose();
-        if (Array.isArray(obj.material)) {
-            obj.material.forEach(material => material.dispose());
-        } else if (obj.material) {
-            obj.material.dispose();
-        }
+  if (obj instanceof THREE.Mesh) {
+    obj.geometry.dispose();
+    if (Array.isArray(obj.material)) {
+      obj.material.forEach(material => material.dispose());
+    } else if (obj.material) {
+      obj.material.dispose();
     }
+  }
 
-    if (obj.children) {
-        for (let child of obj.children) {
-            disposeMeshes(child);
-        }
+  if (obj.children) {
+    for (let child of obj.children) {
+      disposeMeshes(child);
     }
+  }
 }
 export { BaseObject, MovableObject };

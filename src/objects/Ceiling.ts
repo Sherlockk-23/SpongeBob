@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { BaseObject } from './BaseObject';
 
 class Ceiling extends BaseObject {
-    constructor(name: string, width: number = 10, height: number = 10) {
+    constructor(name: string, width: number = 5, height: number = 5) {
         console.log('createCeiling');
         const geometry = new THREE.PlaneGeometry(width, height);
         const material = new THREE.MeshStandardMaterial({ color: 0x909090 });
