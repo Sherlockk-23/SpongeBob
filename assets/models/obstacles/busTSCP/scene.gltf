@@ -3,24 +3,24 @@
     {
       "bufferView": 2,
       "componentType": 5126,
-      "count": 7671,
+      "count": 8138,
       "max": [
-        19.865299224853516,
-        7.950689792633057,
-        25.80109977722168
+        -276.9460144042969,
+        217.90199279785156,
+        61.2411003112793
       ],
       "min": [
-        -21.68910026550293,
-        -6.844099998474121,
-        1.0
+        -318.5010070800781,
+        203.10800170898438,
+        36.440101623535156
       ],
       "type": "VEC3"
     },
     {
       "bufferView": 2,
-      "byteOffset": 92052,
+      "byteOffset": 97656,
       "componentType": 5126,
-      "count": 7671,
+      "count": 8138,
       "max": [
         1.0,
         1.0,
@@ -36,7 +36,7 @@
     {
       "bufferView": 1,
       "componentType": 5126,
-      "count": 7671,
+      "count": 8138,
       "max": [
         0.9684900045394897,
         0.9864770174026489
@@ -50,7 +50,7 @@
     {
       "bufferView": 0,
       "componentType": 5125,
-      "count": 33924,
+      "count": 35928,
       "type": "SCALAR"
     }
   ],
@@ -58,31 +58,31 @@
     "extras": {
       "author": "SMF Friends Fan 2024 YouTube Live (https://sketchfab.com/cherylhill28)",
       "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
-      "source": "https://sketchfab.com/3d-models/bus-tscp-roblox-b9e5499f67894ecfb1c70e2ab4f452a7",
-      "title": "Bus TSCP Roblox"
+      "source": "https://sketchfab.com/3d-models/tscp-bus-d6b5445484a34c69b1a5fe52918c8ba3",
+      "title": "Tscp - Bus"
     },
-    "generator": "Sketchfab-16.29.0",
+    "generator": "Sketchfab-16.53.0",
     "version": "2.0"
   },
   "bufferViews": [
     {
       "buffer": 0,
-      "byteLength": 135696,
+      "byteLength": 143712,
       "name": "floatBufferViews",
       "target": 34963
     },
     {
       "buffer": 0,
-      "byteLength": 61368,
-      "byteOffset": 135696,
+      "byteLength": 65104,
+      "byteOffset": 143712,
       "byteStride": 8,
       "name": "floatBufferViews",
       "target": 34962
     },
     {
       "buffer": 0,
-      "byteLength": 184104,
-      "byteOffset": 197064,
+      "byteLength": 195312,
+      "byteOffset": 208816,
       "byteStride": 12,
       "name": "floatBufferViews",
       "target": 34962
@@ -90,26 +90,24 @@
   ],
   "buffers": [
     {
-      "byteLength": 381168,
+      "byteLength": 404128,
       "uri": "scene.bin"
     }
   ],
   "images": [
     {
-      "uri": "textures/Wheels1Mtl_baseColor.png"
+      "uri": "textures/Glass1Mtl_baseColor.png"
     }
   ],
   "materials": [
     {
-      "emissiveTexture": {
-        "index": 0
-      },
-      "name": "Wheels1Mtl",
+      "name": "Glass1Mtl",
       "pbrMetallicRoughness": {
         "baseColorTexture": {
           "index": 0
         },
-        "metallicFactor": 0.0
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
       }
     }
   ],
@@ -159,7 +157,7 @@
       "children": [
         2
       ],
-      "name": "Bus_Rig.obj.cleaner.materialmerger.gles"
+      "name": "bus.obj.cleaner.materialmerger.gles"
     },
     {
       "mesh": 0,

@@ -44,24 +44,25 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
     }
 
     const obstaclePaths = [
-        // 'bed',
-        // 'boatTSCP',
+        'lightHouseTSCP',
+        'busTSCP',
+        'boatTSCP',
+        'tableTSCP',
+        'spongehengeTSCP',
+        // 'train',
+        // 'burger',
         // 'bottom',
         // 'building1TSCP',
         // 'building2TSCP',
-        'bus',
-        // 'busTSCP',
-        // 'car1',
-        'train',
-        'burger',
+        // 'bus'
+        // 'car1',//not usable
         // 'car2',
         // 'chair1',
-        'clock',
+        // 'clock',
         // 'hat',
         // 'house1',
         // 'karen',
         // 'krabTSCP',
-        // 'lightHouseTSCP',
         // 'patrickStatue',
         // 'pattyWagon',
         // 'pineappleHouse',
@@ -71,6 +72,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         // 'squidwardHouseTSCP',
         // 'table'
         'wooden_fence'
+        // 'bed',
     ];
 
     const characterPaths = [

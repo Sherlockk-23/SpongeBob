@@ -2,10 +2,10 @@ import * as THREE from 'three';
 import { BaseObject } from './BaseObject';
 
 class Ceiling extends BaseObject {
-    constructor(name: string, width: number = 5, height: number = 5) {
+    constructor(name: string, width: number = 5, height: number = 8) {
         console.log('createCeiling');
         const geometry = new THREE.PlaneGeometry(width, height);
-        const material = new THREE.MeshStandardMaterial({ color: 0x909090 });
+        const material = new THREE.MeshStandardMaterial({ color: "transparent", side: THREE.DoubleSide, transparent: true, opacity: 0 });
         const ceiling = new THREE.Mesh(geometry, material);
         ceiling.rotation.x = Math.PI / 2; // 使平面水平放置
         ceiling.receiveShadow = true; // 接收阴影

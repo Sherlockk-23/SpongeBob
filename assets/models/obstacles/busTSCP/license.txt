@@ -1,6 +1,6 @@
 Model Information:
-* title:	Bus TSCP Roblox
-* source:	https://sketchfab.com/3d-models/bus-tscp-roblox-b9e5499f67894ecfb1c70e2ab4f452a7
+* title:	Tscp - Bus
+* source:	https://sketchfab.com/3d-models/tscp-bus-d6b5445484a34c69b1a5fe52918c8ba3
 * author:	SMF Friends Fan 2024 YouTube Live (https://sketchfab.com/cherylhill28)
 
 Model License:
@@ -8,4 +8,4 @@ Model License:
 * requirements:	Author must be credited. Commercial use is allowed.
 
 If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
-This work is based on "Bus TSCP Roblox" (https://sketchfab.com/3d-models/bus-tscp-roblox-b9e5499f67894ecfb1c70e2ab4f452a7) by SMF Friends Fan 2024 YouTube Live (https://sketchfab.com/cherylhill28) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+This work is based on "Tscp - Bus" (https://sketchfab.com/3d-models/tscp-bus-d6b5445484a34c69b1a5fe52918c8ba3) by SMF Friends Fan 2024 YouTube Live (https://sketchfab.com/cherylhill28) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

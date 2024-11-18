@@ -52,7 +52,11 @@ class ObstacleGenerator {
         this.sizeDict['chair1'] = new THREE.Vector3(1, 1, 1);
         this.sizeDict['table'] = new THREE.Vector3(1, 0.5, 1);
         this.sizeDict['train'] = new THREE.Vector3(2, 2, 10);
-        this.sizeDict['busTSCP'] = new THREE.Vector3(10, 2, 2);
+        this.sizeDict['boatTSCP'] = new THREE.Vector3(1, 1, 2);
+        this.sizeDict['busTSCP'] = new THREE.Vector3(10, 3, 2.5);
+        this.sizeDict['lightHouseTSCP'] = new THREE.Vector3(2.5, 7.5, 2.5);
+        this.sizeDict['spongehengeTSCP'] = new THREE.Vector3(1.2, 1.8, 0.35);
+        this.sizeDict['tableTSCP'] = new THREE.Vector3(3, 1, 3);
         this.sizeDict['wooden_fence'] = new THREE.Vector3(3, 1.2, 0.1);
         console.log('generator initialized', this.themeDict);
     }
@@ -78,8 +82,17 @@ class ObstacleGenerator {
             const size = bbox3.getSize(new THREE.Vector3());
             console.log('new obstacle generated', obstacle.name, bbox3);
         }
-        obstacle.rotate('y', Math.PI / 2);
-
+        if (name == 'busTSCP') {
+            obstacle.rotate('y', Math.PI);
+        }
+        if (name == 'boatTSCP') {
+            obstacle.rotate('y', Math.PI / 2);
+        }
+        if (name == 'spongehengeTSCP') {
+            obstacle.rotate('y', Math.PI / 2);
+        }
+        //obstacle.rotate('y', Math.PI);
+        //
         return obstacle;
 
     }

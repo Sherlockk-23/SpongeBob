@@ -70,42 +70,28 @@ class Stage extends MovableObject {
         const numObstacles = 20;
 
         for (let i = 0; i < numObstacles; i++) {
-            // const obstacle = this.obstacleGenerator.randomObstacle(i, this.theme);
             const obstacle = this.obstacleGenerator.centainObstacle('wooden_fence');
             obstacle.rotate('y', Math.PI / 2)
             this.obstacles.push(obstacle);
             this.mesh.add(obstacle.mesh);
-
-            // const x = Math.random() * trackWidth - trackWidth / 2;
-            // const y = 0; // For ground objects
-            // const z = i * obstacleSpacing + Math.random() * obstacleSpacing;
 
             const x = -3.5;
             const y = 0;
             const z = i * 3;
 
             obstacle.setPosition(x, y, z);
-            // console.log('new obstacle generated', obstacle);
-            // obstacle.addBoundingBoxHelper(this.scene.getScene());
         }
         for (let i = 0; i < numObstacles; i++) {
-            // const obstacle = this.obstacleGenerator.randomObstacle(i, this.theme);
             const obstacle = this.obstacleGenerator.centainObstacle('wooden_fence');
             obstacle.rotate('y', -Math.PI / 2)
             this.obstacles.push(obstacle);
             this.mesh.add(obstacle.mesh);
-
-            // const x = Math.random() * trackWidth - trackWidth / 2;
-            // const y = 0; // For ground objects
-            // const z = i * obstacleSpacing + Math.random() * obstacleSpacing;
 
             const x = 3.5;
             const y = 0;
             const z = i * 3;
 
             obstacle.setPosition(x, y, z);
-            // console.log('new obstacle generated', obstacle);
-            // obstacle.addBoundingBoxHelper(this.scene.getScene());
         }
         for (let i = 0; i < numObstacles; i++) {
             const obstacle = this.obstacleGenerator.randomObstacle(i, this.theme);
