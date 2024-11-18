@@ -208,14 +208,32 @@ abstract class BaseCharacter extends MovableObject {
         this.updateEffects(delta);
         this.camera.update();
         console.log(this.name, 'position:', this.mesh.position);
-        console.log(this.name, 'velocity:', this.vel);
+        // console.log(this.name, 'velocity:', this.vel);
         this.updateMovement();
-        console.log(this.name, 'is', this.movement);
+        // console.log(this.name, 'is', this.movement);
         this.animate(delta);
+        // this.mesh.updateMatrix();
+        // this.mesh.updateMatrix();
+        // this.mesh.updateMatrixWorld();
+        // this.mesh.parent?.updateMatrixWorld(true);
+        // this.mesh.parent?.updateWorldMatrix(true, true);
     }
 
     cameraShake(intensity: number, duration: number) {
         this.camera.shake(intensity, duration);
+    }
+
+    reset() {
+        this.updateCondition('normal');
+        this.newMovement = 'idle';
+        this.updateMovement();
+        this.mesh.position.set(0, 0, 0);   
+        this.vel.set(0, 0, 0);
+        this.accel.set(0, 0, 0); 
+        // this.mesh.updateMatrix();
+        // this.mesh.updateMatrixWorld();
+        // this.mesh.parent?.updateMatrixWorld(true);
+        // this.mesh.parent?.updateWorldMatrix(true, true);
     }
 
     abstract updateMovementAnimation(movement: string): { animationId: number };

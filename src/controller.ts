@@ -30,6 +30,10 @@ class Controller {
 
     }
 
+    changeStage(stage: Stage) {
+        this.stage = stage;
+    }
+
     updateCharactorMovableBoundary() {
         let movableBoundary: { [key: string]: number } = {
             'forward': 1000,
@@ -55,6 +59,10 @@ class Controller {
                 console.log('collision with item', item.name);
                 item.applyEffect(this.character);
                 this.stage.removeItem(item);
+                if(item.name.includes('TSCP')){
+                    this.character.updateCondition('dead');
+                    document.dispatchEvent(new CustomEvent("gameover", { detail: { item: 'killed by '+ item.name } }));
+                }
             }
         }
     }
