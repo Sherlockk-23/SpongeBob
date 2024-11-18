@@ -3,7 +3,7 @@ import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { PerspectiveCamera } from "../scenes/Camera";
 import { cloneGLTF } from '../utils/mesh';
 
-import { ParticleSystem } from "../utils/ParticleSystem";
+import { ParticleSystem } from "../utils/mesh";
 
 abstract class BaseObject {
   type: string;
@@ -219,7 +219,7 @@ abstract class MovableObject extends BaseObject {
 
   animate(delta: number): void {
     if (this.mixer) {
-      console.log(this.name, 'is animating');
+      // console.log(this.name, 'is animating');
       this.mixer.update(delta);
     }
   }

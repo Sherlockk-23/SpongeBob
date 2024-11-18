@@ -1,0 +1,133 @@
+.header {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  pointer-events: none;
+
+  /* add a opaque backgroud */
+  background-color: rgba(255, 197, 127, 1);
+  z-index: 3;
+}
+
+.header h1 {
+  position: absolute;
+  top: 5vh;
+  left: 35vw;
+  display: inline-block;
+  font-family: 'Playfair Display';
+  font-size: 10vw;
+  color: #ce1a1a;
+
+  margin: 0 0 0 4vw;
+
+  z-index: inherit;
+}
+
+.header h1 span {
+  font-style: italic;
+  display: block;
+  margin: 0 0 -3vh -20vw;
+  font-size: 7vw;
+
+  z-index: inherit;
+}
+
+.header h2 {
+  position: absolute;
+  top: 40vh;
+  width: 100vw;
+
+  text-align: center;
+  font-size: 1.5vw;
+  margin: 0em 0;
+  white-space: nowrap;
+  letter-spacing: 0.8vw;
+  text-transform: uppercase;
+  color: #0f9b9b;
+
+  z-index: inherit;
+}
+
+
+.banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  z-index: 4;
+  display: none;
+}
+
+.banner_text {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  font-size: 1vw;
+  margin: 0 0;
+  white-space: nowrap;
+  text-indent: 1em;
+  letter-spacing: 1em;
+  text-transform: uppercase;
+
+  /* center the text */
+  text-align: center;
+}
+
+.win-banner {
+  background-color: rgba(61, 162, 18, 0.6);
+  color: #d6483b;
+}
+
+.lose-banner {
+  background-color: rgba(201, 64, 10, 0.6);
+  color: #e0f128;
+}
+
+.message {
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  pointer-events: none;
+
+  font-size: 1.25vw;
+
+  z-index: 3;
+}
+
+.message--replay {
+  font-size: 1.2vw;
+  bottom: 40vh;
+  /* display: none; */
+  display: block;
+  letter-spacing: 0.5vw;
+  color: #109634;
+}
+
+.message--instructions {
+  font-family: 'Playfair Display';
+  font-size: 1.25vw;
+  bottom: 30%;
+  letter-spacing: 0.2em;
+  color: #68c3c0;
+}
+
+.message__character {
+  position: absolute;
+  left: 0;
+  width: 50%;
+  background-color: rgba(255, 197, 127, 0.6);
+  z-index: 2;
+}
+
+
+.message--instructions span {
+  display: block;
+  color: #d6483b;
+  white-space: nowrap;
+}
