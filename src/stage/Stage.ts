@@ -31,7 +31,7 @@ class Stage extends MovableObject {
     constructor(scene: Scene, name: string, stageNumber: number, obstacleGenerator: ObstacleGenerator, itemGenerator: ItemGenerator) {
         const stageGroup = new THREE.Group();
         super('stage', name, stageGroup);
-        this.mesh=stageGroup;
+        this.mesh = stageGroup;
 
         const stagePosition = Stage.LENGTH * stageNumber;
         this.scene = scene.getScene();
@@ -152,7 +152,7 @@ class Stage extends MovableObject {
         super.destruct();
     }
 
-    reset(){
+    reset() {
         this.obstacles.forEach((obstacle) => {
             obstacle.destruct();
         });
