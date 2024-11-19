@@ -43,7 +43,7 @@ class Controller {
             'up': 1000,
             'down': 0
         };
-        for (let obstacle of this.stage.obstacles) {
+        for (let obstacle of this.stage.nearestObstacles) {
             updateMovableBoundary(this.character, obstacle, movableBoundary);
         }
         movableBoundary['up'] = Math.min(movableBoundary['up'], this.stage.ceiling.mesh.position.y);
@@ -54,7 +54,7 @@ class Controller {
         // console.log(this.character.movableBoundary);
     }
     checkCollisionItems() {
-        for (let item of this.stage.items) {
+        for (let item of this.stage.nearestItems) {
             if (checkCollision(this.character, item)) {
                 console.log('collide with item ', item.name);
                 item.applyEffect(this.character);
@@ -68,7 +68,7 @@ class Controller {
     }
 
     checkCollisionObstacles() {
-        for (let obstacle of this.stage.obstacles) {
+        for (let obstacle of this.stage.nearestObstacles) {
             if (checkCollision(this.character, obstacle)) {
                 // document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by '+ obstacle.name } }));
                 console.log('collide with obstacle ' + obstacle.name);
@@ -92,7 +92,7 @@ class Controller {
         // 1. check if the character is colliding with any of the items, this may cause logic to change
         // 2. check if the character is colliding with any of the obstacles, this may cause logic to change
         // 3. check if the character is to be colliding with ground, and use this to update the character's movable direction
-        this.stage.updateNearestList(this.character.mesh.position, 30);
+        this.stage.updateNearestList(this.character.mesh.position.clone(), 20);
         this.checkCollisionObstacles();
         this.checkCollisionItems();
         this.updateCharactorMovableBoundary();

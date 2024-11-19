@@ -17,6 +17,7 @@ abstract class BaseObject {
     this.mesh = new THREE.Object3D();
     this.mesh.add(mesh);
     this.mesh.castShadow = true;
+    this.mesh.receiveShadow=true;
     const bbox = new THREE.Box3().setFromObject(this.mesh);
     const size = bbox.getSize(new THREE.Vector3());
     this.boundingBoxHelper = new THREE.BoxHelper(this.mesh, 0xff0000);
@@ -95,6 +96,12 @@ abstract class BaseObject {
 
   addBoundingBoxHelperToThis() {
     this.mesh.add(this.boundingBoxHelper);
+  }
+
+  getBottomCenter() :THREE.Vector3{
+    const bbox = new THREE.Box3().setFromObject(this.mesh);
+    const center = bbox.getCenter(new THREE.Vector3());
+    return center;
   }
 
   setPosition(x: number, y: number, z: number) {
