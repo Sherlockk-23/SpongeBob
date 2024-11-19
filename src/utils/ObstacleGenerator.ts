@@ -53,8 +53,8 @@ class ObstacleGenerator {
         this.sizeDict['table'] = new THREE.Vector3(1, 0.5, 1);
         this.sizeDict['train'] = new THREE.Vector3(2, 2, 10);
         this.sizeDict['boatTSCP'] = new THREE.Vector3(1, 1, 2);
-        this.sizeDict['busTSCP'] = new THREE.Vector3(10, 3, 2.5);
-        this.sizeDict['lightHouseTSCP'] = new THREE.Vector3(2.5, 7.5, 2.5);
+        this.sizeDict['busTSCP'] = new THREE.Vector3(6, 2, 2);
+        this.sizeDict['lightHouseTSCP'] = new THREE.Vector3(2, 5, 2);
         this.sizeDict['spongehengeTSCP'] = new THREE.Vector3(1.2, 1.8, 0.35);
         this.sizeDict['tableTSCP'] = new THREE.Vector3(3, 1, 3);
         this.sizeDict['wooden_fence'] = new THREE.Vector3(3, 1.2, 0.1);

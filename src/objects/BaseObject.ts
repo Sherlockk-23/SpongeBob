@@ -30,10 +30,6 @@ abstract class BaseObject {
       const particleSystem = new ParticleSystem(this.mesh.position.clone());
       scene.add(particleSystem.particles);
 
-      // 移除对象并释放资源
-      this.mesh.parent?.remove(this.mesh);
-      disposeMeshes(this.mesh);
-
       // 更新粒子系统
       const clock = new THREE.Clock();
       const animate = () => {
@@ -44,11 +40,11 @@ abstract class BaseObject {
         }
       };
       animate();
-    } else {
-      // 如果类型不是 'item' 或 'obstacle'，直接移除并释放资源
-      this.mesh.parent?.remove(this.mesh);
-      disposeMeshes(this.mesh);
-    }
+    } 
+    this.mesh.parent?.remove(this.mesh);
+    this.boundingBoxHelper.parent?.remove(this.boundingBoxHelper);
+    disposeMeshes(this.mesh);
+    
   }
 
   rescale(targetWidth: number, targetHeight: number, targetDepth: number) {
@@ -95,6 +91,10 @@ abstract class BaseObject {
 
   addBoundingBoxHelper(scene: THREE.Scene) {
     scene.add(this.boundingBoxHelper);
+  }
+
+  addBoundingBoxHelperToThis() {
+    this.mesh.add(this.boundingBoxHelper);
   }
 
   setPosition(x: number, y: number, z: number) {
