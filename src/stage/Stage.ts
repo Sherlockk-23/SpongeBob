@@ -117,13 +117,13 @@ class Stage extends MovableObject {
         }
         this.obstacles.sort((a, b) => a.mesh.position.z - b.mesh.position.z);
         this.obstaclePointerL=0;
-        this.obstaclePointerR=0;
+        this.obstaclePointerR=1;
     }
 
     initItems(trackLength: number, trackWidth: number) {
         const itemSpacing = 10; // Change this to change density
         // const numItems = Math.floor(trackLength / itemSpacing);
-        const numItems = 20;
+        const numItems = 10;
         for (let i = 0; i < numItems; i++) {
             const item = this.itemGenerator.randomItem(i, this.theme);
             this.items.push(item);
@@ -139,7 +139,7 @@ class Stage extends MovableObject {
 
         this.items.sort((a, b) => a.mesh.position.z - b.mesh.position.z);
         this.itemPointerL=0;
-        this.itemPointerR=0;
+        this.itemPointerR=1;
     }
 
     updateNearestList(position: THREE.Vector3, range: number=10) {
@@ -152,12 +152,12 @@ class Stage extends MovableObject {
             this.obstacles[this.obstaclePointerL].mesh.position.z < position.z - range) {
             this.obstaclePointerL++;
         }
-        while(this.obstaclePointerR<this.obstacles.length-1 && 
-            this.obstacles[this.obstaclePointerR+1].mesh.position.z < position.z + range){
+        while(this.obstaclePointerR < this.obstacles.length && 
+            this.obstacles[this.obstaclePointerR].mesh.position.z < position.z + range){
             this.obstaclePointerR++;
         }
-        while (this.obstaclePointerR >0 &&
-            this.obstacles[this.obstaclePointerR].mesh.position.z > position.z + range) {
+        while (this.obstaclePointerR >0 && (! this.obstacles[this.obstaclePointerR-1]||
+            this.obstacles[this.obstaclePointerR-1].mesh.position.z > position.z + range)) {
             this.obstaclePointerR--;
         }
         this.nearestObstacles = this.obstacles.slice(this.obstaclePointerL, this.obstaclePointerR);
@@ -174,12 +174,12 @@ class Stage extends MovableObject {
             this.items[this.itemPointerL].mesh.position.z < position.z - range) {
             this.itemPointerL++;
         }
-        while(this.itemPointerR<this.items.length-1 && 
-            this.items[this.itemPointerR+1].mesh.position.z < position.z + range){
+        while(this.itemPointerR<this.items.length && 
+            this.items[this.itemPointerR].mesh.position.z < position.z + range){
             this.itemPointerR++;
         }
-        while (this.itemPointerR >0 &&
-            this.items[this.itemPointerR].mesh.position.z > position.z + range) {
+        while (this.itemPointerR >0 &&(! this.items[this.itemPointerR-1]||
+            this.items[this.itemPointerR-1].mesh.position.z > position.z + range)) {
             this.itemPointerR--;
         }
         this.nearestItems = this.items.slice(this.itemPointerL, this.itemPointerR);
@@ -231,10 +231,10 @@ class Stage extends MovableObject {
         // this.items.forEach((item) => {
         //     item.tick(delta);
         // });
-        this.nearestObstacles.forEach((obstacle) => {
+        this.obstacles.forEach((obstacle) => {
             obstacle.tick(delta);
         });
-        this.nearestItems.forEach((item) => {
+        this.items.forEach((item) => {
             item.tick(delta);
         });
     }

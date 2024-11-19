@@ -90,7 +90,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
 
     const itemPaths = [
         // 'burger',
-        'checkpoint',
+        // 'checkpoint',
         'infoSign',
         'sauceTSCP',
         'sodaTSCP'
