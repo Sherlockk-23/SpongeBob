@@ -23,6 +23,13 @@ class Stage extends MovableObject {
 
     scene: THREE.Scene;
 
+    nearestObstacles: BaseObstacle[] = [];
+    obstaclePointerL: number = 0;
+    obstaclePointerR: number = 0;
+    nearestItems: BaseItem[] = [];
+    itemPointerL: number = 0;
+    itemPointerR: number = 0;
+
     static readonly LENGTH = 100;
     static readonly WIDTH = 5;
     static readonly HEIGHT = 10;
@@ -106,8 +113,11 @@ class Stage extends MovableObject {
 
             obstacle.setPosition(x, y, z);
             // console.log('new obstacle generated', obstacle);
-            // obstacle.addBoundingBoxHelper(this.scene.getScene());
+            obstacle.addBoundingBoxHelper(this.scene);
         }
+        this.obstacles.sort((a, b) => a.mesh.position.z - b.mesh.position.z);
+        this.obstaclePointerL=0;
+        this.obstaclePointerR=0;
     }
 
     initItems(trackLength: number, trackWidth: number) {
@@ -124,7 +134,56 @@ class Stage extends MovableObject {
             const z = i * itemSpacing + Math.random() * itemSpacing;
 
             item.setPosition(x, y, z);
+            item.addBoundingBoxHelper(this.scene);
         }
+
+        this.items.sort((a, b) => a.mesh.position.z - b.mesh.position.z);
+        this.itemPointerL=0;
+        this.itemPointerR=0;
+    }
+
+    updateNearestList(position: THREE.Vector3, range: number=10) {
+        // update nearestObstacles
+        while(this.obstaclePointerL>0 && 
+            this.obstacles[this.obstaclePointerL-1].mesh.position.z > position.z - range){
+            this.obstaclePointerL--;
+        }
+        while (this.obstaclePointerL < this.obstacles.length &&
+            this.obstacles[this.obstaclePointerL].mesh.position.z < position.z - range) {
+            this.obstaclePointerL++;
+        }
+        while(this.obstaclePointerR<this.obstacles.length-1 && 
+            this.obstacles[this.obstaclePointerR+1].mesh.position.z < position.z + range){
+            this.obstaclePointerR++;
+        }
+        while (this.obstaclePointerR >0 &&
+            this.obstacles[this.obstaclePointerR].mesh.position.z > position.z + range) {
+            this.obstaclePointerR--;
+        }
+        this.nearestObstacles = this.obstacles.slice(this.obstaclePointerL, this.obstaclePointerR);
+
+        // console.log("nearestObestacles: ",this.nearestObstacles);
+
+        // update nearestItems
+        
+        while(this.itemPointerL>0 && 
+            this.items[this.itemPointerL-1].mesh.position.z > position.z - range){
+            this.itemPointerL--;
+        }
+        while (this.itemPointerL < this.items.length &&
+            this.items[this.itemPointerL].mesh.position.z < position.z - range) {
+            this.itemPointerL++;
+        }
+        while(this.itemPointerR<this.items.length-1 && 
+            this.items[this.itemPointerR+1].mesh.position.z < position.z + range){
+            this.itemPointerR++;
+        }
+        while (this.itemPointerR >0 &&
+            this.items[this.itemPointerR].mesh.position.z > position.z + range) {
+            this.itemPointerR--;
+        }
+        this.nearestItems = this.items.slice(this.itemPointerL, this.itemPointerR);
+        // console.log("nearestItems: ",this.nearestItems);
     }
 
     removeItem(item: BaseItem) {
@@ -166,10 +225,16 @@ class Stage extends MovableObject {
     }
 
     tick(delta: number) {
-        this.obstacles.forEach((obstacle) => {
+        // this.obstacles.forEach((obstacle) => {
+        //     obstacle.tick(delta);
+        // });
+        // this.items.forEach((item) => {
+        //     item.tick(delta);
+        // });
+        this.nearestObstacles.forEach((obstacle) => {
             obstacle.tick(delta);
         });
-        this.items.forEach((item) => {
+        this.nearestItems.forEach((item) => {
             item.tick(delta);
         });
     }

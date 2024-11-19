@@ -47,6 +47,7 @@ abstract class BaseObject {
     } else {
       // 如果类型不是 'item' 或 'obstacle'，直接移除并释放资源
       this.mesh.parent?.remove(this.mesh);
+      this.mesh.parent?.remove(this.boundingBoxHelper);
       disposeMeshes(this.mesh);
     }
   }
@@ -95,6 +96,10 @@ abstract class BaseObject {
 
   addBoundingBoxHelper(scene: THREE.Scene) {
     scene.add(this.boundingBoxHelper);
+  }
+
+  addBoundingBoxHelperToThis() {
+    this.mesh.add(this.boundingBoxHelper);
   }
 
   setPosition(x: number, y: number, z: number) {
