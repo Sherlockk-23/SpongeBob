@@ -3,7 +3,8 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   build: {
     rollupOptions: {
-      input: 'index.html', // 确保路径正确
+      input: 'index.html' // 确保路径正确
+
     },
   },
   optimizeDeps: {

@@ -1,55 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>SpongeBob Run!</title>
-		<style>
-			body { margin: 0; }
-		</style>
-		<link rel="stylesheet" href="/styles/main.css">
-		<link rel="stylesheet" href="/styles/pbar.css">
-		<link rel="stylesheet" href="/styles/menu.css">
-	</head>
-	<body>
-		<script type="module" src="main.ts"></script>
-		<div class="game-holder" id="gameHolder">
-			<div class="header" id="menu">
-				<div id="banner">
-					<h1><span>SpongeBob</span>Run</h1>
-					<h2>
-						Run faster!
-					</h2>
-					<!-- collect item or anything -->
-					<!-- <img class="powerup_img" src="/assets/img/powerup1.png" alt="Powerup 1" width="25">  -->
-				</div>
-			</div>
-			<div class="container" id="scene-container">
-				<div class="distance" id="distance">
-					<div class="distance" id="distance-bar_text">distance</div>
-					<div class="distance" id="distance-bar">
-						<div class="distance__bar__fill" id="distance-bar-fill"></div>
-					</div>
-					<div class="distance__value" id="distance-value">0</div>
-				</div>
-				<div class="banner win-banner" id="win-banner" style="display: none;">
-					<div class="banner_text">
-						<h1>YOU WIN!</h1>
-					</div>
-				</div>
-				<div class="banner lose-banner" id="lose-banner" style="display: none;">
-					<div class="banner_text">
-						<h1>YOU LOSE!</h1>
-					</div>
-				</div>
-			</div>
-			<div class="message message--replay" id="replayMessage">Click anywhere to start</div>
-			<div class="message message--instructions" id="instructions">
-				<div class="message__character" id="instruction">
-					<div class="message__text" id="instructions-text">SpongeBob</div>
-					<div class="message__controls" id="instructions-controls">
-						<br> <span>WSAD</span> to move, <span>Space</span> to jump, <span>c</span> to quick fall 
-					</div>
-				</div>
-			</div>
-	</body>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/png" href="assets/pics/1.png">
+	<title>Start Page</title>
+	<style>
+		body {
+			margin: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			background-color: #f0f8ff;
+			font-family: Arial, sans-serif;
+			color: #333;
+			cursor: pointer;
+		}
+
+		.message {
+			font-size: 2rem;
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="message">
+		Click anywhere to start
+	</div>
+
+	<script>
+		document.body.addEventListener('click', function () {
+			window.location.href = "Character.html";
+		});
+	</script>
+</body>
+
 </html>

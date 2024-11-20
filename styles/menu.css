@@ -6,7 +6,8 @@
   pointer-events: none;
 
   /* add a opaque backgroud */
-  background-color: rgba(255, 197, 127, 1);
+  background-color: none;
+
   z-index: 3;
 }
 

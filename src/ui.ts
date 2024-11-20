@@ -58,6 +58,24 @@ class UIController {
 
 export {UIController};
 
+const startButton = document.getElementById("start-button");
+
+if (startButton) {
+    startButton.addEventListener("click", () => {
+        // Hide the button
+        startButton.style.display = "none";
+        // Call a function to start the game
+        startGame();
+    });
+}
+
+function startGame() {
+    // Assuming `game` is initialized in this file or elsewhere
+    console.log("Game Starting...");
+    // Dispatch custom logic to notify the game logic to start
+    window.dispatchEvent(new Event("gameStart"));
+}
+
 function fadeElement(element: HTMLElement, init_opacity: number=1, final_opacity: number=0, remove: boolean=true, duration: number=500) {
     var op = init_opacity;  // initial opacity
     const timeInterval = 10; // in ms

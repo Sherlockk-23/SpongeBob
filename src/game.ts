@@ -58,15 +58,15 @@ class Game {
     async init() {
         this.status = 'paused';
         this.uiController = new UIController();
-        
-        await loadAssets(this.gltfCharacterDict, this.gltfObstacleDict,this.gltfItemDict);
+
+        await loadAssets(this.gltfCharacterDict, this.gltfObstacleDict, this.gltfItemDict);
         this.uiController.shallowMenu();
 
 
         this.scene = new Scene();
         this.obstacleGenerator = new ObstacleGenerator(this.gltfObstacleDict);
         this.itemGenerator = new ItemGenerator(this.gltfItemDict);
-        
+
         this.initCharacter();
         this.initStage();
         this.controller = new Controller(this.stages[0], this.Character);
@@ -111,9 +111,9 @@ class Game {
         // console.log("Stage position (x, y, z):", this.stages[0].mesh.position.x, this.stages[0].mesh.position.y, this.stages[0].mesh.position.z);
 
         this.loop.updatableLists = [];
-        this.CharacterListForLoop=[this.Character];
-        this.controllerListForLoop=[this.controller];
-        console.log("length of list for loop",this.controllerListForLoop.length);
+        this.CharacterListForLoop = [this.Character];
+        this.controllerListForLoop = [this.controller];
+        console.log("length of list for loop", this.controllerListForLoop.length);
         this.loop.updatableLists.push(this.CharacterListForLoop);
         this.loop.updatableLists.push(this.controllerListForLoop);
         this.loop.updatableLists.push(this.stages);
@@ -131,7 +131,7 @@ class Game {
         if (controller_index !== -1) this.loop.updatableLists.splice(controller_index, 1);
         const stage_index = this.loop.updatableLists.indexOf(this.stages);
         if (stage_index !== -1) this.loop.updatableLists.splice(stage_index, 1);
-        console.log("pausing ",this.loop.updatableLists);
+        console.log("pausing ", this.loop.updatableLists);
     }
 
     resume() {
@@ -141,34 +141,52 @@ class Game {
         if (controller_index === -1) this.loop.updatableLists.push(this.controllerListForLoop);
         const stage_index = this.loop.updatableLists.indexOf(this.stages);
         if (stage_index === -1) this.loop.updatableLists.push(this.stages);
-        console.log("resuming ",this.loop.updatableLists);
+        console.log("resuming ", this.loop.updatableLists);
     }
 
     initCharacter() {
         const spongeBob = new SpongeBob('spongeBob', this.gltfCharacterDict);
         spongeBob.rescale(1, 1, 1);
-        this.Character=spongeBob;
-        
+        this.Character = spongeBob;
+
         this.scene.add(this.Character);
         this.Character.addBoundingBoxHelper(this.scene.getScene());
-        
+
         spongeBob.mesh.position.set(0, 0, 3);
     }
 
 
     initStage() {
-        this.stages[0] = new Stage(this.scene,'firstStage', 0, this.obstacleGenerator, this.itemGenerator);
+        this.stages[0] = new Stage(this.scene, 'firstStage', 0, this.obstacleGenerator, this.itemGenerator);
         this.scene.add(this.stages[0]);
     }
 
     registerEventHandlers() {
-        window.addEventListener("click", ()=> {
+        //     window.addEventListener("gameStart", () => {
+        //         if (this.status === "paused") {
+        //             this.status = "playing";
+        //             this.resume();
+        //             this.uiController.resume();
+        //         }
+        //         else if (this.status === "playing") {
+        //             this.status = "paused";
+        //             this.pause();
+        //             this.uiController.pause();
+        //         }
+        //         else if (this.status === "gameover") {
+        //             this.reset();
+        //             this.resume();
+        //             this.status = "playing";
+        //             this.uiController.restart();
+        //         }
+        //     });
+        window.addEventListener("click", () => {
             if (this.status === "paused") {
                 this.status = "playing";
                 this.resume();
                 this.uiController.resume();
             }
-            else if(this.status === "playing") {
+            else if (this.status === "playing") {
                 this.status = "paused";
                 this.pause();
                 this.uiController.pause();
