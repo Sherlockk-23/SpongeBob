@@ -18,6 +18,7 @@ abstract class BaseCharacter extends MovableObject {
     accel: THREE.Vector3;
     camera: PerspectiveCamera;
     effects: { [key: string]: Effect } = {};
+    // effect: Effect;
 
     // used to tell the 6 boundary of the character for position update
     movableBoundary: { [key: string]: number } = {
@@ -37,7 +38,7 @@ abstract class BaseCharacter extends MovableObject {
     newMovement: string;
 
     delta: number = 0.05;
-    defaultMaxVel: number = 20;
+    defaultMaxVel: number = 5;
     defaultMinVel: number = 0.1;
     defaultMaxJumpVel: number = 2;
     defaultDeaccel: number = 5;
@@ -169,7 +170,7 @@ abstract class BaseCharacter extends MovableObject {
         if (this.condition == 'dead') {
             this.rescale(0.5, 0.5, 0.5);
         } else if (this.condition == 'robotic') {
-            this.rescale(1, 1.5, 1);
+            this.rescale(1.5, 2.5, 1.5);
         }
         this.cameraShake(1, 200);
     }
@@ -182,8 +183,17 @@ abstract class BaseCharacter extends MovableObject {
     }
 
     applyEffect(effectName: string, effect: Effect) {
-        if (this.effects[effectName]) {
-            this.effects[effectName].remove(this);
+        // if (this.effects[effectName]) {
+        //     this.effects[effectName].remove(this);
+        // }
+        // this.effects[effectName] = effect;
+        // effect.apply(this);
+
+        //only allow one effect at a time
+        for (const effectName in this.effects) {
+            const effect = this.effects[effectName];
+            effect.remove(this);
+            delete this.effects[effectName];
         }
         this.effects[effectName] = effect;
         effect.apply(this);

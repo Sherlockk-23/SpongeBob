@@ -24,7 +24,7 @@ abstract class BaseItem extends MovableObject {
     abstract applyEffect(character: BaseCharacter): void;
 }
 
-class burgerItem extends BaseItem {
+class speedupItem extends BaseItem {
     constructor(name: string, item_gltf: GLTF) {
         super(name, item_gltf);
     }
@@ -43,4 +43,23 @@ class burgerItem extends BaseItem {
     }
 }
 
-export { BaseItem, burgerItem };
+class roboticItem extends BaseItem {
+    constructor(name: string, item_gltf: GLTF) {
+        super(name, item_gltf);
+    }
+
+    applyEffect(character: BaseCharacter): void {
+        const roboticEffect = {
+            duration: 7,
+            apply: (char: BaseCharacter) => {
+                char.updateCondition('robotic');
+            },
+            remove: (char: BaseCharacter) => {
+                char.updateCondition('normal');
+            }
+        };
+        character.applyEffect('robotic', roboticEffect);
+    }
+}
+
+export { BaseItem, speedupItem, roboticItem };

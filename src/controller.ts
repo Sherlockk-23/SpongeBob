@@ -13,28 +13,53 @@ import { Stage } from './stage/Stage.ts';
 
 import { Ground } from './objects/Ground.ts';
 
+import { Scene } from './scenes/Scene.ts';
+
 import { updateMovableBoundary, checkCollision } from './utils/Collision.ts';
 
+import { ObstacleGenerator } from './utils/ObstacleGenerator';
+import { ItemGenerator } from './utils/ItemGenerator';
+
 class Controller {
-    //when we have realize Stage
-    stage: Stage;
+   
+    stages: Stage[]= [];
     character: BaseCharacter;
-    constructor(stage: Stage, character: BaseCharacter) {
-        this.stage = stage;
+    scene: Scene;
+    obstacleGenerator: ObstacleGenerator;  
+    itemGenerator: ItemGenerator;
+
+    stageidx: number = 0;
+
+    constructor(scene: Scene,character: BaseCharacter, obstacleGenerator: ObstacleGenerator, itemGenerator: ItemGenerator) {
+        this.scene = scene;
         this.character = character;
-        this.init();
+        this.obstacleGenerator = obstacleGenerator;
+        this.itemGenerator = itemGenerator
+        // this.init();
     }
 
 
     init() {
-
+        for(let stage of this.stages){
+            stage.destruct();
+        }
+        this.stages = [];
+        this.stages.push(new Stage(this.scene, 'stage1', 0, this.obstacleGenerator, this.itemGenerator));
+        this.stageidx = 0;
     }
 
-    changeStage(stage: Stage) {
-        this.stage = stage;
+    changeStage() {
+        console.log('change stage');
+        this.stageidx += 1;
+        this.stages.push(new Stage(this.scene, 'stage' + (this.stageidx + 1), this.stageidx, this.obstacleGenerator, this.itemGenerator));
+        this.stages[this.stageidx].mesh.position.z = 
+            this.stages[this.stageidx - 1].mesh.position.z + this.stages[this.stageidx - 1].length;
+        if (this.stageidx > 1) {
+            this.stages[this.stageidx - 2].destruct();
+        }
     }
 
-    updateCharactorMovableBoundary() {
+    getCharactorMovableBoundary() {
         let movableBoundary: { [key: string]: number } = {
             'forward': 1000,
             'backward': -1000,
@@ -43,47 +68,63 @@ class Controller {
             'up': 1000,
             'down': 0
         };
-        for (let obstacle of this.stage.nearestObstacles) {
+        let stage = this.stages[this.stageidx];
+        for (let obstacle of stage.nearestObstacles) {
             updateMovableBoundary(this.character, obstacle, movableBoundary);
         }
-        movableBoundary['up'] = Math.min(movableBoundary['up'], this.stage.ceiling.mesh.position.y);
-        movableBoundary['down'] = Math.max(movableBoundary['down'], this.stage.ground.mesh.position.y);
-        movableBoundary['left'] = Math.max(movableBoundary['left'], this.stage.leftWall.mesh.position.x);
-        movableBoundary['right'] = Math.min(movableBoundary['right'], this.stage.rightWall.mesh.position.x);
+        movableBoundary['up'] = Math.min(movableBoundary['up'], stage.ceiling.mesh.position.y);
+        movableBoundary['down'] = Math.max(movableBoundary['down'], stage.ground.mesh.position.y);
+        movableBoundary['left'] = Math.max(movableBoundary['left'], stage.leftWall.mesh.position.x);
+        movableBoundary['right'] = Math.min(movableBoundary['right'], stage.rightWall.mesh.position.x);
+        if(this.stageidx > 0)
+            stage = this.stages[this.stageidx-1];
+        for (let obstacle of stage.nearestObstacles) {
+            updateMovableBoundary(this.character, obstacle, movableBoundary);
+        }
+        movableBoundary['up'] = Math.min(movableBoundary['up'], stage.ceiling.mesh.position.y);
+        movableBoundary['down'] = Math.max(movableBoundary['down'], stage.ground.mesh.position.y);
+        movableBoundary['left'] = Math.max(movableBoundary['left'], stage.leftWall.mesh.position.x);
+        movableBoundary['right'] = Math.min(movableBoundary['right'], stage.rightWall.mesh.position.x);
+
         this.character.movableBoundary = movableBoundary;
         // console.log(this.character.movableBoundary);
     }
-    checkCollisionItems() {
-        for (let item of this.stage.nearestItems) {
+    checkCollisionItems(stage: Stage) {
+        for (let item of stage.nearestItems) {
             if (checkCollision(this.character, item)) {
                 console.log('collide with item ', item.name);
                 item.applyEffect(this.character);
-                this.stage.removeItem(item);
-                if(item.name.includes('TSCP')){
-                    this.character.updateCondition('dead');
-                    document.dispatchEvent(new CustomEvent("gameover", { detail: { item: 'killed by '+ item.name } }));
-                }
+                stage.removeItem(item);
             }
         }
+
     }
 
-    checkCollisionObstacles() {
-        for (let obstacle of this.stage.nearestObstacles) {
+    checkCollisionObstacles(stage: Stage) {
+        for (let obstacle of stage.nearestObstacles) {
             if (checkCollision(this.character, obstacle)) {
                 // document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by '+ obstacle.name } }));
                 console.log('collide with obstacle ' + obstacle.name);
                 if (this.character.condition == 'robotic') {
-                    this.stage.removeObstacle(obstacle);
+                    stage.removeObstacle(obstacle);
+                }else{
+                    if(!obstacle.colliding){
+                        obstacle.colliding=true;
+                        obstacle.collidedCnt++;
+                    }
+                    if(obstacle.collidedCnt>=3){
+                        stage.removeObstacle(obstacle);
+                    }
                 }
-                // if(obstacle.name.includes('TSCP')){
-                //     this.character.updateCondition('dead');
-                // }else if(obstacle.name.includes('b')){
-                //     this.character.updateCondition('robotic');
-                // }else if(obstacle.name.includes('c')){
-                //     this.character.updateCondition('scary');
-                // }else
-                //     this.character.updateCondition('normal');
+            }else{
+                obstacle.colliding=false;
             }
+        }
+    }
+    checkToChangeStage() {
+        // console.log(this.character.getBottomCenter().z, this.stages[this.stageidx].length);
+        if (this.character.getBottomCenter().z + 100 > this.stages[this.stageidx].length + this.stages[this.stageidx].mesh.position.z) {
+            this.changeStage();
         }
     }
 
@@ -92,11 +133,22 @@ class Controller {
         // 1. check if the character is colliding with any of the items, this may cause logic to change
         // 2. check if the character is colliding with any of the obstacles, this may cause logic to change
         // 3. check if the character is to be colliding with ground, and use this to update the character's movable direction
-        this.stage.updateNearestList(this.character.mesh.position.clone(), 20);
-        this.checkCollisionObstacles();
-        this.checkCollisionItems();
-        this.updateCharactorMovableBoundary();
 
+
+
+        this.stages[this.stageidx].updateNearestList(this.character.mesh.position.clone(), 20);
+        this.stages[this.stageidx].tick(delta);
+        this.checkCollisionObstacles(this.stages[this.stageidx]);
+        this.checkCollisionItems(this.stages[this.stageidx]);
+        console.log(this.stageidx);
+        if(this.stageidx > 0){
+            this.stages[this.stageidx-1].tick(delta);
+            this.stages[this.stageidx-1].updateNearestList(this.character.mesh.position.clone(), 20);
+            this.checkCollisionObstacles(this.stages[this.stageidx-1]);
+            this.checkCollisionItems(this.stages[this.stageidx-1]);
+        }
+        this.getCharactorMovableBoundary();
+        this.checkToChangeStage();
     }
 
 }

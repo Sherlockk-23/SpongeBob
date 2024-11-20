@@ -2,8 +2,9 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { BaseItem } from '../objects/items/BaseItem';
-import { burgerItem } from '../objects/items/BaseItem';
+import { speedupItem, roboticItem } from '../objects/items/BaseItem';
 import { seededRandom } from './MathUtils';
+import { cloneGLTF } from './mesh';
 
 
 class ItemGenerator {
@@ -19,8 +20,8 @@ class ItemGenerator {
         this.init();
     }
     init () {
-        this.seed = Date.now();
-        //this.seed=0;
+        // this.seed = Date.now();
+        this.seed=0;
         this.themes.forEach(theme => {
             this.themeDict[theme] = [];
         });
@@ -48,7 +49,11 @@ class ItemGenerator {
         const { random, newSeed } = seededRandom(this.seed);
         this.seed = newSeed;
         name = this.themeDict[theme][Math.floor(random * this.themeDict[theme].length)];
-        item = new burgerItem(name+'_'+id, this.gltfDict[name]);
+        if(name.includes('TSCP')){
+            item = new speedupItem(name+'_'+id, cloneGLTF(this.gltfDict[name]));
+        }else{
+            item = new roboticItem(name+'_'+id, cloneGLTF(this.gltfDict[name]));
+        }
 
         if ( isNaN(size.x) || isNaN(size.y) || isNaN(size.z)) {
             size = this.sizeDict[name];
@@ -65,7 +70,7 @@ class ItemGenerator {
     }
     centainItem(name:string,id:number = -1, size: THREE.Vector3 = NaN): BaseItem {
         let item: BaseItem;
-        item = new burgerItem(name+'_'+id, this.gltfDict[name]);
+        item = new speedupItem(name+'_'+id, this.gltfDict[name]);
         if ( isNaN(size.x) || isNaN(size.y) || isNaN(size.z)) {
             size = this.sizeDict[name];
         }

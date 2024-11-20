@@ -4,6 +4,10 @@ import { MovableObject } from '../BaseObject';
 import {cloneGLTF} from '../../utils/mesh';
 
 class BaseObstacle extends MovableObject {
+
+    collidedCnt: number = 0;
+    colliding: boolean = false;
+
     constructor(name: string, obstacle_gltf: GLTF) {
         const clonedGLTF = cloneGLTF(obstacle_gltf);
         super('obstacle', name, clonedGLTF);
@@ -11,7 +15,8 @@ class BaseObstacle extends MovableObject {
     }
 
     init() {
-        
+        this.collidedCnt=0;
+        this.colliding=false;
     }
 
 

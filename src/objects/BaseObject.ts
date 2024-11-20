@@ -28,7 +28,8 @@ abstract class BaseObject {
     if (scene && (this.type === 'item' || this.type === 'obstacle')) {
       console.log(this.name, 'is destructing');
       // 创建粒子系统
-      const particleSystem = new ParticleSystem(this.mesh.position.clone());
+
+      const particleSystem = new ParticleSystem(this.getBottomCenter());
       scene.add(particleSystem.particles);
 
       // 更新粒子系统

@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { BaseObstacle } from '../objects/obstacles/BaseObstacle';
 import { seededRandom } from './MathUtils';
+import { cloneGLTF } from './mesh';
 
 
 class ObstacleGenerator {
@@ -71,7 +72,7 @@ class ObstacleGenerator {
         const { random, newSeed } = seededRandom(this.seed);
         this.seed = newSeed;
         name = this.themeDict[theme][Math.floor(random * this.themeDict[theme].length)];
-        obstacle = new BaseObstacle(name + '_' + id, this.gltfDict[name]);
+        obstacle = new BaseObstacle(name + '_' + id, cloneGLTF(this.gltfDict[name]));
 
         if (isNaN(size.x) || isNaN(size.y) || isNaN(size.z)) {
             size = this.sizeDict[name];

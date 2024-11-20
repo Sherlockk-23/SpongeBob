@@ -46,7 +46,7 @@ class Game {
     Character: BaseCharacter;
     CharacterListForLoop: BaseCharacter[] = [];
     ground: Ground;
-    stages: Stage[] = [];
+    // stages: Stage[] = [];
 
     obstacleGenerator: ObstacleGenerator;
     itemGenerator: ItemGenerator;
@@ -68,8 +68,8 @@ class Game {
         this.itemGenerator = new ItemGenerator(this.gltfItemDict);
 
         this.initCharacter();
-        this.initStage();
-        this.controller = new Controller(this.stages[0], this.Character);
+        
+        this.controller = new Controller(this.scene,this.Character,this.obstacleGenerator,this.itemGenerator);
 
 
         this.camera = this.Character.camera
@@ -93,22 +93,7 @@ class Game {
     reset() {
         this.Character.reset();
 
-        this.stages[0].reset();
-        this.controller.changeStage(this.stages[0]);
-        // this.scene.scene.updateMatrixWorld();
-
-        // console.log("positions of chara and stage",this.Character.mesh.position,this.stages[0].mesh.position);
-        //         // 打印 Character 的位置
-        // console.log("Character position:", this.Character.mesh.position);
-
-        // // 打印 Character 的位置的具体值
-        // console.log("Character position (x, y, z):", this.Character.mesh.position.x, this.Character.mesh.position.y, this.Character.mesh.position.z);
-
-        // // 打印第一个 stage 的位置
-        // console.log("Stage position:", this.stages[0].mesh.position);
-
-        // // 打印第一个 stage 的位置的具体值
-        // console.log("Stage position (x, y, z):", this.stages[0].mesh.position.x, this.stages[0].mesh.position.y, this.stages[0].mesh.position.z);
+        this.controller.init();
 
         this.loop.updatableLists = [];
         this.CharacterListForLoop = [this.Character];
@@ -116,7 +101,7 @@ class Game {
         console.log("length of list for loop", this.controllerListForLoop.length);
         this.loop.updatableLists.push(this.CharacterListForLoop);
         this.loop.updatableLists.push(this.controllerListForLoop);
-        this.loop.updatableLists.push(this.stages);
+        // this.loop.updatableLists.push(this.stages);
 
     }
 
@@ -129,8 +114,8 @@ class Game {
         if (Character_index !== -1) this.loop.updatableLists.splice(Character_index, 1);
         const controller_index = this.loop.updatableLists.indexOf(this.controllerListForLoop);
         if (controller_index !== -1) this.loop.updatableLists.splice(controller_index, 1);
-        const stage_index = this.loop.updatableLists.indexOf(this.stages);
-        if (stage_index !== -1) this.loop.updatableLists.splice(stage_index, 1);
+        // const stage_index = this.loop.updatableLists.indexOf(this.stages);
+        // if (stage_index !== -1) this.loop.updatableLists.splice(stage_index, 1);
         console.log("pausing ", this.loop.updatableLists);
     }
 
@@ -139,8 +124,8 @@ class Game {
         if (Character_index === -1) this.loop.updatableLists.push(this.CharacterListForLoop);
         const controller_index = this.loop.updatableLists.indexOf(this.controllerListForLoop);
         if (controller_index === -1) this.loop.updatableLists.push(this.controllerListForLoop);
-        const stage_index = this.loop.updatableLists.indexOf(this.stages);
-        if (stage_index === -1) this.loop.updatableLists.push(this.stages);
+        // const stage_index = this.loop.updatableLists.indexOf(this.stages);
+        // if (stage_index === -1) this.loop.updatableLists.push(this.stages);
         console.log("resuming ", this.loop.updatableLists);
     }
 
@@ -156,10 +141,10 @@ class Game {
     }
 
 
-    initStage() {
-        this.stages[0] = new Stage(this.scene, 'firstStage', 0, this.obstacleGenerator, this.itemGenerator);
-        this.scene.add(this.stages[0]);
-    }
+    // initStage() {
+    //     this.stages[0] = new Stage(this.scene, 'firstStage', 0, this.obstacleGenerator, this.itemGenerator);
+    //     this.scene.add(this.stages[0]);
+    // }
 
     registerEventHandlers() {
         //     window.addEventListener("gameStart", () => {
@@ -192,6 +177,8 @@ class Game {
                 this.uiController.pause();
             }
             else if (this.status === "gameover") {
+                // maybe jump to front page
+                window.location.reload();
                 this.reset();
                 this.resume();
                 this.status = "playing";

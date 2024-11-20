@@ -20,6 +20,7 @@ class Stage extends MovableObject {
     items: BaseItem[] = [];
     itemGenerator: ItemGenerator;
     theme: string = 'all';
+    length: number = 200;  
 
     scene: THREE.Scene;
 
@@ -35,25 +36,31 @@ class Stage extends MovableObject {
     static readonly HEIGHT = 10;
     static readonly START_Z = 0;
 
-    constructor(scene: Scene, name: string, stageNumber: number, obstacleGenerator: ObstacleGenerator, itemGenerator: ItemGenerator) {
+    constructor(scene: Scene, name: string, stageNumber: number, 
+        obstacleGenerator: ObstacleGenerator, itemGenerator: ItemGenerator, theme='all') {
+
         const stageGroup = new THREE.Group();
         super('stage', name, stageGroup);
         this.mesh = stageGroup;
+        this.length = Stage.LENGTH;
+        this.theme = theme;
 
-        const stagePosition = Stage.LENGTH * stageNumber;
+        const stagePosition = this.length * stageNumber;
         this.scene = scene.getScene();
+        this.scene.add(this.mesh);
 
-        this.ground = new Ground('ground', Stage.WIDTH, Stage.LENGTH);
-        this.leftWall = new Wall('leftWall', Stage.LENGTH, Stage.HEIGHT);
-        this.rightWall = new Wall('rightWall', Stage.LENGTH, Stage.HEIGHT);
-        this.ceiling = new Ceiling('ceiling', Stage.WIDTH, Stage.LENGTH);
+        this.ground = new Ground('ground', Stage.WIDTH, this.length);
+        this.leftWall = new Wall('leftWall', Stage.LENGTH, this.length);
+        this.rightWall = new Wall('rightWall', Stage.LENGTH, this.length);
+        this.ceiling = new Ceiling('ceiling', Stage.WIDTH, this.length);
         this.obstacleGenerator = obstacleGenerator;
         this.itemGenerator = itemGenerator;
 
-        this.ground.mesh.position.z = stagePosition;
-        this.leftWall.mesh.position.z = stagePosition;
-        this.rightWall.mesh.position.z = stagePosition;
-        this.ceiling.mesh.position.z = stagePosition;
+        this.ground.mesh.position.z = this.length/2;
+        this.leftWall.mesh.position.z = this.length/2;
+        this.rightWall.mesh.position.z = this.length/2;
+        this.ceiling.mesh.position.z = this.length/2;
+
 
         this.leftWall.setAsLeftWall();
         this.rightWall.setAsRightWall();
@@ -65,8 +72,8 @@ class Stage extends MovableObject {
         this.mesh.add(this.ceiling.mesh);
 
         this.initStage();
-        this.initObstacles(Stage.LENGTH, Stage.WIDTH);
-        this.initItems(Stage.LENGTH, Stage.WIDTH);
+        this.initObstacles(this.length, Stage.WIDTH);
+        this.initItems(this.length, Stage.WIDTH);
     }
 
     initStage() {
@@ -74,8 +81,8 @@ class Stage extends MovableObject {
 
     initObstacles(trackLength: number, trackWidth: number) {
         const obstacleSpacing = 2; // Change this to change density
-        // const numObstacles = Math.floor(trackLength / obstacleSpacing);
-        const numObstacles = 40;
+        const numObstacles = Math.floor(trackLength / obstacleSpacing);
+        // const numObstacles = 40;
 
         for (let i = 0; i < numObstacles; i++) {
             const obstacle = this.obstacleGenerator.centainObstacle('wooden_fence');
@@ -85,7 +92,7 @@ class Stage extends MovableObject {
 
             const x = -3.5;
             const y = 0;
-            const z = i * 3;
+            const z = i * obstacleSpacing;
 
             obstacle.setPosition(x, y, z);
         }
@@ -97,7 +104,7 @@ class Stage extends MovableObject {
 
             const x = 3.5;
             const y = 0;
-            const z = i * 3;
+            const z = i * obstacleSpacing;
 
             obstacle.setPosition(x, y, z);
         }
@@ -115,15 +122,21 @@ class Stage extends MovableObject {
             // console.log('new obstacle generated', obstacle);
             obstacle.addBoundingBoxHelper(this.scene);
         }
+        // delete obstacle close to end
         this.obstacles.sort((a, b) => a.getBottomCenter().z - b.getBottomCenter().z);
+        while(this.obstacles.length>0 && this.obstacles[this.obstacles.length-1].getBottomCenter().z > this.length){
+            this.obstacles[this.obstacles.length-1].destruct();
+            this.obstacles.pop();
+        }
+
         this.obstaclePointerL=0;
         this.obstaclePointerR=1;
     }
 
     initItems(trackLength: number, trackWidth: number) {
-        const itemSpacing = 10; // Change this to change density
-        // const numItems = Math.floor(trackLength / itemSpacing);
-        const numItems = 10;
+        const itemSpacing = 20; // Change this to change density
+        const numItems = Math.floor(trackLength / itemSpacing);
+        // const numItems = 10;
         for (let i = 0; i < numItems; i++) {
             const item = this.itemGenerator.randomItem(i, this.theme);
             this.items.push(item);
@@ -138,6 +151,10 @@ class Stage extends MovableObject {
         }
 
         this.items.sort((a, b) => a.getBottomCenter().z - b.getBottomCenter().z);
+        while(this.items.length>0 && this.items[this.items.length-1].getBottomCenter().z > this.length){
+            this.items[this.items.length-1].destruct();
+            this.items.pop();
+        }
         this.itemPointerL=0;
         this.itemPointerR=1;
     }
@@ -162,7 +179,7 @@ class Stage extends MovableObject {
         }
         this.nearestObstacles = this.obstacles.slice(this.obstaclePointerL, this.obstaclePointerR);
 
-        console.log("nearestObestacles: ",this.nearestObstacles);
+        // console.log("nearestObestacles: ",this.nearestObstacles);
 
         // update nearestItems
         
