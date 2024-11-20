@@ -40,7 +40,7 @@ abstract class BaseCharacter extends MovableObject {
     delta: number = 0.05;
     defaultMaxVel: number = 5;
     defaultMinVel: number = 0.1;
-    defaultMaxJumpVel: number = 2;
+    defaultMaxJumpVel: number = 4;
     defaultDeaccel: number = 5;
     defaultAccel: number = 1.5;
     defaultGravity: number = 2;
@@ -112,10 +112,10 @@ abstract class BaseCharacter extends MovableObject {
             this.updateMovementTmp('walking');
         }
         if (this.inputHandler.isKeyPressed(' ') && this.onGround()) {
-            this.vel.y = this.defaultMaxJumpVel;
+            this.vel.y = this.defaultMaxJumpVel/2;
         }
         if (this.inputHandler.isKeyPressed('c') && !this.onGround()) {
-            this.vel.y = -2 * this.defaultMaxJumpVel;
+            this.vel.y = -this.defaultMaxJumpVel;
         }
         this.accel.y = -this.defaultGravity;
     }

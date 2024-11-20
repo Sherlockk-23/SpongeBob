@@ -19,7 +19,8 @@ class Stage extends MovableObject {
     obstacleGenerator: ObstacleGenerator;
     items: BaseItem[] = [];
     itemGenerator: ItemGenerator;
-    theme: string = 'all';
+    theme: string = 'normal';
+    themes: string[] = ['normal', 'TSCP', 'food', 'car', 'house', 'scary'];
     length: number = 200;  
 
     scene: THREE.Scene;
@@ -43,7 +44,11 @@ class Stage extends MovableObject {
         super('stage', name, stageGroup);
         this.mesh = stageGroup;
         this.length = Stage.LENGTH;
-        this.theme = theme;
+        if(theme=='all')
+            this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
+        else 
+            this.theme = theme;
+        console.log('theme:',this.theme);
 
         const stagePosition = this.length * stageNumber;
         this.scene = scene.getScene();
@@ -110,7 +115,6 @@ class Stage extends MovableObject {
         }
         for (let i = 0; i < numObstacles; i++) {
             const obstacle = this.obstacleGenerator.randomObstacle(i, this.theme);
-            obstacle.rotate('y', Math.PI / 2)
             this.obstacles.push(obstacle);
             this.mesh.add(obstacle.mesh);
 

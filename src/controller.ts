@@ -105,6 +105,9 @@ class Controller {
             if (checkCollision(this.character, obstacle)) {
                 // document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by '+ obstacle.name } }));
                 console.log('collide with obstacle ' + obstacle.name);
+                if(obstacle.name == 'bottom'){
+                    this.character.vel.y = this.character.defaultMaxJumpVel;
+                }
                 if (this.character.condition == 'robotic') {
                     stage.removeObstacle(obstacle);
                 }else{

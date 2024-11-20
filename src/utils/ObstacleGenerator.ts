@@ -9,9 +9,10 @@ import { cloneGLTF } from './mesh';
 class ObstacleGenerator {
     seed: number = 0;
     gltfDict: { [key: string]: GLTF } = {};
-    themes: string[] = ['all', 'normal', 'TSCP', 'food', 'scary'];
+    themes: string[] = ['all', 'normal', 'TSCP', 'food','car','house','scary'];
     themeDict: { [key: string]: string[] } = {};
     sizeDict: { [key: string]: THREE.Vector3 } = {};
+    rotateDict: { [key: string]: THREE.Vector3 } = {};
 
     constructor(gltfDict: { [key: string]: GLTF }) {
         console.log('generator created');
@@ -28,16 +29,28 @@ class ObstacleGenerator {
             if (key != 'wooden_fence')
                 this.themeDict['all'].push(key);
         }
+        this.initThemes();
         this.initSizeDict();
+        this.initRotateDict();
+        
         //TODO : add more themes
+    }
+
+    initThemes() {
+        this.themeDict['normal'] = ['bed', 'bottom', 'hat','chair1', 'clock', 'snailClock'];
+        this.themeDict['TSCP'] = ['squidwardHouseTSCP', 'pineappleHouseTSCP', 'lightHouseTSCP','krabTSCP'];
+        this.themeDict['food'] = ['burger', 'table', 'spatula', 'tableTSCP'];
+        this.themeDict['car'] = ['car2', 'busTSCP','train','boatTSCP','pattyWagon'];
+        this.themeDict['house'] = ['house1', 'pineappleHouse', 'squidwardHouseTSCP','bottom'];
+        this.themeDict['scary'] = ['patrickStatue', 'spongehengeTSCP'];
     }
 
     initSizeDict() {
         this.themeDict['all'].forEach(name => {
             this.sizeDict[name] = new THREE.Vector3(1, 1, 1);
         });
-        this,
-            this.sizeDict['burger'] = new THREE.Vector3(2, 2, 2)//done
+        
+        this.sizeDict['burger'] = new THREE.Vector3(2, 2, 2)//done
         this.sizeDict['hat'] = new THREE.Vector3(0.2, 0.5, 0.2);
         this.sizeDict['spatula'] = new THREE.Vector3(0.3, 1, 0.3);
         this.sizeDict['pineappleHouse'] = new THREE.Vector3(3, 5, 3);
@@ -48,7 +61,7 @@ class ObstacleGenerator {
         this.sizeDict['car2'] = new THREE.Vector3(1, 1, 2);
         this.sizeDict['snailClock'] = new THREE.Vector3(0.8, 0.8, 0.4);
         this.sizeDict['house1'] = new THREE.Vector3(1, 2, 1);
-        this.sizeDict['clock'] = new THREE.Vector3(1, 2, 1);
+        this.sizeDict['clock'] = new THREE.Vector3(2, 5, 2);
         this.sizeDict['bed'] = new THREE.Vector3(1, 1, 2);
         this.sizeDict['chair1'] = new THREE.Vector3(1, 1, 1);
         this.sizeDict['table'] = new THREE.Vector3(1, 0.5, 1);
@@ -61,17 +74,39 @@ class ObstacleGenerator {
         this.sizeDict['wooden_fence'] = new THREE.Vector3(3, 1.2, 0.1);
         console.log('generator initialized', this.themeDict);
     }
+    initRotateDict() {
+        this.themeDict['all'].forEach(name => {
+            this.rotateDict[name] = new THREE.Vector3(0, 0, 0);
+        });
+        this.rotateDict['burger'] = new THREE.Vector3(0, Math.PI/2, 0);
+        this.rotateDict['busTSCP'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['boatTSCP'] = new THREE.Vector3(0, Math.PI/2, 0);
+        this.rotateDict['spongehengeTSCP'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['bed'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['snailClock'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['chair1'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['hat'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['clock'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['patrickStatue'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['squidwardHouseTSCP'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['pineappleHouseTSCP'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['krabTSCP'] = new THREE.Vector3(0, Math.PI, 0);
 
-    randomObstacle(id: number = -1, theme: string = 'all', size: THREE.Vector3 = NaN): BaseObstacle {
+    }
+
+    randomObstacle(id: number = -1, theme: string = 'normal', size: THREE.Vector3 = NaN): BaseObstacle {
         let obstacle: BaseObstacle;
         let name: string;
-        if (!(theme in this.themes)) {
-            theme = 'all';
+        console.log('parse in  theme ', theme);
+        if (!this.themes.includes(theme)) {
+            theme = 'normal';
         }
+        console.log('trying to randomObstacle from theme ', theme);
         //name pick randomly from themeDict[theme] by this.seed()
         const { random, newSeed } = seededRandom(this.seed);
         this.seed = newSeed;
         name = this.themeDict[theme][Math.floor(random * this.themeDict[theme].length)];
+        // console.log('trying to randomObstacle ', name);
         obstacle = new BaseObstacle(name + '_' + id, cloneGLTF(this.gltfDict[name]));
 
         if (isNaN(size.x) || isNaN(size.y) || isNaN(size.z)) {
@@ -83,17 +118,12 @@ class ObstacleGenerator {
             const size = bbox3.getSize(new THREE.Vector3());
             console.log('new obstacle generated', obstacle.name, bbox3);
         }
-        if (name == 'busTSCP') {
-            obstacle.rotate('y', Math.PI);
-        }
-        if (name == 'boatTSCP') {
-            obstacle.rotate('y', Math.PI / 2);
-        }
-        if (name == 'spongehengeTSCP') {
-            obstacle.rotate('y', Math.PI / 2);
-        }
-        //obstacle.rotate('y', Math.PI);
-        //
+        
+        //rotate by rotateDict
+        obstacle.rotate('x', this.rotateDict[name].x);
+        obstacle.rotate('y', this.rotateDict[name].y);
+        obstacle.rotate('z', this.rotateDict[name].z);
+        
         return obstacle;
 
     }
