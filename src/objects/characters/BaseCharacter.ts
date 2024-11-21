@@ -112,7 +112,7 @@ abstract class BaseCharacter extends MovableObject {
             this.updateMovementTmp('walking');
         }
         if (this.inputHandler.isKeyPressed(' ') && this.onGround()) {
-            this.vel.y = this.defaultMaxJumpVel/2;
+            this.vel.y = this.defaultMaxJumpVel / 2;
         }
         if (this.inputHandler.isKeyPressed('c') && !this.onGround()) {
             this.vel.y = -this.defaultMaxJumpVel;
@@ -237,9 +237,9 @@ abstract class BaseCharacter extends MovableObject {
         this.updateCondition('normal');
         this.newMovement = 'idle';
         this.updateMovement();
-        this.mesh.position.set(0, 0, 0);   
+        this.mesh.position.set(0, 0, 0);
         this.vel.set(0, 0, 0);
-        this.accel.set(0, 0, 0); 
+        this.accel.set(0, 0, 0);
         // this.mesh.updateMatrix();
         // this.mesh.updateMatrixWorld();
         // this.mesh.parent?.updateMatrixWorld(true);

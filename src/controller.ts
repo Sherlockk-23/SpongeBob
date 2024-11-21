@@ -22,11 +22,11 @@ import { ItemGenerator } from './utils/ItemGenerator';
 import { BaseEnemy } from './objects/enemies/BaseEnemy.ts';
 
 class Controller {
-   
-    stages: Stage[]= [];
+
+    stages: Stage[] = [];
     character: BaseCharacter;
     scene: Scene;
-    obstacleGenerator: ObstacleGenerator;  
+    obstacleGenerator: ObstacleGenerator;
     itemGenerator: ItemGenerator;
 
     stageidx: number = 0;
@@ -37,7 +37,7 @@ class Controller {
 
     enemy: BaseEnemy;
 
-    constructor(scene: Scene,character: BaseCharacter, obstacleGenerator: ObstacleGenerator, itemGenerator: ItemGenerator) {
+    constructor(scene: Scene, character: BaseCharacter, obstacleGenerator: ObstacleGenerator, itemGenerator: ItemGenerator) {
         this.scene = scene;
         this.character = character;
         this.obstacleGenerator = obstacleGenerator;
@@ -47,17 +47,17 @@ class Controller {
 
 
     init() {
-        for(let stage of this.stages){
+        for (let stage of this.stages) {
             stage.destruct();
         }
         this.stages = [];
         this.stages.push(new Stage(this.scene, 'stage1', 0, this.obstacleGenerator, this.itemGenerator));
         this.stageidx = 0;
 
-        this.enemy= new BaseEnemy('jellyKing', this.obstacleGenerator.gltfDict['bus']);
+        this.enemy = new BaseEnemy('jellyKing', this.obstacleGenerator.gltfDict['bus']);
         this.enemy.rescale(5, 5, 5);
         this.scene.getScene().add(this.enemy.mesh);
-        this.enemy.setPosition(0,0,-20);
+        this.enemy.setPosition(0, 0, -20);
         // this.character.mesh.add(this.enemy.mesh);
     }
 
@@ -65,7 +65,7 @@ class Controller {
         console.log('change stage');
         this.stageidx += 1;
         this.stages.push(new Stage(this.scene, 'stage' + (this.stageidx + 1), this.stageidx, this.obstacleGenerator, this.itemGenerator));
-        this.stages[this.stageidx].mesh.position.z = 
+        this.stages[this.stageidx].mesh.position.z =
             this.stages[this.stageidx - 1].mesh.position.z + this.stages[this.stageidx - 1].length;
         if (this.stageidx > 1) {
             this.stages[this.stageidx - 2].destruct();
@@ -89,8 +89,8 @@ class Controller {
         movableBoundary['down'] = Math.max(movableBoundary['down'], stage.ground.mesh.position.y);
         movableBoundary['left'] = Math.max(movableBoundary['left'], stage.leftWall.mesh.position.x);
         movableBoundary['right'] = Math.min(movableBoundary['right'], stage.rightWall.mesh.position.x);
-        if(this.stageidx > 0)
-            stage = this.stages[this.stageidx-1];
+        if (this.stageidx > 0)
+            stage = this.stages[this.stageidx - 1];
         for (let obstacle of stage.nearestObstacles) {
             updateMovableBoundary(this.character, obstacle, movableBoundary);
         }
@@ -118,22 +118,22 @@ class Controller {
             if (checkCollision(this.character, obstacle)) {
                 // document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by '+ obstacle.name } }));
                 console.log('collide with obstacle ' + obstacle.name);
-                if(obstacle.name == 'bottom'){
+                if (obstacle.name == 'bottom') {
                     this.character.vel.y = this.character.defaultMaxJumpVel;
                 }
                 if (this.character.condition == 'robotic') {
                     stage.removeObstacle(obstacle);
-                }else{
-                    if(!obstacle.colliding){
-                        obstacle.colliding=true;
+                } else {
+                    if (!obstacle.colliding) {
+                        obstacle.colliding = true;
                         obstacle.collidedCnt++;
                     }
-                    if(obstacle.collidedCnt>=3){
+                    if (obstacle.collidedCnt >= 3) {
                         stage.removeObstacle(obstacle);
                     }
                 }
-            }else{
-                obstacle.colliding=false;
+            } else {
+                obstacle.colliding = false;
             }
         }
     }
@@ -150,34 +150,37 @@ class Controller {
         // 2. check if the character is colliding with any of the obstacles, this may cause logic to change
         // 3. check if the character is to be colliding with ground, and use this to update the character's movable direction
 
-        
+
 
         this.stages[this.stageidx].updateNearestList(this.character.mesh.position.clone(), 20);
         this.stages[this.stageidx].tick(delta);
         this.checkCollisionObstacles(this.stages[this.stageidx]);
         this.checkCollisionItems(this.stages[this.stageidx]);
         console.log(this.stageidx);
-        if(this.stageidx > 0){
-            this.stages[this.stageidx-1].tick(delta);
-            this.stages[this.stageidx-1].updateNearestList(this.character.mesh.position.clone(), 20);
-            this.checkCollisionObstacles(this.stages[this.stageidx-1]);
-            this.checkCollisionItems(this.stages[this.stageidx-1]);
+        if (this.stageidx > 0) {
+            this.stages[this.stageidx - 1].tick(delta);
+            this.stages[this.stageidx - 1].updateNearestList(this.character.mesh.position.clone(), 20);
+            this.checkCollisionObstacles(this.stages[this.stageidx - 1]);
+            this.checkCollisionItems(this.stages[this.stageidx - 1]);
         }
         this.getCharactorMovableBoundary();
         this.checkToChangeStage();
 
         this.totalTime += delta;
-
+        const distanceValueElement = document.getElementById('distance-value');
+        if (distanceValueElement) {
+            distanceValueElement.textContent = this.character.mesh.position.z.toFixed(2); // Display z position rounded to 2 decimals
+        }
         this.enemy.tick(delta);
-        this.enemyPos +=this.enemyVel*delta;
+        this.enemyPos += this.enemyVel * delta;
         this.enemyPos = Math.max(this.enemyPos, this.character.mesh.position.z - 40);
-        this.enemy.setPosition(0,0,this.enemyPos);
+        this.enemy.setPosition(0, 0, this.enemyPos);
         console.log("enemy pos: ", this.enemyPos, "char pos: ", this.character.mesh.position.z);
         console.log("enemy pos: ", this.enemy.getBottomCenter());
         // if(this.enemyPos > this.character.mesh.position.z){
         //     document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by enemy' } }));
         // }
-        if(checkCollision(this.character, this.enemy)){
+        if (checkCollision(this.character, this.enemy)) {
             document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by enemy' } }));
         }
     }
