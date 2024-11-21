@@ -9,7 +9,7 @@ abstract class Camera {
 
 class PerspectiveCamera extends Camera {
   _camera: THREE.PerspectiveCamera;
-  cameraDistance: number = 3;
+  cameraDistance: number = 4;
   cameraAngle: number = THREE.MathUtils.degToRad(20);
   character: BaseCharacter;
   perspective: "thirdPerson" | "firstPerson" | "secondPerson" | null;

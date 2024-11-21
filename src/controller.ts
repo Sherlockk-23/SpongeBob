@@ -19,6 +19,7 @@ import { updateMovableBoundary, checkCollision } from './utils/Collision.ts';
 
 import { ObstacleGenerator } from './utils/ObstacleGenerator';
 import { ItemGenerator } from './utils/ItemGenerator';
+import { BaseEnemy } from './objects/enemies/BaseEnemy.ts';
 
 class Controller {
    
@@ -31,8 +32,10 @@ class Controller {
     stageidx: number = 0;
 
     totalTime: number = 0;
-    enemyVel: number = 2.0;
+    enemyVel: number = 2.3;
     enemyPos: number = -20;
+
+    enemy: BaseEnemy;
 
     constructor(scene: Scene,character: BaseCharacter, obstacleGenerator: ObstacleGenerator, itemGenerator: ItemGenerator) {
         this.scene = scene;
@@ -50,6 +53,12 @@ class Controller {
         this.stages = [];
         this.stages.push(new Stage(this.scene, 'stage1', 0, this.obstacleGenerator, this.itemGenerator));
         this.stageidx = 0;
+
+        this.enemy= new BaseEnemy('jellyKing', this.obstacleGenerator.gltfDict['bus']);
+        this.enemy.rescale(5, 5, 5);
+        this.scene.getScene().add(this.enemy.mesh);
+        this.enemy.setPosition(0,0,-20);
+        // this.character.mesh.add(this.enemy.mesh);
     }
 
     changeStage() {
@@ -141,7 +150,7 @@ class Controller {
         // 2. check if the character is colliding with any of the obstacles, this may cause logic to change
         // 3. check if the character is to be colliding with ground, and use this to update the character's movable direction
 
-
+        
 
         this.stages[this.stageidx].updateNearestList(this.character.mesh.position.clone(), 20);
         this.stages[this.stageidx].tick(delta);
@@ -158,10 +167,17 @@ class Controller {
         this.checkToChangeStage();
 
         this.totalTime += delta;
+
+        this.enemy.tick(delta);
         this.enemyPos +=this.enemyVel*delta;
         this.enemyPos = Math.max(this.enemyPos, this.character.mesh.position.z - 40);
+        this.enemy.setPosition(0,0,this.enemyPos);
         console.log("enemy pos: ", this.enemyPos, "char pos: ", this.character.mesh.position.z);
-        if(this.enemyPos > this.character.mesh.position.z){
+        console.log("enemy pos: ", this.enemy.getBottomCenter());
+        // if(this.enemyPos > this.character.mesh.position.z){
+        //     document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by enemy' } }));
+        // }
+        if(checkCollision(this.character, this.enemy)){
             document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by enemy' } }));
         }
     }

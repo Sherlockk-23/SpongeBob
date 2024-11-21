@@ -134,7 +134,7 @@ class Game {
         spongeBob.rescale(1, 1, 1);
         this.Character = spongeBob;
 
-        this.scene.add(this.Character);
+        this.scene.getScene().add(this.Character.mesh);
         this.Character.addBoundingBoxHelper(this.scene.getScene());
 
         spongeBob.mesh.position.set(0, 0, 3);
