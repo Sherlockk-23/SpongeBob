@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { BaseItem } from '../objects/items/BaseItem';
-import { speedupItem, roboticItem } from '../objects/items/BaseItem';
+import { speedupItem, roboticItem, highJumpItem } from '../objects/items/BaseItem';
 import { seededRandom } from './MathUtils';
 import { cloneGLTF } from './mesh';
 
@@ -49,10 +49,12 @@ class ItemGenerator {
         const { random, newSeed } = seededRandom(this.seed);
         this.seed = newSeed;
         name = this.themeDict[theme][Math.floor(random * this.themeDict[theme].length)];
-        if(name.includes('TSCP')){
+        if(name.includes('soda')){
             item = new speedupItem(name+'_'+id, cloneGLTF(this.gltfDict[name]));
-        }else{
+        }else if(name.includes('info')){
             item = new roboticItem(name+'_'+id, cloneGLTF(this.gltfDict[name]));
+        }else{
+            item = new highJumpItem(name+'_'+id, cloneGLTF(this.gltfDict[name]));
         }
 
         if ( isNaN(size.x) || isNaN(size.y) || isNaN(size.z)) {

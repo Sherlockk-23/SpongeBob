@@ -30,6 +30,10 @@ class Controller {
 
     stageidx: number = 0;
 
+    totalTime: number = 0;
+    enemyVel: number = 2.0;
+    enemyPos: number = -20;
+
     constructor(scene: Scene,character: BaseCharacter, obstacleGenerator: ObstacleGenerator, itemGenerator: ItemGenerator) {
         this.scene = scene;
         this.character = character;
@@ -126,7 +130,7 @@ class Controller {
     }
     checkToChangeStage() {
         // console.log(this.character.getBottomCenter().z, this.stages[this.stageidx].length);
-        if (this.character.getBottomCenter().z + 100 > this.stages[this.stageidx].length + this.stages[this.stageidx].mesh.position.z) {
+        if (this.character.getBottomCenter().z + 70 > this.stages[this.stageidx].length + this.stages[this.stageidx].mesh.position.z) {
             this.changeStage();
         }
     }
@@ -152,6 +156,14 @@ class Controller {
         }
         this.getCharactorMovableBoundary();
         this.checkToChangeStage();
+
+        this.totalTime += delta;
+        this.enemyPos +=this.enemyVel*delta;
+        this.enemyPos = Math.max(this.enemyPos, this.character.mesh.position.z - 40);
+        console.log("enemy pos: ", this.enemyPos, "char pos: ", this.character.mesh.position.z);
+        if(this.enemyPos > this.character.mesh.position.z){
+            document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by enemy' } }));
+        }
     }
 
 }

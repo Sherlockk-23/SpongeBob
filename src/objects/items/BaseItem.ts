@@ -43,6 +43,25 @@ class speedupItem extends BaseItem {
     }
 }
 
+class highJumpItem extends BaseItem {
+    constructor(name: string, item_gltf: GLTF) {
+        super(name, item_gltf);
+    }
+
+    applyEffect(character: BaseCharacter): void {
+        const highJumpEffect = {
+            duration: 10,
+            apply: (char: BaseCharacter) => {
+                char.defaultMaxJumpVel *= 2; // 将跳跃速度增加50%
+            },
+            remove: (char: BaseCharacter) => {
+                char.defaultMaxJumpVel /= 2;
+            }
+        };
+        character.applyEffect('highJump', highJumpEffect);
+    }
+}
+
 class roboticItem extends BaseItem {
     constructor(name: string, item_gltf: GLTF) {
         super(name, item_gltf);
@@ -62,4 +81,4 @@ class roboticItem extends BaseItem {
     }
 }
 
-export { BaseItem, speedupItem, roboticItem };
+export { BaseItem, speedupItem, roboticItem,highJumpItem };

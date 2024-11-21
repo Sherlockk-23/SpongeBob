@@ -4,6 +4,7 @@ import { Scene } from '../scenes/Scene';
 import { Wall } from '../objects/Wall';
 import { Ground } from '../objects/Ground';
 import { Ceiling } from "../objects/Ceiling";
+import { Dome } from '../objects/Dome';
 import { BaseObstacle } from '../objects/obstacles/BaseObstacle';
 import { BaseItem } from '../objects/items/BaseItem';
 import { ObstacleGenerator } from '../utils/ObstacleGenerator';
@@ -15,6 +16,7 @@ class Stage extends MovableObject {
     leftWall: Wall;
     rightWall: Wall;
     ceiling: Ceiling;
+    dome: Dome;
     obstacles: BaseObstacle[] = [];
     obstacleGenerator: ObstacleGenerator;
     items: BaseItem[] = [];
@@ -32,7 +34,7 @@ class Stage extends MovableObject {
     itemPointerL: number = 0;
     itemPointerR: number = 0;
 
-    static readonly LENGTH = 200;
+    static readonly LENGTH = 150;
     static readonly WIDTH = 5;
     static readonly HEIGHT = 10;
     static readonly START_Z = 0;
@@ -54,10 +56,14 @@ class Stage extends MovableObject {
         this.scene = scene.getScene();
         this.scene.add(this.mesh);
 
-        this.ground = new Ground('ground', Stage.WIDTH, this.length);
+        this.ground = new Ground('ground', Stage.WIDTH*10, this.length);
         this.leftWall = new Wall('leftWall', Stage.LENGTH, this.length);
         this.rightWall = new Wall('rightWall', Stage.LENGTH, this.length);
         this.ceiling = new Ceiling('ceiling', Stage.WIDTH, this.length);
+        if(this.theme=='scary')
+            this.dome = new Dome('dome', Stage.WIDTH*3, this.length, 'assets/pics/3.png');
+        else
+            this.dome = new Dome('dome', Stage.WIDTH*3, this.length, 'assets/pics/4.jpeg');
         this.obstacleGenerator = obstacleGenerator;
         this.itemGenerator = itemGenerator;
 
@@ -65,6 +71,7 @@ class Stage extends MovableObject {
         this.leftWall.mesh.position.z = this.length/2;
         this.rightWall.mesh.position.z = this.length/2;
         this.ceiling.mesh.position.z = this.length/2;
+        this.dome.mesh.position.z = this.length/2;
 
 
         this.leftWall.setAsLeftWall();
@@ -75,6 +82,7 @@ class Stage extends MovableObject {
         this.mesh.add(this.leftWall.mesh);
         this.mesh.add(this.rightWall.mesh);
         this.mesh.add(this.ceiling.mesh);
+        this.mesh.add(this.dome.mesh);
 
         this.initStage();
         this.initObstacles(this.length, Stage.WIDTH);

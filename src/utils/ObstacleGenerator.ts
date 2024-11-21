@@ -53,25 +53,28 @@ class ObstacleGenerator {
         this.sizeDict['burger'] = new THREE.Vector3(2, 2, 2)//done
         this.sizeDict['hat'] = new THREE.Vector3(0.2, 0.5, 0.2);
         this.sizeDict['spatula'] = new THREE.Vector3(0.3, 1, 0.3);
-        this.sizeDict['pineappleHouse'] = new THREE.Vector3(3, 5, 3);
+        this.sizeDict['pineappleHouse'] = new THREE.Vector3(2, 4, 2);
         this.sizeDict['bus'] = new THREE.Vector3(1, 1, 2);
         this.sizeDict['boat'] = new THREE.Vector3(1, 1, 2);
         this.sizeDict['bottom'] = new THREE.Vector3(2, 0.3, 2);
         this.sizeDict['karen'] = new THREE.Vector3(0.4, 1, 0.4);
         this.sizeDict['car2'] = new THREE.Vector3(1, 1, 2);
-        this.sizeDict['snailClock'] = new THREE.Vector3(0.8, 0.8, 0.4);
+        this.sizeDict['snailClock'] = new THREE.Vector3(1.6, 1.6, 0.8);
         this.sizeDict['house1'] = new THREE.Vector3(1, 2, 1);
         this.sizeDict['clock'] = new THREE.Vector3(2, 5, 2);
         this.sizeDict['bed'] = new THREE.Vector3(1, 1, 2);
-        this.sizeDict['chair1'] = new THREE.Vector3(1, 1, 1);
+        this.sizeDict['chair1'] = new THREE.Vector3(2, 2, 2);
         this.sizeDict['table'] = new THREE.Vector3(1, 0.5, 1);
-        this.sizeDict['train'] = new THREE.Vector3(2, 2, 10);
+        this.sizeDict['train'] = new THREE.Vector3(1.5, 2.5, 5);
         this.sizeDict['boatTSCP'] = new THREE.Vector3(1, 1, 2);
         this.sizeDict['busTSCP'] = new THREE.Vector3(6, 2, 2);
         this.sizeDict['lightHouseTSCP'] = new THREE.Vector3(2, 5, 2);
         this.sizeDict['spongehengeTSCP'] = new THREE.Vector3(1.2, 1.8, 0.35);
         this.sizeDict['tableTSCP'] = new THREE.Vector3(3, 1, 3);
         this.sizeDict['wooden_fence'] = new THREE.Vector3(3, 1.2, 0.1);
+        this.sizeDict['krabTSCP'] = new THREE.Vector3(2, 1, 1);
+        this.sizeDict['pineappleHouseTSCP'] = new THREE.Vector3(1.5, 2, 1.5);
+        this.sizeDict['squidwardHouseTSCP'] = new THREE.Vector3(1.5, 2, 1.5);
         console.log('generator initialized', this.themeDict);
     }
     initRotateDict() {
@@ -79,10 +82,12 @@ class ObstacleGenerator {
             this.rotateDict[name] = new THREE.Vector3(0, 0, 0);
         });
         this.rotateDict['burger'] = new THREE.Vector3(0, Math.PI/2, 0);
-        this.rotateDict['busTSCP'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['busTSCP'] = new THREE.Vector3(0, 3*Math.PI/2, 0);
         this.rotateDict['boatTSCP'] = new THREE.Vector3(0, Math.PI/2, 0);
+        this.rotateDict['pattywagon'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['car2'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotateDict['spongehengeTSCP'] = new THREE.Vector3(0, Math.PI, 0);
-        this.rotateDict['bed'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['bed'] = new THREE.Vector3(0, 0, 0);
         this.rotateDict['snailClock'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotateDict['chair1'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotateDict['hat'] = new THREE.Vector3(0, Math.PI, 0);
@@ -91,6 +96,7 @@ class ObstacleGenerator {
         this.rotateDict['squidwardHouseTSCP'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotateDict['pineappleHouseTSCP'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotateDict['krabTSCP'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['house1'] = new THREE.Vector3(0, Math.PI, 0);
 
     }
 
