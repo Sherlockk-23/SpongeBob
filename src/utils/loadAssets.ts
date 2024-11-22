@@ -45,7 +45,9 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
 
     const obstaclePaths = [
         'lightHouseTSCP',
-        'busTSCP',
+        // 'busTSCP',
+        'bus2TSCP',
+        'barrelTSCP',
         'boatTSCP',
         'tableTSCP',
         'spongehengeTSCP',
