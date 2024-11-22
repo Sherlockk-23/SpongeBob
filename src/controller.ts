@@ -32,7 +32,9 @@ class Controller {
     stageidx: number = 0;
 
     totalTime: number = 0;
-    enemyVel: number = 2.3;
+    enemyMinVel: number = 0.4;
+    enemyMaxVel: number = 3;
+    enemyDist: number = 20;
     enemyPos: number = -20;
 
     enemy: BaseEnemy;
@@ -118,7 +120,7 @@ class Controller {
             if (checkCollision(this.character, obstacle)) {
                 // document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by '+ obstacle.name } }));
                 console.log('collide with obstacle ' + obstacle.name);
-                if (obstacle.name == 'bottom') {
+                if (obstacle.name.includes('bottom')) {
                     this.character.vel.y = this.character.defaultMaxJumpVel;
                 }
                 if (this.character.condition == 'robotic') {
@@ -172,11 +174,14 @@ class Controller {
             distanceValueElement.textContent = this.character.mesh.position.z.toFixed(2); // Display z position rounded to 2 decimals
         }
         this.enemy.tick(delta);
-        this.enemyPos += this.enemyVel * delta;
-        this.enemyPos = Math.max(this.enemyPos, this.character.mesh.position.z - 40);
+        const enemyVel = this.enemyMinVel + (this.enemyMaxVel - this.enemyMinVel) * 
+            ((this.character.mesh.position.z-this.enemyPos)/this.enemyDist);
+        console.log("enemy vel: ", enemyVel, "char pos: ", this.character.mesh.position.z, "enemy pos: ", this.enemyPos);
+        this.enemyPos += enemyVel * delta;
+        this.enemyPos = Math.max(this.enemyPos, this.character.mesh.position.z - this.enemyDist);
         this.enemy.setPosition(0, 0, this.enemyPos);
-        console.log("enemy pos: ", this.enemyPos, "char pos: ", this.character.mesh.position.z);
-        console.log("enemy pos: ", this.enemy.getBottomCenter());
+        // console.log("enemy pos: ", this.enemyPos, "char pos: ", this.character.mesh.position.z);
+        // console.log("enemy pos: ", this.enemy.getBottomCenter());
         // if(this.enemyPos > this.character.mesh.position.z){
         //     document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by enemy' } }));
         // }

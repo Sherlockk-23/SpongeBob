@@ -50,6 +50,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else 
             this.theme = theme;
+        this.theme = 'normal';
         console.log('theme:',this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -61,9 +62,9 @@ class Stage extends MovableObject {
         this.rightWall = new Wall('rightWall', Stage.LENGTH, this.length);
         this.ceiling = new Ceiling('ceiling', Stage.WIDTH, this.length);
         if(this.theme=='scary')
-            this.dome = new Dome('dome', Stage.WIDTH*3, this.length, 'assets/pics/3.png');
+            this.dome = new Dome('dome', Stage.WIDTH*4, this.length, 'assets/pics/3.png');
         else
-            this.dome = new Dome('dome', Stage.WIDTH*3, this.length, 'assets/pics/4.jpeg');
+            this.dome = new Dome('dome', Stage.WIDTH*4, this.length, 'assets/pics/4.jpeg');
         this.obstacleGenerator = obstacleGenerator;
         this.itemGenerator = itemGenerator;
 

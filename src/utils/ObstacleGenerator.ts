@@ -42,7 +42,7 @@ class ObstacleGenerator {
         this.themeDict['food'] = ['burger', 'table', 'spatula', 'tableTSCP'];
         this.themeDict['car'] = ['car2', 'busTSCP','train','boatTSCP','pattyWagon'];
         this.themeDict['house'] = ['house1', 'pineappleHouse', 'squidwardHouseTSCP','bottom'];
-        this.themeDict['scary'] = ['patrickStatue', 'spongehengeTSCP'];
+        this.themeDict['scary'] = ['patrickStatue', 'spongehengeTSCP','patrickRobot','swimmingRing','checkPoint'];
     }
 
     initSizeDict() {
@@ -75,6 +75,8 @@ class ObstacleGenerator {
         this.sizeDict['krabTSCP'] = new THREE.Vector3(2, 1, 1);
         this.sizeDict['pineappleHouseTSCP'] = new THREE.Vector3(1.5, 2, 1.5);
         this.sizeDict['squidwardHouseTSCP'] = new THREE.Vector3(1.5, 2, 1.5);
+        this.sizeDict['swimmingRing'] = new THREE.Vector3(1.5, 0.5, 1.5);
+        this.sizeDict['checkPoint'] = new THREE.Vector3(1, 3.5, 1);
         console.log('generator initialized', this.themeDict);
     }
     initRotateDict() {

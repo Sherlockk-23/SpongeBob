@@ -56,6 +56,8 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'building2TSCP',
         'bus',
         // 'car1',//not usable
+        'swimmingRing',
+        'checkPoint',
         'car2',
         'chair1',
         'clock',
@@ -74,6 +76,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'wooden_fence',
         'bed',
         'jellyKing',
+        'patrickRobot'
     ];
 
     const characterPaths = [
