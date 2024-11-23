@@ -32,15 +32,16 @@ abstract class BaseCharacter extends MovableObject {
 
     //condition can be normal, robotic, highjump, scary, dead
     condition: string = 'normal';
-    //movement can be walking, running, jumping, idle
+    //movement can be walking, running, jumping, idle, punching
     movement: string;
     movementUpdated: boolean = false;
     newMovement: string;
+    punchingTime: number = 0;
 
     delta: number = 0.05;
-    defaultMaxVel: number = 5;
+    defaultMaxVel: number = 4;
     defaultMinVel: number = 0.1;
-    defaultMaxJumpVel: number = 4;
+    defaultMaxJumpVel: number = 4.2;
     defaultDeaccel: number = 5;
     defaultAccel: number = 1.5;
     defaultGravity: number = 2;
@@ -76,7 +77,7 @@ abstract class BaseCharacter extends MovableObject {
     }
 
     updateAcceleration(delta: number, acceleration: number = this.defaultAccel, deceleration: number = this.defaultDeaccel) {
-        if (this.inputHandler.isKeyPressed('w')) {
+        if (this.inputHandler.isKeyPressed('w') || true) {
             this.accel.z = acceleration;
             this.updateMovementTmp('running');
         } else if (this.inputHandler.isKeyPressed('s')) {
@@ -118,6 +119,10 @@ abstract class BaseCharacter extends MovableObject {
             this.vel.y = -this.defaultMaxJumpVel;
         }
         this.accel.y = -this.defaultGravity;
+
+        if(this.inputHandler.isKeyPressed('j')){
+            this.updateMovementTmp('punching');
+        }
     }
 
     updateVelocity(delta: number): void {
@@ -175,11 +180,16 @@ abstract class BaseCharacter extends MovableObject {
         this.cameraShake(1, 200);
     }
 
-    updateMovement(): void {
+    updateMovement(delta:number=0): void {
+        this.punchingTime = Math.max(0, this.punchingTime - delta);
         if (this.movement == this.newMovement) return;
+        if(this.punchingTime > 0)   return;
         this.movement = this.newMovement;
         let { animationId } = this.updateMovementAnimation(this.movement);
         this.initAnimation(animationId);
+        if(this.movement=='punching'){
+            this.punchingTime = 0.4;
+        }
     }
 
     applyEffect(effectName: string, effect: Effect) {
@@ -219,7 +229,7 @@ abstract class BaseCharacter extends MovableObject {
         this.camera.update();
         console.log(this.name, 'position:', this.mesh.position);
         // console.log(this.name, 'velocity:', this.vel);
-        this.updateMovement();
+        this.updateMovement(delta);
         // console.log(this.name, 'is', this.movement);
         this.animate(delta);
         // this.mesh.updateMatrix();

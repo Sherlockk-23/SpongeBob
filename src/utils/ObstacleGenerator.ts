@@ -38,12 +38,12 @@ class ObstacleGenerator {
 
     initThemes() {
         // 这里各科调distribution !!!
-        this.themeDict['normal'] = ['bed', 'bottom', 'hat','chair1', 'clock', 'snailClock'];
+        this.themeDict['normal'] = ['bed', 'bottom', 'hat', 'clock', 'snailClock','swimmingRing'];
         this.themeDict['TSCP'] = ['squidwardHouseTSCP', 'pineappleHouseTSCP', 'lightHouseTSCP','krabTSCP'];
-        this.themeDict['food'] = ['burger', 'table', 'spatula', 'tableTSCP'];
-        this.themeDict['car'] = ['car2', 'bus2TSCP','train','boatTSCP','pattyWagon','bus2TSCP','barrelTSCP'];
+        this.themeDict['food'] = ['burger', 'table', 'spatula', 'barrelTSCP', 'burger','burger','burger'];
+        this.themeDict['car'] = ['car2', 'bus2TSCP','train','boatTSCP','pattyWagon','bus2TSCP'];
         this.themeDict['house'] = ['house1', 'pineappleHouse', 'squidwardHouseTSCP','bottom'];
-        this.themeDict['scary'] = ['patrickStatue', 'spongehengeTSCP','patrickRobot','swimmingRing','checkPoint'];
+        this.themeDict['scary'] = ['patrickStatue', 'spongehengeTSCP',];
     }
 
     initSizeDict() {

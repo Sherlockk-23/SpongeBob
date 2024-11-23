@@ -115,7 +115,7 @@ class Controller {
 
     }
 
-    checkCollisionObstacles(stage: Stage) {
+    checkCollisionObstacles(stage: Stage,delta:number) {
         for (let obstacle of stage.nearestObstacles) {
             if (checkCollision(this.character, obstacle)) {
                 // document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by '+ obstacle.name } }));
@@ -131,6 +131,12 @@ class Controller {
                         obstacle.collidedCnt++;
                     }
                     if (obstacle.collidedCnt >= 3) {
+                        stage.removeObstacle(obstacle);
+                    }
+                    if(this.character.movement=='punching'){
+                        obstacle.punchedTime += delta;
+                    }
+                    if(obstacle.punchedTime > 2){
                         stage.removeObstacle(obstacle);
                     }
                 }
@@ -156,13 +162,13 @@ class Controller {
 
         this.stages[this.stageidx].updateNearestList(this.character.mesh.position.clone(), 20);
         this.stages[this.stageidx].tick(delta);
-        this.checkCollisionObstacles(this.stages[this.stageidx]);
+        this.checkCollisionObstacles(this.stages[this.stageidx],delta);
         this.checkCollisionItems(this.stages[this.stageidx]);
         console.log(this.stageidx);
         if (this.stageidx > 0) {
             this.stages[this.stageidx - 1].tick(delta);
             this.stages[this.stageidx - 1].updateNearestList(this.character.mesh.position.clone(), 20);
-            this.checkCollisionObstacles(this.stages[this.stageidx - 1]);
+            this.checkCollisionObstacles(this.stages[this.stageidx - 1],delta);
             this.checkCollisionItems(this.stages[this.stageidx - 1]);
         }
         this.getCharactorMovableBoundary();

@@ -59,7 +59,7 @@ class SpongeBob extends BaseCharacter {
                 break;
             case 'walking':
                 if(this.condition == 'robotic'){
-                    animationId = 8;
+                    animationId = 9;
                 }else if (this.condition == 'normal'){
                     animationId = 32;
                 }else
@@ -67,7 +67,7 @@ class SpongeBob extends BaseCharacter {
                 break;
             case 'running':
                 if(this.condition == 'robotic'){
-                    animationId = 8;
+                    animationId = 9;
                 }else if (this.condition == 'normal'){
                     animationId = 28;
                 }else
@@ -79,6 +79,14 @@ class SpongeBob extends BaseCharacter {
                 }else if (this.condition == 'normal'){
                     animationId = 23;
                 }else 
+                    animationId=0;
+                break;
+            case 'punching':
+                if(this.condition == 'robotic'){
+                    animationId = 5;
+                }else if (this.condition == 'normal'){
+                    animationId = 30;
+                }else
                     animationId=0;
                 break;
             default:
