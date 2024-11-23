@@ -40,6 +40,7 @@ class Scene {
         additionalLight.position.set(-10, 10, -10);
         additionalLight.castShadow = true; // 使额外光源投射阴影
         this.scene.add(additionalLight);
+
     }
 
 

@@ -20,6 +20,8 @@ abstract class BaseCharacter extends MovableObject {
     effects: { [key: string]: Effect } = {};
     // effect: Effect;
 
+    fog:THREE.Fog;
+
     // used to tell the 6 boundary of the character for position update
     movableBoundary: { [key: string]: number } = {
         'forward': 1000,
@@ -39,7 +41,7 @@ abstract class BaseCharacter extends MovableObject {
     punchingTime: number = 0;
 
     delta: number = 0.05;
-    defaultMaxVel: number = 4;
+    defaultMaxVel: number = 3.5;
     defaultMinVel: number = 0.1;
     defaultMaxJumpVel: number = 4.2;
     defaultDeaccel: number = 5;
@@ -56,6 +58,7 @@ abstract class BaseCharacter extends MovableObject {
     }
 
     init() {
+
         this.pos = new THREE.Vector3(0, 0, 0);
         this.vel = new THREE.Vector3(0, 0, 0);
         this.accel = new THREE.Vector3(0, 0, 0);

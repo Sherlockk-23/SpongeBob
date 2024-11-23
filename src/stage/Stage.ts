@@ -34,16 +34,20 @@ class Stage extends MovableObject {
     itemPointerL: number = 0;
     itemPointerR: number = 0;
 
+    textureDict: {[key:string]:THREE.Texture}={};
+
     static readonly LENGTH = 150;
     static readonly WIDTH = 5;
     static readonly HEIGHT = 10;
     static readonly START_Z = 0;
 
     constructor(scene: Scene, name: string, stageNumber: number, 
-        obstacleGenerator: ObstacleGenerator, itemGenerator: ItemGenerator, theme='all') {
+        obstacleGenerator: ObstacleGenerator, itemGenerator: ItemGenerator, 
+        textureDict: {[key:string]:THREE.Texture}={},theme='all') {
 
         const stageGroup = new THREE.Group();
         super('stage', name, stageGroup);
+        this.textureDict = textureDict;
         this.mesh = stageGroup;
         this.length = Stage.LENGTH;
         if(theme=='all')
@@ -57,14 +61,14 @@ class Stage extends MovableObject {
         this.scene = scene.getScene();
         this.scene.add(this.mesh);
 
-        this.ground = new Ground('ground', Stage.WIDTH*10, this.length);
+        this.ground = new Ground('ground', Stage.WIDTH*10, this.length, this.textureDict['grass']);
         this.leftWall = new Wall('leftWall', Stage.LENGTH, this.length);
         this.rightWall = new Wall('rightWall', Stage.LENGTH, this.length);
         this.ceiling = new Ceiling('ceiling', Stage.WIDTH, this.length);
         if(this.theme=='scary')
-            this.dome = new Dome('dome', Stage.WIDTH*4, this.length, 'assets/pics/3.png');
+            this.dome = new Dome('dome', Stage.WIDTH*4, this.length, this.textureDict['flower']);
         else
-            this.dome = new Dome('dome', Stage.WIDTH*4, this.length, 'assets/pics/4.jpeg');
+            this.dome = new Dome('dome', Stage.WIDTH*4, this.length, this.textureDict['flower2']);
         this.obstacleGenerator = obstacleGenerator;
         this.itemGenerator = itemGenerator;
 
@@ -94,7 +98,7 @@ class Stage extends MovableObject {
     }
 
     initObstacles(trackLength: number, trackWidth: number) {
-        const obstacleSpacing = 2; // Change this to change density
+        const obstacleSpacing = 1.5; // Change this to change density
         const numObstacles = Math.floor(trackLength / obstacleSpacing);
         // const numObstacles = 40;
 
@@ -133,7 +137,7 @@ class Stage extends MovableObject {
 
             obstacle.setPosition(x, y, z);
             // console.log('new obstacle generated', obstacle);
-            obstacle.addBoundingBoxHelper(this.scene);
+            // obstacle.addBoundingBoxHelper(this.scene);
         }
         // delete obstacle close to end
         this.obstacles.sort((a, b) => a.getBottomCenter().z - b.getBottomCenter().z);

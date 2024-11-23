@@ -16,16 +16,18 @@ class PerspectiveCamera extends Camera {
   _isCustomCamera: boolean = true;
   isShaking: boolean = false;
 
-  constructor(character_: BaseCharacter, aspectRatio: number=window.innerWidth/window.innerHeight) {
+  constructor(character_: BaseCharacter, aspectRatio: number = window.innerWidth / window.innerHeight, 
+    fov: number = 75, far: number = 1000) {
     super();
     this._camera = new THREE.PerspectiveCamera(
-      75,
+      fov, // 视场角
       aspectRatio,
       0.1,
-      1000
+      far // 可见距离
     );
     this.character = character_;
     this.thirdPersonPerspective();
+    
   }
 
   get camera(): THREE.PerspectiveCamera {

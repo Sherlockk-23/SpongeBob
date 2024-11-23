@@ -2,10 +2,20 @@ import * as THREE from 'three';
 import { BaseObject } from './BaseObject';
 
 class Ground extends BaseObject {
-    constructor(name: string, width: number = 10, height: number = 1000) {
+    constructor(name: string, width: number = 10, height: number = 1000, texture: THREE.Texture = null) {
         console.log('createGround');
         const geometry = new THREE.PlaneGeometry(width, height);
-        const material = new THREE.MeshStandardMaterial({ color: 0x808080 });
+
+        let material;
+        if (texture) {
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            texture.repeat.set(width / 1, height / 1); // 根据宽度和高度设置重复次数
+            material = new THREE.MeshStandardMaterial({ map: texture, side: THREE.DoubleSide });
+        } else {
+            material = new THREE.MeshStandardMaterial({ color: 0x808080 });
+        }
+
         const ground = new THREE.Mesh(geometry, material);
         ground.rotation.x = -Math.PI / 2; // 使平面水平放置
         ground.receiveShadow = true; // 接收阴影
@@ -14,7 +24,7 @@ class Ground extends BaseObject {
     }
 
     createGround(width: number = 5, height: number = 1000) {
-
+        // 这里可以添加其他创建地面的逻辑
     }
 }
 

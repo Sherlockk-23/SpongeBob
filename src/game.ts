@@ -41,7 +41,8 @@ class Game {
     gltfObstacleDict: { [key: string]: GLTF } = {};
     gltfItemDict: { [key: string]: GLTF } = {};
     audioDict: { [key: string]: AudioBuffer } = {};
-    textureDict: { [key: string]: { [key: string]: THREE.Texture } } = {};
+    // textureDict: { [key: string]: { [key: string]: THREE.Texture } } = {};
+    textureDict: {[key:string]:THREE.Texture}={};
 
     Character: BaseCharacter;
     CharacterListForLoop: BaseCharacter[] = [];
@@ -59,7 +60,7 @@ class Game {
         this.status = 'paused';
         this.uiController = new UIController();
 
-        await loadAssets(this.gltfCharacterDict, this.gltfObstacleDict, this.gltfItemDict);
+        await loadAssets(this.gltfCharacterDict, this.gltfObstacleDict, this.gltfItemDict,this.textureDict);
         this.uiController.shallowMenu();
 
 
@@ -69,7 +70,8 @@ class Game {
 
         this.initCharacter();
         
-        this.controller = new Controller(this.scene,this.Character,this.obstacleGenerator,this.itemGenerator);
+        this.controller = new Controller(this.scene,this.Character,
+                this.obstacleGenerator,this.itemGenerator,this.textureDict);
 
 
         this.camera = this.Character.camera

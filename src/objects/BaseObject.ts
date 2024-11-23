@@ -200,7 +200,7 @@ abstract class MovableObject extends BaseObject {
 
     const children = this.mesh.children;
     children.forEach(child => {
-      if (child instanceof THREE.Camera) {
+      if (child instanceof THREE.Camera || child instanceof THREE.Fog) {
 
       } else {
         this.mesh.remove(child);

@@ -21,6 +21,8 @@ import { ObstacleGenerator } from './utils/ObstacleGenerator';
 import { ItemGenerator } from './utils/ItemGenerator';
 import { BaseEnemy } from './objects/enemies/BaseEnemy.ts';
 
+import { Fog } from './objects/fog.ts';
+
 class Controller {
 
     stages: Stage[] = [];
@@ -28,22 +30,25 @@ class Controller {
     scene: Scene;
     obstacleGenerator: ObstacleGenerator;
     itemGenerator: ItemGenerator;
+    textureDict: {[key:string]:THREE.Texture}={};
 
     stageidx: number = 0;
 
     totalTime: number = 0;
     enemyMinVel: number = 0.4;
     enemyMaxVel: number = 3;
-    enemyDist: number = 20;
+    enemyDist: number = 15;
     enemyPos: number = -20;
 
     enemy: BaseEnemy;
 
-    constructor(scene: Scene, character: BaseCharacter, obstacleGenerator: ObstacleGenerator, itemGenerator: ItemGenerator) {
+    constructor(scene: Scene, character: BaseCharacter, obstacleGenerator: ObstacleGenerator,
+         itemGenerator: ItemGenerator, textureDict: {[key:string]:THREE.Texture}={}) {
         this.scene = scene;
         this.character = character;
         this.obstacleGenerator = obstacleGenerator;
         this.itemGenerator = itemGenerator
+        this.textureDict = textureDict;
         // this.init();
     }
 
@@ -53,7 +58,7 @@ class Controller {
             stage.destruct();
         }
         this.stages = [];
-        this.stages.push(new Stage(this.scene, 'stage1', 0, this.obstacleGenerator, this.itemGenerator));
+        this.stages.push(new Stage(this.scene, 'stage1', 0, this.obstacleGenerator, this.itemGenerator, this.textureDict));
         this.stageidx = 0;
 
         this.enemy = new BaseEnemy('jellyKing', this.obstacleGenerator.gltfDict['bus']);
@@ -61,12 +66,15 @@ class Controller {
         this.scene.getScene().add(this.enemy.mesh);
         this.enemy.setPosition(0, 0, -20);
         // this.character.mesh.add(this.enemy.mesh);
+
+        this.scene.getScene().fog = new THREE.Fog(0x000000, 0.5, 50);
     }
 
     changeStage() {
         console.log('change stage');
         this.stageidx += 1;
-        this.stages.push(new Stage(this.scene, 'stage' + (this.stageidx + 1), this.stageidx, this.obstacleGenerator, this.itemGenerator));
+        this.stages.push(new Stage(this.scene, 'stage' + (this.stageidx + 1), this.stageidx, 
+            this.obstacleGenerator, this.itemGenerator, this.textureDict));
         this.stages[this.stageidx].mesh.position.z =
             this.stages[this.stageidx - 1].mesh.position.z + this.stages[this.stageidx - 1].length;
         if (this.stageidx > 1) {
@@ -152,6 +160,13 @@ class Controller {
         }
     }
 
+    updateFog() {
+        const fogStart = 0.5 + this.character.mesh.position.z * 0.1;
+        const fogEnd = 50 + this.character.mesh.position.z * 0.1;
+        this.scene.getScene().fog.near = fogStart;
+        this.scene.getScene().fog.far = fogEnd;
+    }
+
 
     tick(delta: number) {
         // 1. check if the character is colliding with any of the items, this may cause logic to change
@@ -173,6 +188,7 @@ class Controller {
         }
         this.getCharactorMovableBoundary();
         this.checkToChangeStage();
+        this.updateFog();
 
         this.totalTime += delta;
         const distanceValueElement = document.getElementById('distance-value');
@@ -194,6 +210,8 @@ class Controller {
         if (checkCollision(this.character, this.enemy)) {
             document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by enemy' } }));
         }
+
+        
     }
 
 }

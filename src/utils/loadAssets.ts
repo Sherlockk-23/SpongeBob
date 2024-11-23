@@ -3,7 +3,8 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 
 async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstacleDict: { [key: string]: GLTF },
-    gltfItemDict: { [key: string]: GLTF }) {
+    gltfItemDict: { [key: string]: GLTF }, textureDict: {[key:string]:THREE.Texture}={}) {
+
     const gltfLoader = new GLTFLoader();
 
     function gltfPromise(path: string): Promise<GLTF> {
@@ -11,8 +12,6 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
             gltfLoader.load(
                 path,
                 (gltf) => {
-                    // 标准化模型
-                    standardizeModel(gltf.scene);
                     resolve(gltf);
                 },
                 undefined,
@@ -23,25 +22,6 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         });
     }
 
-    function standardizeModel(model: THREE.Object3D) {
-        return;
-        // 计算模型的包围盒
-        const bbox = new THREE.Box3().setFromObject(model);
-        const size = bbox.getSize(new THREE.Vector3());
-        const center = bbox.getCenter(new THREE.Vector3());
-
-        // 将模型居中
-        model.position.x += (model.position.x - center.x);
-        model.position.y += (model.position.y - center.y);
-        model.position.z += (model.position.z - center.z);
-
-        // 调整模型的缩放比例
-        const maxAxis = Math.max(size.x, size.y, size.z);
-        model.scale.multiplyScalar(1.0 / maxAxis);
-
-        // 更新模型的世界矩阵
-        model.updateMatrixWorld(true);
-    }
 
     const obstaclePaths = [
         'lightHouseTSCP',
@@ -136,6 +116,48 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         );
     });
 
+
+    const texturePaths=[
+        'wood',
+        'block',
+        'glass',
+        'grass',
+        'particle',
+        'flower',
+        'flower2',
+    ];
+
+
+    const textureLoader = new THREE.TextureLoader();
+    
+
+    function texturePromise(path: string): Promise<GLTF> {
+        return new Promise((resolve, reject) => {
+            textureLoader.load(
+                path,
+                (texture) => {
+                    resolve(texture);
+                },
+                undefined,
+                (error) => {
+                    reject(error);
+                }
+            );
+        });
+    }
+
+    texturePaths.forEach((path) => {
+        promises.push(
+            texturePromise(`assets/textures/${path}.png`).then((texture) => {
+                textureDict[path] = texture;
+                console.log('Loaded texture:', path);
+            })
+        );
+    });
+
+
+
+
     await Promise.all(promises);
 
     // sort gltf dict by key
@@ -153,6 +175,9 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         },
         {}
     );
+
+   
+
 }
 
 export { loadAssets };
