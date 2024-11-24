@@ -93,6 +93,7 @@
                     resetImageSize2(image2);
                     image1.style.zIndex = "2";
                     image2.style.zIndex = "1";
+                    localStorage.setItem('selectedCharacter', 'spongebob');
                     actionTaken = true;
                     break;
                 case 'a':
@@ -101,6 +102,7 @@
                     resetImageSize1(image1);
                     image1.style.zIndex = "1";
                     image2.style.zIndex = "2";
+                    localStorage.setItem('selectedCharacter', 'patrick');
                     actionTaken = true;
                     break;
                 case 'enter':

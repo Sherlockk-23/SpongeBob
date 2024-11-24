@@ -30,7 +30,7 @@ class Controller {
     scene: Scene;
     obstacleGenerator: ObstacleGenerator;
     itemGenerator: ItemGenerator;
-    textureDict: {[key:string]:THREE.Texture}={};
+    textureDict: { [key: string]: THREE.Texture } = {};
 
     stageidx: number = 0;
 
@@ -43,7 +43,7 @@ class Controller {
     enemy: BaseEnemy;
 
     constructor(scene: Scene, character: BaseCharacter, obstacleGenerator: ObstacleGenerator,
-         itemGenerator: ItemGenerator, textureDict: {[key:string]:THREE.Texture}={}) {
+        itemGenerator: ItemGenerator, textureDict: { [key: string]: THREE.Texture } = {}) {
         this.scene = scene;
         this.character = character;
         this.obstacleGenerator = obstacleGenerator;
@@ -73,7 +73,7 @@ class Controller {
     changeStage() {
         console.log('change stage');
         this.stageidx += 1;
-        this.stages.push(new Stage(this.scene, 'stage' + (this.stageidx + 1), this.stageidx, 
+        this.stages.push(new Stage(this.scene, 'stage' + (this.stageidx + 1), this.stageidx,
             this.obstacleGenerator, this.itemGenerator, this.textureDict));
         this.stages[this.stageidx].mesh.position.z =
             this.stages[this.stageidx - 1].mesh.position.z + this.stages[this.stageidx - 1].length;
@@ -123,7 +123,7 @@ class Controller {
 
     }
 
-    checkCollisionObstacles(stage: Stage,delta:number) {
+    checkCollisionObstacles(stage: Stage, delta: number) {
         for (let obstacle of stage.nearestObstacles) {
             if (checkCollision(this.character, obstacle)) {
                 // document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by '+ obstacle.name } }));
@@ -141,10 +141,10 @@ class Controller {
                     if (obstacle.collidedCnt >= 3) {
                         stage.removeObstacle(obstacle);
                     }
-                    if(this.character.movement=='punching'){
+                    if (this.character.movement == 'punching') {
                         obstacle.punchedTime += delta;
                     }
-                    if(obstacle.punchedTime > 2){
+                    if (obstacle.punchedTime > 2) {
                         stage.removeObstacle(obstacle);
                     }
                 }
@@ -177,13 +177,13 @@ class Controller {
 
         this.stages[this.stageidx].updateNearestList(this.character.mesh.position.clone(), 20);
         this.stages[this.stageidx].tick(delta);
-        this.checkCollisionObstacles(this.stages[this.stageidx],delta);
+        this.checkCollisionObstacles(this.stages[this.stageidx], delta);
         this.checkCollisionItems(this.stages[this.stageidx]);
         console.log(this.stageidx);
         if (this.stageidx > 0) {
             this.stages[this.stageidx - 1].tick(delta);
             this.stages[this.stageidx - 1].updateNearestList(this.character.mesh.position.clone(), 20);
-            this.checkCollisionObstacles(this.stages[this.stageidx - 1],delta);
+            this.checkCollisionObstacles(this.stages[this.stageidx - 1], delta);
             this.checkCollisionItems(this.stages[this.stageidx - 1]);
         }
         this.getCharactorMovableBoundary();
@@ -195,9 +195,29 @@ class Controller {
         if (distanceValueElement) {
             distanceValueElement.textContent = this.character.mesh.position.z.toFixed(2); // Display z position rounded to 2 decimals
         }
+
+        const distanceBarFill = document.getElementById('distance-bar-fill');
+        const movingIcon = document.getElementById('s-icon');
+        if (distanceBarFill && movingIcon) {
+            const distance = Math.abs(this.enemyPos - this.character.mesh.position.z);
+            const maxDistance = this.enemyDist; // Use maxDistance as a scaling factor
+            const normalizedDistance = Math.min(distance / maxDistance, 1);
+            distanceBarFill.style.height = `${normalizedDistance * 100}%`;
+            movingIcon.style.bottom = `${normalizedDistance * 100}%`;
+            const red = Math.round(255 * (1 - normalizedDistance));
+            const green = Math.round(255 * normalizedDistance);
+            const color = `rgb(${red}, ${green}, 0)`;
+
+
+            distanceBarFill.style.backgroundColor = color;
+
+            // Move the s-icon to the top of the fill
+
+        }
+
         this.enemy.tick(delta);
-        const enemyVel = this.enemyMinVel + (this.enemyMaxVel - this.enemyMinVel) * 
-            ((this.character.mesh.position.z-this.enemyPos)/this.enemyDist);
+        const enemyVel = this.enemyMinVel + (this.enemyMaxVel - this.enemyMinVel) *
+            ((this.character.mesh.position.z - this.enemyPos) / this.enemyDist);
         console.log("enemy vel: ", enemyVel, "char pos: ", this.character.mesh.position.z, "enemy pos: ", this.enemyPos);
         this.enemyPos += enemyVel * delta;
         this.enemyPos = Math.max(this.enemyPos, this.character.mesh.position.z - this.enemyDist);
@@ -211,7 +231,7 @@ class Controller {
             document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by enemy' } }));
         }
 
-        
+
     }
 
 }

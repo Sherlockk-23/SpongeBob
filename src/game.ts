@@ -12,6 +12,7 @@ import { loadAssets } from './utils/loadAssets';
 
 import { BaseCharacter } from './objects/characters/BaseCharacter';
 import { SpongeBob } from './objects/characters/SpongeBob.ts';
+import { Patrick } from './objects/characters/Patrick.ts';
 
 import { BaseObstacle } from './objects/obstacles/BaseObstacle';
 
@@ -42,7 +43,7 @@ class Game {
     gltfItemDict: { [key: string]: GLTF } = {};
     audioDict: { [key: string]: AudioBuffer } = {};
     // textureDict: { [key: string]: { [key: string]: THREE.Texture } } = {};
-    textureDict: {[key:string]:THREE.Texture}={};
+    textureDict: { [key: string]: THREE.Texture } = {};
 
     Character: BaseCharacter;
     CharacterListForLoop: BaseCharacter[] = [];
@@ -60,7 +61,7 @@ class Game {
         this.status = 'paused';
         this.uiController = new UIController();
 
-        await loadAssets(this.gltfCharacterDict, this.gltfObstacleDict, this.gltfItemDict,this.textureDict);
+        await loadAssets(this.gltfCharacterDict, this.gltfObstacleDict, this.gltfItemDict, this.textureDict);
         this.uiController.shallowMenu();
 
 
@@ -69,9 +70,9 @@ class Game {
         this.itemGenerator = new ItemGenerator(this.gltfItemDict);
 
         this.initCharacter();
-        
-        this.controller = new Controller(this.scene,this.Character,
-                this.obstacleGenerator,this.itemGenerator,this.textureDict);
+
+        this.controller = new Controller(this.scene, this.Character,
+            this.obstacleGenerator, this.itemGenerator, this.textureDict);
 
 
         this.camera = this.Character.camera
@@ -132,14 +133,27 @@ class Game {
     }
 
     initCharacter() {
-        const spongeBob = new SpongeBob('spongeBob', this.gltfCharacterDict);
-        spongeBob.rescale(1, 1, 1);
-        this.Character = spongeBob;
+        const selectedCharacter = localStorage.getItem('selectedCharacter'); // Retrieve choice
 
-        this.scene.getScene().add(this.Character.mesh);
-        this.Character.addBoundingBoxHelper(this.scene.getScene());
+        if (selectedCharacter === 'spongebob') {
+            const spongeBob = new SpongeBob('spongeBob', this.gltfCharacterDict);
+            spongeBob.rescale(1, 1, 1);
+            this.Character = spongeBob;
 
-        spongeBob.mesh.position.set(0, 0, 3);
+            this.scene.getScene().add(this.Character.mesh);
+            this.Character.addBoundingBoxHelper(this.scene.getScene());
+
+            spongeBob.mesh.position.set(0, 0, 3);
+        } else {
+            const patrick = new Patrick('patrick', this.gltfCharacterDict);
+            patrick.rescale(1, 1, 1);
+            this.Character = patrick;
+
+            this.scene.getScene().add(this.Character.mesh);
+            this.Character.addBoundingBoxHelper(this.scene.getScene());
+
+            patrick.mesh.position.set(0, 0, 3);
+        }
     }
 
 
