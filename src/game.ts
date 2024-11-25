@@ -86,11 +86,14 @@ class Game {
 
         this.cameraController = new CameraController(this.camera, this.renderer.domElement);
 
-        this.uiController.removeLoadingScreen();
+       this.uiController.removeLoadingScreen();
 
         this.reset();
         this.start();
         this.pause();
+        await this.uiController.countdown(5);
+        this.status = "playing";
+        this.resume();
 
         this.registerEventHandlers();
     }
@@ -122,6 +125,8 @@ class Game {
         // const stage_index = this.loop.updatableLists.indexOf(this.stages);
         // if (stage_index !== -1) this.loop.updatableLists.splice(stage_index, 1);
         console.log("pausing ", this.loop.updatableLists);
+
+        // if(showPause)this.uiController.pause();
     }
 
     resume() {
@@ -165,24 +170,6 @@ class Game {
     // }
 
     registerEventHandlers() {
-        //     window.addEventListener("gameStart", () => {
-        //         if (this.status === "paused") {
-        //             this.status = "playing";
-        //             this.resume();
-        //             this.uiController.resume();
-        //         }
-        //         else if (this.status === "playing") {
-        //             this.status = "paused";
-        //             this.pause();
-        //             this.uiController.pause();
-        //         }
-        //         else if (this.status === "gameover") {
-        //             this.reset();
-        //             this.resume();
-        //             this.status = "playing";
-        //             this.uiController.restart();
-        //         }
-        //     });
         window.addEventListener("click", () => {
             if (this.status === "paused") {
                 this.status = "playing";

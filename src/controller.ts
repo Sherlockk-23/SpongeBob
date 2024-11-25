@@ -67,7 +67,7 @@ class Controller {
         this.enemy.setPosition(0, 0, -20);
         // this.character.mesh.add(this.enemy.mesh);
 
-        this.scene.getScene().fog = new THREE.Fog(0xffffff, 0.5, 50);
+        this.scene.getScene().fog = new THREE.Fog(0x87CEFA, 0.5, 50);
     }
 
     changeStage() {

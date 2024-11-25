@@ -11,6 +11,8 @@ class UIController {
   loading: HTMLElement;
   loadingIcon: HTMLImageElement;
 
+  countdownElement: HTMLElement;
+
 
   constructor() {
     this.sceneContainer = document.getElementById('scene-container') as HTMLElement;
@@ -20,6 +22,8 @@ class UIController {
     this.loadingIcon = document.getElementById('loading-icon') as HTMLImageElement;
 
     this.pause_popup = document.getElementById('pause-popup') as HTMLElement;
+
+    this.countdownElement = document.getElementById('countdown') as HTMLElement;
 
     const returnButton = document.getElementById('return-button') as HTMLElement;
     if (returnButton) {
@@ -35,7 +39,7 @@ class UIController {
   }
 
   removeLoadingScreen() {
-    fadeElement(this.loading);
+    fadeElement(this.loading, 1, 0, true, 500);
   }
 
 
@@ -64,6 +68,15 @@ class UIController {
     fadeElement(this.overlay, 0.5, 0, true, 500);
     fadeElement(this.pause_popup, 1, 0, true, 500);
     
+  }
+
+  async countdown(count: number) {
+    this.countdownElement.style.display = 'block';
+    for (let i = count; i > 0; i--) {
+      this.countdownElement.innerText = i.toString();
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+    this.countdownElement.style.display = 'none';
   }
 
   returnToMain() {

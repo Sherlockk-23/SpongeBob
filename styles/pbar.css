@@ -183,3 +183,14 @@
   margin-right: -82%;
   margin-bottom: 12%;
 }
+
+.countdown{
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10vh;
+  font-weight: bold;
+  color: red;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}

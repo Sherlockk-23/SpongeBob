@@ -10,6 +10,8 @@ import { BaseItem } from '../objects/items/BaseItem';
 import { ObstacleGenerator } from '../utils/ObstacleGenerator';
 import { ItemGenerator } from '../utils/ItemGenerator';
 
+const groundoffset = 20;
+
 class Stage extends MovableObject {
 
     ground: Ground;
@@ -36,7 +38,7 @@ class Stage extends MovableObject {
 
     textureDict: {[key:string]:THREE.Texture}={};
 
-    static readonly LENGTH = 150;
+    static readonly LENGTH = 100;
     static readonly WIDTH = 5;
     static readonly HEIGHT = 15;
     static readonly START_Z = 0;
@@ -72,11 +74,11 @@ class Stage extends MovableObject {
         this.obstacleGenerator = obstacleGenerator;
         this.itemGenerator = itemGenerator;
 
-        this.ground.mesh.position.z = this.length/2;
-        this.leftWall.mesh.position.z = this.length/2;
-        this.rightWall.mesh.position.z = this.length/2;
-        this.ceiling.mesh.position.z = this.length/2;
-        this.dome.mesh.position.z = this.length/2;
+        this.ground.mesh.position.z = this.length/2-groundoffset;
+        this.leftWall.mesh.position.z = this.length/2-groundoffset;
+        this.rightWall.mesh.position.z = this.length/2-groundoffset;
+        this.ceiling.mesh.position.z = this.length/2-groundoffset;
+        this.dome.mesh.position.z = this.length/2-groundoffset;
 
 
         this.leftWall.setAsLeftWall();
