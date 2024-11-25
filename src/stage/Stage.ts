@@ -155,7 +155,8 @@ class Stage extends MovableObject {
         const numItems = Math.floor(trackLength / itemSpacing);
         // const numItems = 10;
         for (let i = 0; i < numItems; i++) {
-            const item = this.itemGenerator.randomItem(i, this.theme);
+            // const item = this.itemGenerator.randomItem(i, this.theme);
+            const item = this.itemGenerator.centainItem('infoSign',i);
             this.items.push(item);
             this.mesh.add(item.mesh);
 

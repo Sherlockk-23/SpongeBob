@@ -223,6 +223,12 @@ abstract class BaseCharacter extends MovableObject {
         }
     }
 
+    debugLogging(){
+        if(this.condition != 'robotic') return;
+        console.log("debug robot",  'position:', this.mesh.position);
+        console.log("debug robot",  'box:', this.getBottomCenter());
+    }
+
     tick(delta: number): void {
         this.updateAcceleration(delta);
         this.updateVelocity(delta);
@@ -240,6 +246,7 @@ abstract class BaseCharacter extends MovableObject {
         // this.mesh.updateMatrixWorld();
         // this.mesh.parent?.updateMatrixWorld(true);
         // this.mesh.parent?.updateWorldMatrix(true, true);
+        this.debugLogging();
     }
 
     cameraShake(intensity: number, duration: number) {
