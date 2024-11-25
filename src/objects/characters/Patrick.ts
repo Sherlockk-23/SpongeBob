@@ -50,7 +50,7 @@ class Patrick extends BaseCharacter {
                 if (this.condition == 'robotic') {
                     animationId = 9;
                 } else if (this.condition == 'normal') {
-                    animationId = 4;
+                    animationId = 17 & 1;
                 } else
                     animationId = 0;
                 break;
@@ -58,7 +58,7 @@ class Patrick extends BaseCharacter {
                 if (this.condition == 'robotic') {
                     animationId = 7;
                 } else if (this.condition == 'normal') {
-                    animationId = 17;
+                    animationId = 4;
                 } else
                     animationId = 0;
                 break;

@@ -12,10 +12,12 @@
     </style>
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/styles/pbar.css">
+    <link rel="stylesheet" href="/styles/menu.css">
 </head>
 
 <body>
     <script type="module" src="main.ts"></script>
+
     <div class="container" id="scene-container">
 
         <div class="distance" id="distance">
@@ -35,15 +37,10 @@
             <img src="assets/pics/bubble.png" alt="Bubble Icon" class="bubble-icon" />
         </div>
 
-        <div class="banner win-banner" id="win-banner" style="display: none;">
-            <div class="banner_text">
-                <h1>YOU WIN!</h1>
-            </div>
-        </div>
-        <div class="banner lose-banner" id="lose-banner" style="display: none;">
-            <div class="banner_text">
-                <h1>YOU LOSE!</h1>
-            </div>
+        <div class="overlay" id="overlay" style="display: none;"></div>
+        <div class="popup" id="lose-popup" style="display: none;">
+            <h1>YOU LOSE!</h1>
+            <button id="return-button">Return</button>
         </div>
     </div>
 
@@ -56,6 +53,7 @@
         } else if (selectedCharacter === 'patrick') {
             movingIcon.src = "assets/pics/p_icon.jpg";
         }
+
     </script>
 </body>
 

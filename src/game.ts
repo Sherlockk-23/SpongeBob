@@ -90,7 +90,6 @@ class Game {
         this.pause();
 
         this.registerEventHandlers();
-
     }
 
     reset() {
@@ -192,14 +191,14 @@ class Game {
                 this.pause();
                 this.uiController.pause();
             }
-            else if (this.status === "gameover") {
-                // maybe jump to front page
-                window.location.reload();
-                this.reset();
-                this.resume();
-                this.status = "playing";
-                this.uiController.restart();
-            }
+            // else if (this.status === "gameover") {
+            //     // maybe jump to front page
+            //     window.location.reload();
+            //     this.reset();
+            //     this.resume();
+            //     this.status = "playing";
+            //     this.uiController.restart();
+            // }
         });
         document.addEventListener("gameover", (e) => {
             if (!(e instanceof CustomEvent)) return;

@@ -20,7 +20,7 @@ abstract class BaseCharacter extends MovableObject {
     effects: { [key: string]: Effect } = {};
     // effect: Effect;
 
-    fog:THREE.Fog;
+    fog: THREE.Fog;
 
     // used to tell the 6 boundary of the character for position update
     movableBoundary: { [key: string]: number } = {
@@ -123,7 +123,7 @@ abstract class BaseCharacter extends MovableObject {
         }
         this.accel.y = -this.defaultGravity;
 
-        if(this.inputHandler.isKeyPressed('j')){
+        if (this.inputHandler.isKeyPressed('j')) {
             this.updateMovementTmp('punching');
         }
     }
@@ -183,14 +183,14 @@ abstract class BaseCharacter extends MovableObject {
         this.cameraShake(1, 200);
     }
 
-    updateMovement(delta:number=0): void {
+    updateMovement(delta: number = 0): void {
         this.punchingTime = Math.max(0, this.punchingTime - delta);
         if (this.movement == this.newMovement) return;
-        if(this.punchingTime > 0)   return;
+        if (this.punchingTime > 0) return;
         this.movement = this.newMovement;
         let { animationId } = this.updateMovementAnimation(this.movement);
         this.initAnimation(animationId);
-        if(this.movement=='punching'){
+        if (this.movement == 'punching') {
             this.punchingTime = 0.4;
         }
     }
