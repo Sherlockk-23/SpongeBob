@@ -67,7 +67,7 @@ class Controller {
         this.enemy.setPosition(0, 0, -20);
         // this.character.mesh.add(this.enemy.mesh);
 
-        this.scene.getScene().fog = new THREE.Fog(0x000000, 0.5, 50);
+        this.scene.getScene().fog = new THREE.Fog(0xffffff, 0.5, 50);
     }
 
     changeStage() {
@@ -128,12 +128,14 @@ class Controller {
             if (checkCollision(this.character, obstacle)) {
                 // document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by '+ obstacle.name } }));
                 console.log('collide with obstacle ' + obstacle.name);
-                if (obstacle.name.includes('bottom')) {
-                    this.character.vel.y = this.character.defaultMaxJumpVel;
-                }
+                
+                
                 if (this.character.condition == 'robotic') {
                     stage.removeObstacle(obstacle);
-                } else {
+                } else if (obstacle.name.includes('bottom')) {
+                    this.character.vel.y = this.character.defaultMaxJumpVel;
+                }
+                else {
                     if (!obstacle.colliding) {
                         obstacle.colliding = true;
                         obstacle.collidedCnt++;

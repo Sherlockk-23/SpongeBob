@@ -38,7 +38,7 @@ class Stage extends MovableObject {
 
     static readonly LENGTH = 150;
     static readonly WIDTH = 5;
-    static readonly HEIGHT = 10;
+    static readonly HEIGHT = 15;
     static readonly START_Z = 0;
 
     constructor(scene: Scene, name: string, stageNumber: number, 

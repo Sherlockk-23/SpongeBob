@@ -2,24 +2,24 @@
 
 class UIController {
   sceneContainer: HTMLElement;
-  menu: HTMLElement;
-  replay: HTMLElement;
-  instructions: HTMLElement;
-  win_banner: HTMLElement;
-  lose_banner: HTMLElement;
+  
+  pause_popup: HTMLElement;
+
   lose_popup: HTMLElement;
   overlay: HTMLElement;
+
+  loading: HTMLElement;
+  loadingIcon: HTMLImageElement;
 
 
   constructor() {
     this.sceneContainer = document.getElementById('scene-container') as HTMLElement;
-    this.menu = document.getElementById('menu') as HTMLElement;
-    this.replay = document.getElementById('replayMessage') as HTMLElement;
-    this.instructions = document.getElementById('instructions') as HTMLElement;
-    this.win_banner = document.getElementById('win-banner') as HTMLElement;
-    this.lose_banner = document.getElementById('lose-banner') as HTMLElement;
     this.lose_popup = document.getElementById('lose-popup') as HTMLElement;
     this.overlay = document.getElementById('overlay') as HTMLElement;
+    this.loading = document.getElementById('loading') as HTMLElement;
+    this.loadingIcon = document.getElementById('loading-icon') as HTMLImageElement;
+
+    this.pause_popup = document.getElementById('pause-popup') as HTMLElement;
 
     const returnButton = document.getElementById('return-button') as HTMLElement;
     if (returnButton) {
@@ -27,31 +27,17 @@ class UIController {
     }
   }
 
-  showMenu() {
-    displayElement(this.menu);
-    displayElement(this.instructions);
-    displayElement(this.replay);
+  loadingScreen() {
+    const loadingImages = ["assets/pics/GaryRound.gif", "assets/pics/JellyJump.gif", "assets/pics/SpongeBobWalk.gif", "assets/pics/PatrickRun.gif"];
+    const randomImage = loadingImages[Math.floor(Math.random() * loadingImages.length)];
+    this.loadingIcon.src = randomImage;
+    displayElement(this.loading);
   }
 
-  shallowMenu() {
-    displayElement(this.menu, 0.9, 0.5, false, 1500);
-    displayElement(this.instructions, 0.9, 0.5, false, 1500);
-    displayElement(this.replay, 0.9, 0.5, false, 1500);
+  removeLoadingScreen() {
+    fadeElement(this.loading);
   }
 
-  fadeMenu() {
-    fadeElement(this.menu);
-    fadeElement(this.instructions);
-    fadeElement(this.replay);
-  }
-
-  // lose() {
-  //     displayElement(this.lose_banner);
-  // }
-
-  // restart() {
-  //     fadeElement(this.lose_banner);
-  // }
 
   lose() {
     // Display the lose popup and overlay
@@ -66,11 +52,18 @@ class UIController {
   }
 
   pause() {
-    this.showMenu();
+    // Display the pause popup and overlay
+    console.log("pause in ui");
+    displayElement(this.overlay, 0, 0.5, false, 500); // Dim the background
+    displayElement(this.pause_popup, 0, 1, true, 500); // Show the popup
+    
   }
 
   resume() {
-    this.fadeMenu();
+    // Hide the pause popup and overlay
+    fadeElement(this.overlay, 0.5, 0, true, 500);
+    fadeElement(this.pause_popup, 1, 0, true, 500);
+    
   }
 
   returnToMain() {

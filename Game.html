@@ -17,6 +17,10 @@
 
 <body>
     <script type="module" src="main.ts"></script>
+    
+    <div class="object-container" id="loading">
+        <img id="loading-icon" alt="Loading Icon" class="loading-icon" />
+    </div>
 
     <div class="container" id="scene-container">
 
@@ -41,6 +45,10 @@
         <div class="popup" id="lose-popup" style="display: none;">
             <h1>YOU LOSE!</h1>
             <button id="return-button">Return</button>
+        </div>
+
+        <div class="popup" id="pause-popup" style="display: none;">
+            <h1>pausing...press any keys to continue</h1>
         </div>
     </div>
 

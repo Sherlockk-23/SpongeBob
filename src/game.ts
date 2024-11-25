@@ -60,9 +60,10 @@ class Game {
     async init() {
         this.status = 'paused';
         this.uiController = new UIController();
+        this.uiController.loadingScreen();
 
         await loadAssets(this.gltfCharacterDict, this.gltfObstacleDict, this.gltfItemDict, this.textureDict);
-        this.uiController.shallowMenu();
+        
 
 
         this.scene = new Scene();
@@ -84,6 +85,8 @@ class Game {
         container.appendChild(this.renderer.domElement);
 
         this.cameraController = new CameraController(this.camera, this.renderer.domElement);
+
+        this.uiController.removeLoadingScreen();
 
         this.reset();
         this.start();
