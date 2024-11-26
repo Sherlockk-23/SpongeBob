@@ -10,6 +10,7 @@ class Patrick extends BaseCharacter {
     constructor(name: string, characterGLTFDict: { [key: string]: GLTF }) {
         let tmpgltfDict: { [key: string]: GLTF } = {};
         tmpgltfDict['normal'] = characterGLTFDict['patrickAll'];
+        tmpgltfDict['robotic'] = characterGLTFDict['patrickRobot'];
         super(name, tmpgltfDict['normal']);
         this.gltfDict = tmpgltfDict;
         this.init();
@@ -23,6 +24,14 @@ class Patrick extends BaseCharacter {
                 newgltf = this.gltfDict['normal'];
                 animationId = 0;
                 break;
+            case 'robotic':
+                newgltf = this.gltfDict['robotic'];
+                animationId = 0;
+                break;
+            default:
+                newgltf = this.gltfDict['normal'];
+                animationId = 0;
+                break;
         }
         return newgltf;
 
@@ -32,7 +41,7 @@ class Patrick extends BaseCharacter {
         switch (movement) {
             case 'idle':
                 if (this.condition == 'robotic') {
-                    animationId = 9;
+                    animationId = 0;
                 } else if (this.condition == 'normal') {
                     animationId = 13;
                 } else
@@ -40,31 +49,31 @@ class Patrick extends BaseCharacter {
                 break;
             case 'walking':
                 if (this.condition == 'robotic') {
-                    animationId = 9;
+                    animationId = 0;
                 } else if (this.condition == 'normal') {
-                    animationId = 20;
+                    animationId = 26;
                 } else
                     animationId = 0;
                 break;
             case 'running':
                 if (this.condition == 'robotic') {
-                    animationId = 9;
-                } else if (this.condition == 'normal') {
-                    animationId = 17 & 1;
-                } else
                     animationId = 0;
-                break;
-            case 'jumping':
-                if (this.condition == 'robotic') {
-                    animationId = 7;
                 } else if (this.condition == 'normal') {
                     animationId = 4;
                 } else
                     animationId = 0;
                 break;
+            case 'jumping':
+                if (this.condition == 'robotic') {
+                    animationId = 0;
+                } else if (this.condition == 'normal') {
+                    animationId = 18;
+                } else
+                    animationId = 0;
+                break;
             case 'punching':
                 if (this.condition == 'robotic') {
-                    animationId = 5;
+                    animationId = 0;
                 } else if (this.condition == 'normal') {
                     animationId = 23;
                 } else {

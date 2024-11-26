@@ -50,7 +50,7 @@ class ObstacleGenerator {
         this.themeDict['normal'] = ['bed', 'bottom', 'hat', 'clock', 'snailClock', 'swimmingRing'];
         this.themeDict['TSCP'] = ['squidwardHouseTSCP', 'pineappleHouseTSCP', 'lightHouseTSCP', 'krabTSCP'];
         this.themeDict['food'] = ['burger', 'table', 'spatula', 'barrelTSCP', 'burger', 'burger', 'burger'];
-        this.themeDict['car'] = ['car2', 'bus2TSCP', 'train', 'boatTSCP', 'pattyWagon', 'bus2TSCP'];
+        this.themeDict['car'] = ['car2', 'bus2TSCP', 'train', 'boatTSCP', 'pattyWagon', 'pattyWagon', 'boatTSCP'];
         this.themeDict['house'] = ['house1', 'pineappleHouse', 'squidwardHouseTSCP', 'bottom'];
         this.themeDict['scary'] = ['patrickStatue', 'spongehengeTSCP',];
     }

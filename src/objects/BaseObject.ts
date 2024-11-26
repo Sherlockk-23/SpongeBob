@@ -102,7 +102,8 @@ abstract class BaseObject {
   getBottomCenter() :THREE.Vector3{
     const bbox = new THREE.Box3().setFromObject(this.mesh);
     const center = bbox.getCenter(new THREE.Vector3());
-    return center;
+    const bottomCenter = new THREE.Vector3(center.x, bbox.min.y, center.z);
+    return bottomCenter;
   }
 
   setPosition(x: number, y: number, z: number) {
@@ -187,20 +188,9 @@ abstract class MovableObject extends BaseObject {
     const center = bbox.getCenter(new THREE.Vector3());
     const bottomCenter = new THREE.Vector3(center.x, bbox.min.y, center.z);
 
-    // 保存当前mesh的相机子对象
-    // console.log("Ochildren:",this.mesh.children);
-    // const cameras : THREE.PerspectiveCamera[] = this.mesh.children.filter(child => child.constructor.name === 'PerspectiveCamera');
-    // console.log(this.name, 'is changing to', gltf, cameras);
-
-    // // 清空当前mesh的所有子对象，保留相机
-    // while (this.mesh.children.length > 0) {
-    //     const child = this.mesh.children[0];
-    //     this.mesh.remove(child);
-    // }
-
     const children = this.mesh.children;
     children.forEach(child => {
-      if (child instanceof THREE.Camera || child instanceof THREE.Fog) {
+      if (child instanceof THREE.Camera ) {
 
       } else {
         this.mesh.remove(child);

@@ -72,7 +72,13 @@ class ItemGenerator {
     }
     centainItem(name:string,id:number = -1, size: THREE.Vector3 = NaN): BaseItem {
         let item: BaseItem;
-        item = new speedupItem(name+'_'+id, this.gltfDict[name]);
+        if(name.includes('soda')){
+            item = new speedupItem(name+'_'+id, cloneGLTF(this.gltfDict[name]));
+        }else if(name.includes('info')){
+            item = new roboticItem(name+'_'+id, cloneGLTF(this.gltfDict[name]));
+        }else{
+            item = new highJumpItem(name+'_'+id, cloneGLTF(this.gltfDict[name]));
+        }
         if ( isNaN(size.x) || isNaN(size.y) || isNaN(size.z)) {
             size = this.sizeDict[name];
         }

@@ -82,7 +82,6 @@ abstract class BaseCharacter extends MovableObject {
     updateAcceleration(delta: number, acceleration: number = this.defaultAccel, deceleration: number = this.defaultDeaccel) {
         if (this.inputHandler.isKeyPressed('w') || true) {
             this.accel.z = acceleration;
-            this.updateMovementTmp('running');
         } else if (this.inputHandler.isKeyPressed('s')) {
             this.accel.z = -acceleration;
             this.updateMovementTmp('running');
@@ -100,10 +99,8 @@ abstract class BaseCharacter extends MovableObject {
 
         if (this.inputHandler.isKeyPressed('a')) {
             this.accel.x = acceleration;
-            this.updateMovementTmp('running');
         } else if (this.inputHandler.isKeyPressed('d')) {
             this.accel.x = -acceleration;
-            this.updateMovementTmp('running');
         } else {
             if (Math.abs(this.vel.x) < this.defaultMinVel) {
                 this.accel.x = 0;
@@ -113,7 +110,6 @@ abstract class BaseCharacter extends MovableObject {
             } else {
                 this.accel.x = deceleration;
             }
-            this.updateMovementTmp('walking');
         }
         if (this.inputHandler.isKeyPressed(' ') && this.onGround()) {
             this.vel.y = this.defaultMaxJumpVel / 2;
@@ -122,10 +118,6 @@ abstract class BaseCharacter extends MovableObject {
             this.vel.y = -this.defaultMaxJumpVel;
         }
         this.accel.y = -this.defaultGravity;
-
-        if (this.inputHandler.isKeyPressed('j')) {
-            this.updateMovementTmp('punching');
-        }
     }
 
     updateVelocity(delta: number): void {
@@ -163,9 +155,18 @@ abstract class BaseCharacter extends MovableObject {
                 this.mesh.position.y += boundary - bbox.min.y;
             }
         }
-        if (!this.onGround()) {
-            this.updateMovementTmp('jumping');
+        
+    }
+
+    getMovement(){
+        this.updateMovementTmp('walking');
+        if(this.vel.z == this.defaultMaxVel)
+            this.updateMovementTmp('running');
+        if (this.inputHandler.isKeyPressed('j')) {
+            this.updateMovementTmp('punching');
         }
+        if (!this.onGround()) 
+            this.updateMovementTmp('jumping');
     }
 
     updateCondition(condition: string): void {
@@ -178,7 +179,11 @@ abstract class BaseCharacter extends MovableObject {
         if (this.condition == 'dead') {
             this.rescale(0.5, 0.5, 0.5);
         } else if (this.condition == 'robotic') {
-            this.rescale(1.5, 2.5, 1.5);
+            if(this.name == 'spongeBob'){
+                this.rescale(2, 2, 1.5);
+            }else{
+                this.rescale(1.3, 2.5, 1.3);
+            }
         }
         this.cameraShake(1, 200);
     }
@@ -223,6 +228,12 @@ abstract class BaseCharacter extends MovableObject {
         }
     }
 
+    debugLogging(){
+        if(this.condition != 'robotic') return;
+        console.log("debug robot",  'position:', this.mesh.position);
+        console.log("debug robot",  'box:', this.getBottomCenter());
+    }
+
     tick(delta: number): void {
         this.updateAcceleration(delta);
         this.updateVelocity(delta);
@@ -240,6 +251,8 @@ abstract class BaseCharacter extends MovableObject {
         // this.mesh.updateMatrixWorld();
         // this.mesh.parent?.updateMatrixWorld(true);
         // this.mesh.parent?.updateWorldMatrix(true, true);
+        // this.debugLogging();
+        this.getMovement();
     }
 
     cameraShake(intensity: number, duration: number) {

@@ -161,10 +161,36 @@
   justify-content: center;
 }
 
+.loading-icon {
+  width: 600px; /* 增大尺寸 */
+  height: 600px; /* 增大尺寸 */
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  position: fixed; /* 固定位置 */
+  top: 50%; /* 垂直居中 */
+  left: 50%; /* 水平居中 */
+  transform: translate(-50%, -50%); /* 将元素中心对齐到视口中心 */
+}
+
 .bubble-icon {
   width: 150px;
   /* Icon size */
   height: 150px;
   margin-right: -82%;
   margin-bottom: 12%;
+}
+
+.countdown{
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10vh;
+  font-weight: bold;
+  color: red;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }

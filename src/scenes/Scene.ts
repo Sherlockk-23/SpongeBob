@@ -6,6 +6,7 @@ class Scene {
 
     constructor() {
         this.scene = new THREE.Scene();
+        this.scene.background = new THREE.Color(0x87CEFA); // 设置背景颜色为白色
         this.addLights();
         // this.addFloor();
     }
