@@ -117,24 +117,41 @@ class Controller {
             if (checkCollision(this.character, item)) {
                 console.log('collide with item ', item.name);
                 this.character.holding_item = item.name;
+                const itemIcon2 = document.getElementById('item-icon2');
+                const itemIcon1 = document.getElementById('item-icon1');
+                const itemIcon = document.getElementById('item-icon');
                 if (item.name.includes('soda')) {
-                    const itemIcon = document.getElementById('item-icon2');
-                    if (itemIcon) {
-                        itemIcon.style.display = 'block';
+                    
+                    if (itemIcon2) {
+                        itemIcon2.style.display = 'block';
+                        if (itemIcon1) {
+                            itemIcon1.style.display = 'none';
+                        }
+                        if (itemIcon) {
+                            itemIcon.style.display = 'none';
+                        }
                     }
                 }
                 if (item.name.includes('sauce')) {
-                    const itemIcon = document.getElementById('item-icon1');
-                    if (itemIcon) {
-                        itemIcon.style.display = 'block';
-                    }
-                }
+                    
+                    if (itemIcon1) {
+                        itemIcon1.style.display = 'block';
+                        if (itemIcon2) {
+                            itemIcon2.style.display = 'none';
+                        }
+                        if (itemIcon) {
+                            itemIcon.style.display = 'none';
+                        }}}
                 if (item.name.includes('info')) {
-                    const itemIcon = document.getElementById('item-icon');
                     if (itemIcon) {
                         itemIcon.style.display = 'block';
+                        if (itemIcon1) {
+                            itemIcon1.style.display = 'none';
+                        }
+                        if (itemIcon2) {
+                            itemIcon2.style.display = 'none';
+                    }}
                     }
-                }
                 // item.applyEffect(this.character);
                 stage.removeItem(item);
             }
