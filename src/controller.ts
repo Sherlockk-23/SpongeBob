@@ -67,7 +67,7 @@ class Controller {
         this.enemy.setPosition(0, 0, -20);
         // this.character.mesh.add(this.enemy.mesh);
 
-        this.scene.getScene().fog = new THREE.Fog(0x87CEFA, 0.5, 50);
+        this.scene.getScene().fog = new THREE.Fog(0x000000, 0.5, 50);
     }
 
     changeStage() {
@@ -116,6 +116,11 @@ class Controller {
         for (let item of stage.nearestItems) {
             if (checkCollision(this.character, item)) {
                 console.log('collide with item ', item.name);
+                this.character.holding_item = item.name;
+                // const itemIcon = document.getElementById('item-icon');
+                // if (itemIcon) {
+                //     itemIcon.style.display = 'block';
+                // }
                 item.applyEffect(this.character);
                 stage.removeItem(item);
             }
@@ -128,14 +133,12 @@ class Controller {
             if (checkCollision(this.character, obstacle)) {
                 // document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by '+ obstacle.name } }));
                 console.log('collide with obstacle ' + obstacle.name);
-                
-                
-                if (this.character.condition == 'robotic') {
-                    stage.removeObstacle(obstacle);
-                } else if (obstacle.name.includes('bottom')) {
+                if (obstacle.name.includes('bottom')) {
                     this.character.vel.y = this.character.defaultMaxJumpVel;
                 }
-                else {
+                if (this.character.condition == 'robotic') {
+                    stage.removeObstacle(obstacle);
+                } else {
                     if (!obstacle.colliding) {
                         obstacle.colliding = true;
                         obstacle.collidedCnt++;

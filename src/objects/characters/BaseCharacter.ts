@@ -17,6 +17,7 @@ abstract class BaseCharacter extends MovableObject {
     vel: THREE.Vector3;
     accel: THREE.Vector3;
     camera: PerspectiveCamera;
+    holding_item: string;
     effects: { [key: string]: Effect } = {};
     // effect: Effect;
 
@@ -155,17 +156,17 @@ abstract class BaseCharacter extends MovableObject {
                 this.mesh.position.y += boundary - bbox.min.y;
             }
         }
-        
+
     }
 
-    getMovement(){
+    getMovement() {
         this.updateMovementTmp('walking');
-        if(this.vel.z == this.defaultMaxVel)
+        if (this.vel.z == this.defaultMaxVel)
             this.updateMovementTmp('running');
         if (this.inputHandler.isKeyPressed('j')) {
             this.updateMovementTmp('punching');
         }
-        if (!this.onGround()) 
+        if (!this.onGround())
             this.updateMovementTmp('jumping');
     }
 
@@ -179,9 +180,9 @@ abstract class BaseCharacter extends MovableObject {
         if (this.condition == 'dead') {
             this.rescale(0.5, 0.5, 0.5);
         } else if (this.condition == 'robotic') {
-            if(this.name == 'spongeBob'){
+            if (this.name == 'spongeBob') {
                 this.rescale(2, 2, 1.5);
-            }else{
+            } else {
                 this.rescale(1.3, 2.5, 1.3);
             }
         }
@@ -217,6 +218,50 @@ abstract class BaseCharacter extends MovableObject {
         effect.apply(this);
     }
 
+    // useItem(delta: number) {
+    //     if (this.inputHandler.isKeyPressed('1')) {
+    //         if (this.holding_item == 'speedupItem') {
+    //             this.applyEffect('speedBoost', {
+    //                 duration: 5, // 持续时间为5秒
+    //                 apply: (char: BaseCharacter) => {
+    //                     char.defaultMaxVel *= 2; // 将最大速度增加一倍
+    //                 },
+    //                 remove: (char: BaseCharacter) => {
+    //                     char.defaultMaxVel /= 2; // 恢复原来的最大速度
+    //                 }
+    //             });
+    //         }
+    //         else if (this.holding_item == 'highJumpItem') {
+    //             this.applyEffect('highJump', {
+    //                 duration: 10,
+    //                 apply: (char: BaseCharacter) => {
+    //                     char.defaultMaxJumpVel *= 2; // 将跳跃速度增加50%
+    //                 },
+    //                 remove: (char: BaseCharacter) => {
+    //                     char.defaultMaxJumpVel /= 2;
+    //                 }
+    //             });
+    //         }
+    //         else if (this.holding_item == 'roboticItem') {
+    //             const roboticEffect = {
+    //                 duration: 7,
+    //                 apply: (char: BaseCharacter) => {
+    //                     char.updateCondition('robotic');
+    //                 },
+    //                 remove: (char: BaseCharacter) => {
+    //                     char.updateCondition('normal');
+    //                 }
+    //             };
+    //             this.applyEffect('robotic', roboticEffect);
+    //         }
+    //         const itemIcon = document.getElementById('item-icon');
+    //         if (itemIcon) {
+    //             itemIcon.style.display = 'none';
+    //         }
+    //         this.holding_item = '';
+    //     }
+    // }
+
     updateEffects(delta: number) {
         for (const effectName in this.effects) {
             const effect = this.effects[effectName];
@@ -228,10 +273,10 @@ abstract class BaseCharacter extends MovableObject {
         }
     }
 
-    debugLogging(){
-        if(this.condition != 'robotic') return;
-        console.log("debug robot",  'position:', this.mesh.position);
-        console.log("debug robot",  'box:', this.getBottomCenter());
+    debugLogging() {
+        if (this.condition != 'robotic') return;
+        console.log("debug robot", 'position:', this.mesh.position);
+        console.log("debug robot", 'box:', this.getBottomCenter());
     }
 
     tick(delta: number): void {
@@ -239,6 +284,7 @@ abstract class BaseCharacter extends MovableObject {
         this.updateVelocity(delta);
         this.updatePosition(delta);
         this.updateBoundingBox();
+        // this.useItem(delta);
         this.updateEffects(delta);
         this.camera.update();
         console.log(this.name, 'position:', this.mesh.position);
