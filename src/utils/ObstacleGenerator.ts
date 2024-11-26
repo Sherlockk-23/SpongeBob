@@ -5,11 +5,20 @@ import { BaseObstacle } from '../objects/obstacles/BaseObstacle';
 import { seededRandom } from './MathUtils';
 import { cloneGLTF } from './mesh';
 
+function traverseAndSetShadows(object: THREE.Object3D) {
+    object.traverse((child) => {
+        if ((child as THREE.Mesh).isMesh) {
+            const mesh = child as THREE.Mesh;
+            mesh.castShadow = true; // Allow the mesh to cast shadows
+            mesh.receiveShadow = true; // Allow the mesh to receive shadows
+        }
+    });
+}
 
 class ObstacleGenerator {
     seed: number = 0;
     gltfDict: { [key: string]: GLTF } = {};
-    themes: string[] = ['all', 'normal', 'TSCP', 'food','car','house','scary'];
+    themes: string[] = ['all', 'normal', 'TSCP', 'food', 'car', 'house', 'scary'];
     themeDict: { [key: string]: string[] } = {};
     sizeDict: { [key: string]: THREE.Vector3 } = {};
     rotateDict: { [key: string]: THREE.Vector3 } = {};
@@ -32,17 +41,17 @@ class ObstacleGenerator {
         this.initThemes();
         this.initSizeDict();
         this.initRotateDict();
-        
+
         //TODO : add more themes
     }
 
     initThemes() {
         // 这里各科调distribution !!!
-        this.themeDict['normal'] = ['bed', 'bottom', 'hat', 'clock', 'snailClock','swimmingRing'];
-        this.themeDict['TSCP'] = ['squidwardHouseTSCP', 'pineappleHouseTSCP', 'lightHouseTSCP','krabTSCP'];
-        this.themeDict['food'] = ['burger', 'table', 'spatula', 'barrelTSCP', 'burger','burger','burger'];
-        this.themeDict['car'] = ['car2', 'bus2TSCP','train','boatTSCP','pattyWagon','bus2TSCP'];
-        this.themeDict['house'] = ['house1', 'pineappleHouse', 'squidwardHouseTSCP','bottom'];
+        this.themeDict['normal'] = ['bed', 'bottom', 'hat', 'clock', 'snailClock', 'swimmingRing'];
+        this.themeDict['TSCP'] = ['squidwardHouseTSCP', 'pineappleHouseTSCP', 'lightHouseTSCP', 'krabTSCP'];
+        this.themeDict['food'] = ['burger', 'table', 'spatula', 'barrelTSCP', 'burger', 'burger', 'burger'];
+        this.themeDict['car'] = ['car2', 'bus2TSCP', 'train', 'boatTSCP', 'pattyWagon', 'bus2TSCP'];
+        this.themeDict['house'] = ['house1', 'pineappleHouse', 'squidwardHouseTSCP', 'bottom'];
         this.themeDict['scary'] = ['patrickStatue', 'spongehengeTSCP',];
     }
 
@@ -50,7 +59,7 @@ class ObstacleGenerator {
         this.themeDict['all'].forEach(name => {
             this.sizeDict[name] = new THREE.Vector3(1, 1, 1);
         });
-        
+
         this.sizeDict['burger'] = new THREE.Vector3(2, 2, 2)//done
         this.sizeDict['hat'] = new THREE.Vector3(0.2, 0.5, 0.2);
         this.sizeDict['spatula'] = new THREE.Vector3(0.3, 1, 0.3);
@@ -85,10 +94,10 @@ class ObstacleGenerator {
         this.themeDict['all'].forEach(name => {
             this.rotateDict[name] = new THREE.Vector3(0, 0, 0);
         });
-        this.rotateDict['burger'] = new THREE.Vector3(0, Math.PI/2, 0);
-        this.rotateDict['busTSCP'] = new THREE.Vector3(0, 3*Math.PI/2, 0);
-        this.rotateDict['bus2TSCP'] = new THREE.Vector3(0, 3*Math.PI/2, 0);
-        this.rotateDict['boatTSCP'] = new THREE.Vector3(0, Math.PI/2, 0);
+        this.rotateDict['burger'] = new THREE.Vector3(0, Math.PI / 2, 0);
+        this.rotateDict['busTSCP'] = new THREE.Vector3(0, 3 * Math.PI / 2, 0);
+        this.rotateDict['bus2TSCP'] = new THREE.Vector3(0, 3 * Math.PI / 2, 0);
+        this.rotateDict['boatTSCP'] = new THREE.Vector3(0, Math.PI / 2, 0);
         this.rotateDict['pattywagon'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotateDict['car2'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotateDict['spongehengeTSCP'] = new THREE.Vector3(0, Math.PI, 0);
@@ -118,6 +127,7 @@ class ObstacleGenerator {
         this.seed = newSeed;
         name = this.themeDict[theme][Math.floor(random * this.themeDict[theme].length)];
         // console.log('trying to randomObstacle ', name);
+        traverseAndSetShadows(cloneGLTF(this.gltfDict[name]).scene);
         obstacle = new BaseObstacle(name + '_' + id, cloneGLTF(this.gltfDict[name]));
 
         if (isNaN(size.x) || isNaN(size.y) || isNaN(size.z)) {
@@ -129,12 +139,12 @@ class ObstacleGenerator {
             const size = bbox3.getSize(new THREE.Vector3());
             console.log('new obstacle generated', obstacle.name, bbox3);
         }
-        
+
         //rotate by rotateDict
         obstacle.rotate('x', this.rotateDict[name].x);
         obstacle.rotate('y', this.rotateDict[name].y);
         obstacle.rotate('z', this.rotateDict[name].z);
-        
+
         return obstacle;
 
     }

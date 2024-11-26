@@ -193,7 +193,7 @@ class Controller {
         this.totalTime += delta;
         const distanceValueElement = document.getElementById('distance-value');
         if (distanceValueElement) {
-            distanceValueElement.textContent = this.character.mesh.position.z.toFixed(2); // Display z position rounded to 2 decimals
+            distanceValueElement.textContent = this.character.mesh.position.z.toFixed(0); // Display z position rounded to 2 decimals
         }
 
         const distanceBarFill = document.getElementById('distance-bar-fill');

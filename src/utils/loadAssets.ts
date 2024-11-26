@@ -3,7 +3,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 
 async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstacleDict: { [key: string]: GLTF },
-    gltfItemDict: { [key: string]: GLTF }, textureDict: {[key:string]:THREE.Texture}={}) {
+    gltfItemDict: { [key: string]: GLTF }, textureDict: { [key: string]: THREE.Texture } = {}) {
 
     const gltfLoader = new GLTFLoader();
 
@@ -19,6 +19,15 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
                     reject(error);
                 }
             );
+        });
+    }
+    function traverseAndSetShadows(object: THREE.Object3D) {
+        object.traverse((child) => {
+            if ((child as THREE.Mesh).isMesh) {
+                const mesh = child as THREE.Mesh;
+                mesh.castShadow = true; // Allow the mesh to cast shadows
+                mesh.receiveShadow = true; // Allow the mesh to receive shadows
+            }
         });
     }
 
@@ -84,14 +93,14 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'sodaTSCP'
     ];
 
-
     const promises: Promise<void>[] = [];
 
-    
+
 
     characterPaths.forEach((path) => {
         promises.push(
             gltfPromise(`assets/models/Bobs/${path}/scene.gltf`).then((gltf) => {
+                traverseAndSetShadows(gltf.scene);
                 gltfCharactorDict[path] = gltf;
                 console.log('Loaded GLTF model:', path, gltf);
             })
@@ -101,6 +110,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
     obstaclePaths.forEach((path) => {
         promises.push(
             gltfPromise(`assets/models/obstacles/${path}/scene.gltf`).then((gltf) => {
+                traverseAndSetShadows(gltf.scene);
                 gltfObstacleDict[path] = gltf;
                 console.log('Loaded GLTF model:', path, gltf);
             })
@@ -110,6 +120,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
     itemPaths.forEach((path) => {
         promises.push(
             gltfPromise(`assets/models/items/${path}/scene.gltf`).then((gltf) => {
+                traverseAndSetShadows(gltf.scene);
                 gltfItemDict[path] = gltf;
                 console.log('Loaded GLTF model:', path, gltf);
             })
@@ -117,7 +128,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
     });
 
 
-    const texturePaths=[
+    const texturePaths = [
         'wood',
         'block',
         'glass',
@@ -129,7 +140,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
 
 
     const textureLoader = new THREE.TextureLoader();
-    
+
 
     function texturePromise(path: string): Promise<GLTF> {
         return new Promise((resolve, reject) => {
@@ -176,7 +187,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         {}
     );
 
-   
+
 
 }
 
