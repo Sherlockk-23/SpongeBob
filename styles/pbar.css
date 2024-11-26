@@ -162,18 +162,36 @@
 }
 
 .loading-icon {
-  width: 600px; /* 增大尺寸 */
-  height: 600px; /* 增大尺寸 */
+  width: 600px;
+  /* 增大尺寸 */
+  height: 600px;
+  /* 增大尺寸 */
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-  position: fixed; /* 固定位置 */
-  top: 50%; /* 垂直居中 */
-  left: 50%; /* 水平居中 */
-  transform: translate(-50%, -50%); /* 将元素中心对齐到视口中心 */
+  position: fixed;
+  /* 固定位置 */
+  top: 50%;
+  /* 垂直居中 */
+  left: 50%;
+  /* 水平居中 */
+  transform: translate(-50%, -50%);
+  /* 将元素中心对齐到视口中心 */
+}
+
+.item-icon,
+.item-icon1,
+.item-icon2 {
+  display: none;
+  position: fixed;
+  bottom: 35px;
+  margin-right: -82%;
+  width: 100px;
+  height: 100px;
+
 }
 
 .bubble-icon {
@@ -182,9 +200,10 @@
   height: 150px;
   margin-right: -82%;
   margin-bottom: 12%;
+  z-index: 10;
 }
 
-.countdown{
+.countdown {
   position: absolute;
   top: 10%;
   left: 50%;

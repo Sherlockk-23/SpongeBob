@@ -218,49 +218,57 @@ abstract class BaseCharacter extends MovableObject {
         effect.apply(this);
     }
 
-    // useItem(delta: number) {
-    //     if (this.inputHandler.isKeyPressed('1')) {
-    //         if (this.holding_item == 'speedupItem') {
-    //             this.applyEffect('speedBoost', {
-    //                 duration: 5, // 持续时间为5秒
-    //                 apply: (char: BaseCharacter) => {
-    //                     char.defaultMaxVel *= 2; // 将最大速度增加一倍
-    //                 },
-    //                 remove: (char: BaseCharacter) => {
-    //                     char.defaultMaxVel /= 2; // 恢复原来的最大速度
-    //                 }
-    //             });
-    //         }
-    //         else if (this.holding_item == 'highJumpItem') {
-    //             this.applyEffect('highJump', {
-    //                 duration: 10,
-    //                 apply: (char: BaseCharacter) => {
-    //                     char.defaultMaxJumpVel *= 2; // 将跳跃速度增加50%
-    //                 },
-    //                 remove: (char: BaseCharacter) => {
-    //                     char.defaultMaxJumpVel /= 2;
-    //                 }
-    //             });
-    //         }
-    //         else if (this.holding_item == 'roboticItem') {
-    //             const roboticEffect = {
-    //                 duration: 7,
-    //                 apply: (char: BaseCharacter) => {
-    //                     char.updateCondition('robotic');
-    //                 },
-    //                 remove: (char: BaseCharacter) => {
-    //                     char.updateCondition('normal');
-    //                 }
-    //             };
-    //             this.applyEffect('robotic', roboticEffect);
-    //         }
-    //         const itemIcon = document.getElementById('item-icon');
-    //         if (itemIcon) {
-    //             itemIcon.style.display = 'none';
-    //         }
-    //         this.holding_item = '';
-    //     }
-    // }
+    useItem(delta: number) {
+        if (this.inputHandler.isKeyPressed('1')) {
+            if (this.holding_item.includes('soda')) {
+                this.applyEffect('speedBoost', {
+                    duration: 5, // 持续时间为5秒
+                    apply: (char: BaseCharacter) => {
+                        char.defaultMaxVel *= 2; // 将最大速度增加一倍
+                    },
+                    remove: (char: BaseCharacter) => {
+                        char.defaultMaxVel /= 2; // 恢复原来的最大速度
+                    }
+                });
+                const itemIcon2 = document.getElementById('item-icon2');
+                if (itemIcon2) {
+                    itemIcon2.style.display = 'none';
+                }
+            }
+            else if (this.holding_item.includes('sauce')) {
+                this.applyEffect('highJump', {
+                    duration: 10,
+                    apply: (char: BaseCharacter) => {
+                        char.defaultMaxJumpVel *= 2; // 将跳跃速度增加50%
+                    },
+                    remove: (char: BaseCharacter) => {
+                        char.defaultMaxJumpVel /= 2;
+                    }
+                });
+                const itemIcon1 = document.getElementById('item-icon1');
+                if (itemIcon1) {
+                    itemIcon1.style.display = 'none';
+                }
+            }
+            else if (this.holding_item.includes('info')) {
+                const roboticEffect = {
+                    duration: 7,
+                    apply: (char: BaseCharacter) => {
+                        char.updateCondition('robotic');
+                    },
+                    remove: (char: BaseCharacter) => {
+                        char.updateCondition('normal');
+                    }
+                };
+                this.applyEffect('robotic', roboticEffect);
+                const itemIcon = document.getElementById('item-icon');
+                if (itemIcon) {
+                    itemIcon.style.display = 'none';
+                }
+            }
+            this.holding_item = '';
+        }
+    }
 
     updateEffects(delta: number) {
         for (const effectName in this.effects) {
@@ -284,7 +292,7 @@ abstract class BaseCharacter extends MovableObject {
         this.updateVelocity(delta);
         this.updatePosition(delta);
         this.updateBoundingBox();
-        // this.useItem(delta);
+        this.useItem(delta);
         this.updateEffects(delta);
         this.camera.update();
         console.log(this.name, 'position:', this.mesh.position);
