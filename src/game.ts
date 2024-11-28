@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { UIController } from './ui';
-
+import { AudioManager } from './AudioManager.ts';
 import { Scene } from './scenes/Scene';
 import { PerspectiveCamera } from './scenes/Camera';
 import { Renderer } from './scenes/Renderer';
@@ -28,7 +28,7 @@ import { Stage } from './stage/Stage.ts';
 class Game {
     status: string;
     uiController: UIController;
-
+    audioManager: AudioManager;
     scene: Scene;
     camera: PerspectiveCamera;
     renderer: Renderer;
@@ -63,8 +63,8 @@ class Game {
         this.uiController.loadingScreen();
 
         await loadAssets(this.gltfCharacterDict, this.gltfObstacleDict, this.gltfItemDict, this.textureDict);
-        
 
+        this.audioManager = AudioManager.getInstance();
 
         this.scene = new Scene();
         this.obstacleGenerator = new ObstacleGenerator(this.gltfObstacleDict);
@@ -86,7 +86,9 @@ class Game {
 
         this.cameraController = new CameraController(this.camera, this.renderer.domElement);
 
-       this.uiController.removeLoadingScreen();
+        this.uiController.removeLoadingScreen();
+
+        await this.audioManager.loadAndPlayBGM();
 
         this.reset();
         this.start();
