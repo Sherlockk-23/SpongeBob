@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Loop } from './utils/Loop';
-
+import { AudioManager } from './AudioManager';
 import { BaseCharacter } from './objects/characters/BaseCharacter';
 
 import { BaseObstacle } from './objects/obstacles/BaseObstacle';
@@ -44,9 +44,10 @@ class Controller {
     enemy: BaseEnemy;
 
     uicontroller: UIController;
+    private audioManager: AudioManager;
 
     constructor(scene: Scene, character: BaseCharacter, obstacleGenerator: ObstacleGenerator,
-        itemGenerator: ItemGenerator, textureDict: { [key: string]: THREE.Texture } = {}, 
+        itemGenerator: ItemGenerator, textureDict: { [key: string]: THREE.Texture } = {},
         uiController: UIController) {
         this.scene = scene;
         this.character = character;
@@ -54,6 +55,7 @@ class Controller {
         this.itemGenerator = itemGenerator
         this.textureDict = textureDict;
         this.uicontroller = uiController;
+        this.audioManager = AudioManager.getInstance();
         // this.init();
     }
 
@@ -120,20 +122,21 @@ class Controller {
     checkCollisionItems(stage: Stage) {
         for (let item of stage.nearestItems) {
             if (checkCollision(this.character, item)) {
+                this.audioManager.playCollisionSound();
                 console.log('collide with item ', item.name);
                 item.applyEffect(this.character);
-                if(item.name.includes('info')){
+                if (item.name.includes('info')) {
                     this.uicontroller.swapItem('metal');
-                }else if(item.name.includes('soda')){
+                } else if (item.name.includes('soda')) {
                     this.uicontroller.swapItem('green');
-                }else if(item.name.includes('sauce')){
+                } else if (item.name.includes('sauce')) {
                     this.uicontroller.swapItem('pink');
                 }
                 // item.applyEffect(this.character);
                 stage.removeItem(item);
             }
         }
-        if(this.character.waiting_effect[0]==''){
+        if (this.character.waiting_effect[0] == '') {
             this.uicontroller.swapItem('none');
         }
     }
@@ -143,12 +146,12 @@ class Controller {
             if (checkCollision(this.character, obstacle)) {
                 // document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by '+ obstacle.name } }));
                 console.log('collide with obstacle ' + obstacle.name);
-                
+
                 if (this.character.condition == 'robotic') {
                     stage.removeObstacle(obstacle);
                 } else if (obstacle.name.includes('bottom')) {
                     this.character.vel.y = this.character.defaultMaxJumpVel;
-                }else {
+                } else {
                     if (!obstacle.colliding) {
                         obstacle.colliding = true;
                         obstacle.collidedCnt++;

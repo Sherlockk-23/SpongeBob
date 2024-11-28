@@ -3,6 +3,7 @@ import { AudioLoader, AudioListener, Audio } from 'three';
 export class AudioManager {
     private static instance: AudioManager;
     private bgmAudio: Audio | null = null;
+    private collisionAudio: Audio | null = null;
     private audioLoader: AudioLoader;
     private listener: AudioListener;
 
@@ -22,28 +23,54 @@ export class AudioManager {
         return this.listener;
     }
 
-    public async loadAndPlayBGM(): Promise<void> {
-        try {
-            if (!this.bgmAudio) {
-                this.bgmAudio = new Audio(this.listener);
-            }
+    private async loadAudio(path: string, loop: boolean = false, volume: number = 0.5): Promise<Audio> {
+        const audio = new Audio(this.listener);
 
-            // Load the BGM file
+        try {
             const audioBuffer = await new Promise<AudioBuffer>((resolve, reject) => {
                 this.audioLoader.load(
-                    'assets/audio/the-big-heist-188391.mp3', // Update this path to match your actual BGM file path
+                    path,
                     resolve,
                     undefined,
                     reject
                 );
             });
 
-            this.bgmAudio.setBuffer(audioBuffer);
-            this.bgmAudio.setLoop(true);
-            this.bgmAudio.setVolume(0.5);
+            audio.setBuffer(audioBuffer);
+            audio.setLoop(loop);
+            audio.setVolume(volume);
+            return audio;
+        } catch (error) {
+            console.error(`Error loading audio from ${path}:`, error);
+            throw error;
+        }
+    }
+
+    public async loadAndPlayBGM(): Promise<void> {
+        try {
+            if (!this.bgmAudio) {
+                this.bgmAudio = await this.loadAudio('assets/audio/the-big-heist-188391.mp3', true);
+            }
             this.bgmAudio.play();
         } catch (error) {
             console.error('Error loading BGM:', error);
+        }
+    }
+
+    public async playCollisionSound(): Promise<void> {
+        try {
+            if (!this.collisionAudio) {
+                this.collisionAudio = await this.loadAudio('assets/audio/boing-6222.mp3', false);
+            }
+
+            // If the sound is already playing, stop it first
+            if (this.collisionAudio.isPlaying) {
+                this.collisionAudio.stop();
+            }
+
+            this.collisionAudio.play();
+        } catch (error) {
+            console.error('Error playing collision sound:', error);
         }
     }
 
@@ -68,6 +95,12 @@ export class AudioManager {
     public setBGMVolume(volume: number): void {
         if (this.bgmAudio) {
             this.bgmAudio.setVolume(Math.max(0, Math.min(1, volume)));
+        }
+    }
+
+    public setCollisionVolume(volume: number): void {
+        if (this.collisionAudio) {
+            this.collisionAudio.setVolume(Math.max(0, Math.min(1, volume)));
         }
     }
 }
