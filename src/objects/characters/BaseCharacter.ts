@@ -17,7 +17,8 @@ abstract class BaseCharacter extends MovableObject {
     vel: THREE.Vector3;
     accel: THREE.Vector3;
     camera: PerspectiveCamera;
-    holding_item: string;
+    
+    waiting_effect: [string, Effect]  = ['', {duration: 0, apply: (char: BaseCharacter) => {}, remove: (char: BaseCharacter) => {}}];
     effects: { [key: string]: Effect } = {};
     // effect: Effect;
 
@@ -218,59 +219,23 @@ abstract class BaseCharacter extends MovableObject {
         effect.apply(this);
     }
 
-    useItem(delta: number) {
-        if (this.inputHandler.isKeyPressed('1')) {
-            if (this.holding_item.includes('soda')) {
-                this.applyEffect('speedBoost', {
-                    duration: 5, // 持续时间为5秒
-                    apply: (char: BaseCharacter) => {
-                        char.defaultMaxVel *= 2; // 将最大速度增加一倍
-                    },
-                    remove: (char: BaseCharacter) => {
-                        char.defaultMaxVel /= 2; // 恢复原来的最大速度
-                    }
-                });
-                const itemIcon2 = document.getElementById('item-icon2');
-                if (itemIcon2) {
-                    itemIcon2.style.display = 'none';
-                }
-            }
-            else if (this.holding_item.includes('sauce')) {
-                this.applyEffect('highJump', {
-                    duration: 10,
-                    apply: (char: BaseCharacter) => {
-                        char.defaultMaxJumpVel *= 2; // 将跳跃速度增加50%
-                    },
-                    remove: (char: BaseCharacter) => {
-                        char.defaultMaxJumpVel /= 2;
-                    }
-                });
-                const itemIcon1 = document.getElementById('item-icon1');
-                if (itemIcon1) {
-                    itemIcon1.style.display = 'none';
-                }
-            }
-            else if (this.holding_item.includes('info')) {
-                const roboticEffect = {
-                    duration: 7,
-                    apply: (char: BaseCharacter) => {
-                        char.updateCondition('robotic');
-                    },
-                    remove: (char: BaseCharacter) => {
-                        char.updateCondition('normal');
-                    }
-                };
-                this.applyEffect('robotic', roboticEffect);
-                const itemIcon = document.getElementById('item-icon');
-                if (itemIcon) {
-                    itemIcon.style.display = 'none';
-                }
-            }
-            this.holding_item = '';
-        }
+    pickEffect(effectName: string, effect: Effect) {
+        // remove that in ui
+        this.waiting_effect= [effectName, effect];
+        // add that in ui
     }
 
+
     updateEffects(delta: number) {
+        // check apply
+        if(this.inputHandler.isKeyPressed('1')) {
+            if (this.waiting_effect[0]!='') {
+                this.applyEffect(this.waiting_effect[0], this.waiting_effect[1]);
+                this.waiting_effect = ['', {duration: 0, apply: (char: BaseCharacter) => {}, remove: (char: BaseCharacter) => {}}];
+            }
+        }
+        // update the effect
+
         for (const effectName in this.effects) {
             const effect = this.effects[effectName];
             effect.duration -= delta;
@@ -292,7 +257,6 @@ abstract class BaseCharacter extends MovableObject {
         this.updateVelocity(delta);
         this.updatePosition(delta);
         this.updateBoundingBox();
-        this.useItem(delta);
         this.updateEffects(delta);
         this.camera.update();
         console.log(this.name, 'position:', this.mesh.position);
@@ -300,13 +264,9 @@ abstract class BaseCharacter extends MovableObject {
         this.updateMovement(delta);
         // console.log(this.name, 'is', this.movement);
         this.animate(delta);
-        // this.mesh.updateMatrix();
-        // this.mesh.updateMatrix();
-        // this.mesh.updateMatrixWorld();
-        // this.mesh.parent?.updateMatrixWorld(true);
-        // this.mesh.parent?.updateWorldMatrix(true, true);
-        // this.debugLogging();
         this.getMovement();
+
+        console.log('debuging effects', this.waiting_effect, this.effects);
     }
 
     cameraShake(intensity: number, duration: number) {

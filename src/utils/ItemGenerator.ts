@@ -14,6 +14,8 @@ class ItemGenerator {
     themeDict: { [key: string]: string[] } = {};
     sizeDict: { [key: string]: THREE.Vector3 } = {};
 
+    rotationDict: { [key: string]: THREE.Vector3 } = {};
+
     constructor(gltfDict: { [key: string]: GLTF }) {
         console.log('generator created');
         this.gltfDict = gltfDict;
@@ -35,7 +37,12 @@ class ItemGenerator {
     initSizeDict(){
         this.themeDict['all'].forEach(name => {
             this.sizeDict[name]=new THREE.Vector3(1,1,1);
+            this.rotationDict[name]=new THREE.Vector3(0,0,0);
         });
+
+        this.rotationDict['sodaTSCP']=new THREE.Vector3(0,Math.PI/2,0);
+        this.rotationDict['sauceTSCP']=new THREE.Vector3(0,Math.PI/2,0);
+        this.rotationDict['infoSign']=new THREE.Vector3(0,Math.PI,0);
         console.log('generator initialized',this.themeDict);
     }
 
@@ -66,6 +73,10 @@ class ItemGenerator {
             const size = bbox3.getSize(new THREE.Vector3());
             console.log('new Item generated', item.name, bbox3);
         }
+
+        item.rotate('x',this.rotationDict[name].x);
+        item.rotate('y',this.rotationDict[name].y);
+        item.rotate('z',this.rotationDict[name].z);
         
         return item;
         

@@ -13,6 +13,9 @@ class UIController {
 
   countdownElement: HTMLElement;
 
+  itemIcon: HTMLImageElement;
+  current_item: string;
+
 
   constructor() {
     this.sceneContainer = document.getElementById('scene-container') as HTMLElement;
@@ -20,6 +23,8 @@ class UIController {
     this.overlay = document.getElementById('overlay') as HTMLElement;
     this.loading = document.getElementById('loading') as HTMLElement;
     this.loadingIcon = document.getElementById('loading-icon') as HTMLImageElement;
+
+    this.itemIcon = document.getElementById('item-icon') as HTMLImageElement;
 
     this.pause_popup = document.getElementById('pause-popup') as HTMLElement;
 
@@ -40,6 +45,15 @@ class UIController {
 
   removeLoadingScreen() {
     fadeElement(this.loading, 1, 0, true, 500);
+  }
+
+  swapItem(item: string) {
+    if (this.current_item === item) {
+      return;
+    }
+    console.log("debuging effects. fello from ui's item ", item);
+    this.current_item = item;
+    this.itemIcon.src = `assets/pics/items/${item}.png`;
   }
 
 
