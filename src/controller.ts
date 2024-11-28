@@ -21,7 +21,8 @@ import { ObstacleGenerator } from './utils/ObstacleGenerator';
 import { ItemGenerator } from './utils/ItemGenerator';
 import { BaseEnemy } from './objects/enemies/BaseEnemy.ts';
 
-import { Fog } from './objects/fog.ts';
+import { UIController } from './ui.ts';
+
 
 class Controller {
 
@@ -42,13 +43,17 @@ class Controller {
 
     enemy: BaseEnemy;
 
+    uicontroller: UIController;
+
     constructor(scene: Scene, character: BaseCharacter, obstacleGenerator: ObstacleGenerator,
-        itemGenerator: ItemGenerator, textureDict: { [key: string]: THREE.Texture } = {}) {
+        itemGenerator: ItemGenerator, textureDict: { [key: string]: THREE.Texture } = {}, 
+        uiController: UIController) {
         this.scene = scene;
         this.character = character;
         this.obstacleGenerator = obstacleGenerator;
         this.itemGenerator = itemGenerator
         this.textureDict = textureDict;
+        this.uicontroller = uiController;
         // this.init();
     }
 
@@ -116,47 +121,21 @@ class Controller {
         for (let item of stage.nearestItems) {
             if (checkCollision(this.character, item)) {
                 console.log('collide with item ', item.name);
-                this.character.holding_item = item.name;
-                const itemIcon2 = document.getElementById('item-icon2');
-                const itemIcon1 = document.getElementById('item-icon1');
-                const itemIcon = document.getElementById('item-icon');
-                if (item.name.includes('soda')) {
-                    
-                    if (itemIcon2) {
-                        itemIcon2.style.display = 'block';
-                        if (itemIcon1) {
-                            itemIcon1.style.display = 'none';
-                        }
-                        if (itemIcon) {
-                            itemIcon.style.display = 'none';
-                        }
-                    }
+                item.applyEffect(this.character);
+                if(item.name.includes('info')){
+                    this.uicontroller.swapItem('metal');
+                }else if(item.name.includes('soda')){
+                    this.uicontroller.swapItem('green');
+                }else if(item.name.includes('sauce')){
+                    this.uicontroller.swapItem('pink');
                 }
-                if (item.name.includes('sauce')) {
-                    
-                    if (itemIcon1) {
-                        itemIcon1.style.display = 'block';
-                        if (itemIcon2) {
-                            itemIcon2.style.display = 'none';
-                        }
-                        if (itemIcon) {
-                            itemIcon.style.display = 'none';
-                        }}}
-                if (item.name.includes('info')) {
-                    if (itemIcon) {
-                        itemIcon.style.display = 'block';
-                        if (itemIcon1) {
-                            itemIcon1.style.display = 'none';
-                        }
-                        if (itemIcon2) {
-                            itemIcon2.style.display = 'none';
-                    }}
-                    }
                 // item.applyEffect(this.character);
                 stage.removeItem(item);
             }
         }
-
+        if(this.character.waiting_effect[0]==''){
+            this.uicontroller.swapItem('none');
+        }
     }
 
     checkCollisionObstacles(stage: Stage, delta: number) {
@@ -164,12 +143,12 @@ class Controller {
             if (checkCollision(this.character, obstacle)) {
                 // document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by '+ obstacle.name } }));
                 console.log('collide with obstacle ' + obstacle.name);
-                if (obstacle.name.includes('bottom')) {
-                    this.character.vel.y = this.character.defaultMaxJumpVel;
-                }
+                
                 if (this.character.condition == 'robotic') {
                     stage.removeObstacle(obstacle);
-                } else {
+                } else if (obstacle.name.includes('bottom')) {
+                    this.character.vel.y = this.character.defaultMaxJumpVel;
+                }else {
                     if (!obstacle.colliding) {
                         obstacle.colliding = true;
                         obstacle.collidedCnt++;
@@ -180,7 +159,7 @@ class Controller {
                     if (this.character.movement == 'punching') {
                         obstacle.punchedTime += delta;
                     }
-                    if (obstacle.punchedTime > 2) {
+                    if (obstacle.punchedTime > 1.5) {
                         stage.removeObstacle(obstacle);
                     }
                 }

@@ -114,6 +114,23 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
                 traverseAndSetShadows(gltf.scene);
                 gltfObstacleDict[path] = gltf;
                 console.log('Loaded GLTF model:', path, gltf);
+
+                let verCount = 0;
+                gltf.scene.traverse((child) => {
+                    if ((child as THREE.Mesh).isMesh) {
+                        const mesh = child as THREE.Mesh;
+                        verCount += mesh.geometry.attributes.position.count;
+                    }else{
+                        child.traverse((child2) => {
+                            if ((child2 as THREE.Mesh).isMesh) {
+                                const mesh = child2 as THREE.Mesh;
+                                verCount += mesh.geometry.attributes.position.count;
+                            }
+                        }); 
+                    }
+                });
+
+                console.log('Vertex count:', path, verCount);
             })
         );
     });

@@ -73,7 +73,8 @@ class Game {
         this.initCharacter();
 
         this.controller = new Controller(this.scene, this.Character,
-            this.obstacleGenerator, this.itemGenerator, this.textureDict);
+            this.obstacleGenerator, this.itemGenerator, this.textureDict,
+        this.uiController);
 
 
         this.camera = this.Character.camera

@@ -182,10 +182,7 @@
   /* 将元素中心对齐到视口中心 */
 }
 
-.item-icon,
-.item-icon1,
-.item-icon2 {
-  display: none;
+.item-icon{
   position: fixed;
   bottom: 35px;
   margin-right: -82%;

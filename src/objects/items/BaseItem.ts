@@ -4,7 +4,15 @@ import { MovableObject } from '../BaseObject';
 import {cloneGLTF} from '../../utils/mesh';
 import { BaseCharacter } from '../characters/BaseCharacter';
 
+interface Effect {
+    duration: number;
+    apply: (character: BaseCharacter) => void;
+    remove: (character: BaseCharacter) => void;
+}
+
 abstract class BaseItem extends MovableObject {
+    effect: Effect;
+
     constructor(name: string, item_gltf: GLTF) {
         const clonedGLTF = cloneGLTF(item_gltf);
         super('item', name, clonedGLTF);
@@ -27,29 +35,26 @@ abstract class BaseItem extends MovableObject {
 class speedupItem extends BaseItem {
     constructor(name: string, item_gltf: GLTF) {
         super(name, item_gltf);
+        this.effect = {
+            duration: 5,
+            apply: (char: BaseCharacter) => {
+                char.defaultMaxVel *= 2;
+            },
+            remove: (char: BaseCharacter) => {
+                char.defaultMaxVel /= 2;
+            }
+        };
     }
 
     applyEffect(character: BaseCharacter): void {
-        const speedBoostEffect = {
-            duration: 5, // 持续时间为5秒
-            apply: (char: BaseCharacter) => {
-                char.defaultMaxVel *= 2; // 将最大速度增加一倍
-            },
-            remove: (char: BaseCharacter) => {
-                char.defaultMaxVel /= 2; // 恢复原来的最大速度
-            }
-        };
-        character.applyEffect('speedBoost', speedBoostEffect);
+        character.pickEffect('speedBoost', this.effect);
     }
 }
 
 class highJumpItem extends BaseItem {
     constructor(name: string, item_gltf: GLTF) {
         super(name, item_gltf);
-    }
-
-    applyEffect(character: BaseCharacter): void {
-        const highJumpEffect = {
+        this.effect = {
             duration: 10,
             apply: (char: BaseCharacter) => {
                 char.defaultMaxJumpVel *= 2; // 将跳跃速度增加50%
@@ -58,18 +63,18 @@ class highJumpItem extends BaseItem {
                 char.defaultMaxJumpVel /= 2;
             }
         };
-        character.applyEffect('highJump', highJumpEffect);
+    }
+
+    applyEffect(character: BaseCharacter): void {
+        character.pickEffect('highJump', this.effect);
     }
 }
 
 class roboticItem extends BaseItem {
     constructor(name: string, item_gltf: GLTF) {
         super(name, item_gltf);
-    }
-
-    applyEffect(character: BaseCharacter): void {
-        const roboticEffect = {
-            duration: 7,
+        this.effect = {
+            duration: 10,
             apply: (char: BaseCharacter) => {
                 char.updateCondition('robotic');
             },
@@ -77,7 +82,10 @@ class roboticItem extends BaseItem {
                 char.updateCondition('normal');
             }
         };
-        character.applyEffect('robotic', roboticEffect);
+    }
+
+    applyEffect(character: BaseCharacter): void {
+        character.pickEffect('robotic', this.effect);
     }
 }
 
