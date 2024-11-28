@@ -17,8 +17,8 @@ abstract class BaseCharacter extends MovableObject {
     vel: THREE.Vector3;
     accel: THREE.Vector3;
     camera: PerspectiveCamera;
-    
-    waiting_effect: [string, Effect]  = ['', {duration: 0, apply: (char: BaseCharacter) => {}, remove: (char: BaseCharacter) => {}}];
+
+    waiting_effect: [string, Effect] = ['', { duration: 0, apply: (char: BaseCharacter) => { }, remove: (char: BaseCharacter) => { } }];
     effects: { [key: string]: Effect } = {};
     // effect: Effect;
 
@@ -34,9 +34,9 @@ abstract class BaseCharacter extends MovableObject {
         'down': 0
     };
 
-    //condition can be normal, robotic, highjump, scary, dead
+    //condition can be normal, robotic, highjump, scary, dead, dance
     condition: string = 'normal';
-    //movement can be walking, running, jumping, idle, punching
+    //movement can be walking, running, jumping, idle, punching, dance
     movement: string;
     movementUpdated: boolean = false;
     newMovement: string;
@@ -131,6 +131,11 @@ abstract class BaseCharacter extends MovableObject {
     }
 
     updatePosition(delta: number): void {
+        if (this.condition == 'dance') {
+            this.vel.set(0, 0, 0);
+            this.accel.set(0, 0, 0);
+            return;
+        }
         this.mesh.position.add(this.vel.clone().multiplyScalar(delta));
         // to check if the character touching any boundary
         // if so, set the velocity to 0 and set the most position to the boundary
@@ -161,6 +166,7 @@ abstract class BaseCharacter extends MovableObject {
     }
 
     getMovement() {
+
         this.updateMovementTmp('walking');
         if (this.vel.z == this.defaultMaxVel)
             this.updateMovementTmp('running');
@@ -169,6 +175,10 @@ abstract class BaseCharacter extends MovableObject {
         }
         if (!this.onGround())
             this.updateMovementTmp('jumping');
+
+        if (this.condition == 'dance') {
+            this.updateMovementTmp('dance');
+        }
     }
 
     updateCondition(condition: string): void {
@@ -186,6 +196,8 @@ abstract class BaseCharacter extends MovableObject {
             } else {
                 this.rescale(1.3, 2.5, 1.3);
             }
+        } else if (this.condition == 'dance') {
+
         }
         this.cameraShake(1, 200);
     }
@@ -193,6 +205,7 @@ abstract class BaseCharacter extends MovableObject {
     updateMovement(delta: number = 0): void {
         this.punchingTime = Math.max(0, this.punchingTime - delta);
         if (this.movement == this.newMovement) return;
+        console.log('updateMovement debug dance', this.movement, this.newMovement);
         if (this.punchingTime > 0) return;
         this.movement = this.newMovement;
         let { animationId } = this.updateMovementAnimation(this.movement);
@@ -221,17 +234,17 @@ abstract class BaseCharacter extends MovableObject {
 
     pickEffect(effectName: string, effect: Effect) {
         // remove that in ui
-        this.waiting_effect= [effectName, effect];
+        this.waiting_effect = [effectName, effect];
         // add that in ui
     }
 
 
     updateEffects(delta: number) {
         // check apply
-        if(this.inputHandler.isKeyPressed('1')) {
-            if (this.waiting_effect[0]!='') {
+        if (this.inputHandler.isKeyPressed('1')) {
+            if (this.waiting_effect[0] != '') {
                 this.applyEffect(this.waiting_effect[0], this.waiting_effect[1]);
-                this.waiting_effect = ['', {duration: 0, apply: (char: BaseCharacter) => {}, remove: (char: BaseCharacter) => {}}];
+                this.waiting_effect = ['', { duration: 0, apply: (char: BaseCharacter) => { }, remove: (char: BaseCharacter) => { } }];
             }
         }
         // update the effect

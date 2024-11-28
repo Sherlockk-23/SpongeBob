@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { MovableObject } from '../BaseObject';
-import {cloneGLTF} from '../../utils/mesh';
+import { cloneGLTF } from '../../utils/mesh';
 import { BaseCharacter } from '../characters/BaseCharacter';
 
 interface Effect {
@@ -20,7 +20,7 @@ abstract class BaseItem extends MovableObject {
     }
 
     init() {
-        
+
     }
 
     tick(delta: number): void {
@@ -89,4 +89,45 @@ class roboticItem extends BaseItem {
     }
 }
 
-export { BaseItem, speedupItem, roboticItem,highJumpItem };
+class confusionItem extends BaseItem {
+    constructor(name: string, item_gltf: GLTF) {
+        super(name, item_gltf);
+        this.effect = {
+            duration: 10,
+            apply: (char: BaseCharacter) => {
+                char.updateCondition('confusion');
+            },
+            remove: (char: BaseCharacter) => {
+                char.updateCondition('normal');
+            }
+        };
+    }
+
+    applyEffect(character: BaseCharacter): void {
+        character.pickEffect('confusion', this.effect);
+    }
+}
+
+class danceItem extends BaseItem {
+    constructor(name: string, item_gltf: GLTF) {
+        super(name, item_gltf);
+        this.effect = {
+            duration: 3,
+            apply: (char: BaseCharacter) => {
+                char.rotate('y', Math.PI);
+                char.updateCondition('dance');
+            },
+            remove: (char: BaseCharacter) => {
+                char.rotate('y', -Math.PI);
+                char.updateCondition('normal');
+
+            }
+        };
+    }
+
+    applyEffect(character: BaseCharacter): void {
+        character.applyEffect('dance', this.effect);
+    }
+}
+
+export { BaseItem, speedupItem, roboticItem, highJumpItem, danceItem };
