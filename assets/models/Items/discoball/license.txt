@@ -1,0 +1,11 @@
+Model Information:
+* title:	Pretty simple discoball
+* source:	https://sketchfab.com/3d-models/pretty-simple-discoball-6b1921865be14de982f9483040acaa2d
+* author:	pan.stasian (https://sketchfab.com/pan_stasian)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Pretty simple discoball" (https://sketchfab.com/3d-models/pretty-simple-discoball-6b1921865be14de982f9483040acaa2d) by pan.stasian (https://sketchfab.com/pan_stasian) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
