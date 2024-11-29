@@ -39,7 +39,9 @@ class ItemGenerator {
             this.sizeDict[name] = new THREE.Vector3(1, 1, 1);
             this.rotationDict[name] = new THREE.Vector3(0, 0, 0);
         });
-
+        this.sizeDict['sodaTSCP'] = new THREE.Vector3(0.6, 1, 0.6);
+        this.sizeDict['sauceTSCP'] = new THREE.Vector3(0.6, 1, 0.6);
+        this.sizeDict['infoSign'] = new THREE.Vector3(1, 1, 0.7);
         this.rotationDict['sodaTSCP'] = new THREE.Vector3(0, Math.PI / 2, 0);
         this.rotationDict['sauceTSCP'] = new THREE.Vector3(0, Math.PI / 2, 0);
         this.rotationDict['infoSign'] = new THREE.Vector3(0, Math.PI, 0);

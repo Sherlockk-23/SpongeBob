@@ -29,7 +29,7 @@ abstract class BaseObject {
       console.log(this.name, 'is destructing');
       // 创建粒子系统
 
-      const particleSystem = new ParticleSystem(this.getBottomCenter());
+      const particleSystem = new ParticleSystem(this.getCenter());
       scene.add(particleSystem.particles);
 
       // 更新粒子系统
@@ -97,6 +97,12 @@ abstract class BaseObject {
 
   addBoundingBoxHelperToThis() {
     this.mesh.add(this.boundingBoxHelper);
+  }
+
+  getCenter(): THREE.Vector3 {
+    const bbox = new THREE.Box3().setFromObject(this.mesh);
+    const center = bbox.getCenter(new THREE.Vector3());
+    return center;
   }
 
   getBottomCenter() :THREE.Vector3{
