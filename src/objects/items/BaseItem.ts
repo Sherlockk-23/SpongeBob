@@ -93,7 +93,7 @@ class confusionItem extends BaseItem {
     constructor(name: string, item_gltf: GLTF) {
         super(name, item_gltf);
         this.effect = {
-            duration: 10,
+            duration: 7,
             apply: (char: BaseCharacter) => {
                 char.updateCondition('confusion');
             },

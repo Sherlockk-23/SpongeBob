@@ -91,7 +91,8 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         // 'checkpoint',
         'infoSign',
         'sauceTSCP',
-        'sodaTSCP'
+        'sodaTSCP',
+        'discoball'
     ];
 
     const promises: Promise<void>[] = [];
@@ -120,13 +121,13 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
                     if ((child as THREE.Mesh).isMesh) {
                         const mesh = child as THREE.Mesh;
                         verCount += mesh.geometry.attributes.position.count;
-                    }else{
+                    } else {
                         child.traverse((child2) => {
                             if ((child2 as THREE.Mesh).isMesh) {
                                 const mesh = child2 as THREE.Mesh;
                                 verCount += mesh.geometry.attributes.position.count;
                             }
-                        }); 
+                        });
                     }
                 });
 
