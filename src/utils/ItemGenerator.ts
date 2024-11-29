@@ -67,7 +67,7 @@ class ItemGenerator {
             else {
                 item = new danceItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
             }
-        } else if (name.includes('discoball')) {
+        } else if (name.includes('disco')) {
             item = new danceItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
         }
         else {
