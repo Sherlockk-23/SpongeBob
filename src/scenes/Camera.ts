@@ -15,6 +15,7 @@ class PerspectiveCamera extends Camera {
   perspective: "thirdPerson" | "firstPerson" | "secondPerson" | null;
   _isCustomCamera: boolean = true;
   isShaking: boolean = false;
+  isClosingup: boolean = false;
 
   constructor(character_: BaseCharacter, aspectRatio: number = window.innerWidth / window.innerHeight, 
     fov: number = 75, far: number = 1000) {
@@ -27,7 +28,6 @@ class PerspectiveCamera extends Camera {
     );
     this.character = character_;
     this.thirdPersonPerspective();
-    
   }
 
   get camera(): THREE.PerspectiveCamera {
@@ -40,36 +40,81 @@ class PerspectiveCamera extends Camera {
     let cameraZ = this.character.mesh.position.z - this.cameraDistance;
     this._camera.position.set(cameraX, cameraY, cameraZ);
     this._camera.lookAt(new THREE.Vector3(this.character.mesh.position.x, 
-      this.character.mesh.position.y, this.character.mesh.position.z+this.cameraDistance));
+      this.character.mesh.position.y, this.character.mesh.position.z + this.cameraDistance));
     this._camera.up.set(0, 1, 0);
     this.perspective = "thirdPerson";
   }
+
   firstPersonPerspective() {
     let cameraX = this.character.mesh.position.x;
     let cameraY = this.character.mesh.position.y + this.cameraDistance;
-    let cameraZ = this.character.mesh.position.z - this.cameraDistance;
-    this._camera.position.set(cameraX, cameraY, -cameraZ);
-    this._camera.lookAt(this.character.mesh.position);
+    let cameraZ = this.character.mesh.position.z;
+    this._camera.position.set(cameraX, cameraY, cameraZ);
+    this._camera.lookAt(new THREE.Vector3(this.character.mesh.position.x, 
+      this.character.mesh.position.y, this.character.mesh.position.z + this.cameraDistance));
     this._camera.up.set(0, 1, 0);
     this.perspective = "firstPerson";
   }
 
   secondPersonPerspective() {
-    let cameraX = this.character.mesh.position.x;
+    let cameraX = this.character.mesh.position.x + this.cameraDistance;
     let cameraY = this.character.mesh.position.y + this.cameraDistance;
-    let cameraZ = this.character.mesh.position.z - this.cameraDistance;
+    let cameraZ = this.character.mesh.position.z + this.cameraDistance;
     this._camera.position.set(cameraX, cameraY, cameraZ);
     this._camera.lookAt(this.character.mesh.position);
     this._camera.up.set(0, 1, 0); // 设置上方向为 Y 轴向上
-
-    // 调整相机的旋转角度，确保视角不颠倒
-    this._camera.rotation.z = 0;
-
     this.perspective = "secondPerson";
   }
 
+  async closeUp() {
+    this.isClosingup = true;
+    const originalPosition = this._camera.position.clone();
+    const originalFov = this._camera.fov;
+    const targetPosition = new THREE.Vector3(
+      this.character.mesh.position.x,
+      this.character.mesh.position.y + 2,
+      this.character.mesh.position.z + 3.5 // 贴近角色
+    );
+
+    // 移动到特写位置并调整视场角
+    await this.animateCameraPositionAndFov(targetPosition, 50, 200);
+
+    // 停留一秒
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // 移动回原位并恢复视场角
+    await this.animateCameraPositionAndFov(originalPosition, originalFov, 200);
+    this.isClosingup = false;
+  }
+
+  animateCameraPositionAndFov(targetPosition: THREE.Vector3, targetFov: number, duration: number) {
+    return new Promise<void>((resolve) => {
+      const startPosition = this._camera.position.clone();
+      const startFov = this._camera.fov;
+      const startTime = performance.now();
+
+      const animate = (time: number) => {
+        const elapsed = time - startTime;
+        const t = Math.min(elapsed / duration, 1);
+
+        this._camera.position.lerpVectors(startPosition, targetPosition, t);
+        this._camera.fov = startFov + (targetFov - startFov) * t;
+        this._camera.updateProjectionMatrix();
+        this._camera.lookAt(this.character.mesh.position);
+
+        if (t < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          resolve();
+        }
+      };
+
+      requestAnimationFrame(animate);
+    });
+  }
+
   update() {
-    if (this.isShaking) return;
+    if (this.isShaking || this.isClosingup) return;
     // 根据当前的视角重新设置相机的位置和方向
     switch (this.perspective) {
       case "thirdPerson":

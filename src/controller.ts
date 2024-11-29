@@ -122,7 +122,7 @@ class Controller {
     checkCollisionItems(stage: Stage) {
         for (let item of stage.nearestItems) {
             if (checkCollision(this.character, item)) {
-                this.audioManager.playCollisionSound();
+                this.audioManager.playPickItemSound();
                 console.log('collide with item ', item.name);
                 item.applyEffect(this.character);
                 if (item.name.includes('info')) {
@@ -150,6 +150,7 @@ class Controller {
                 if (this.character.condition == 'robotic') {
                     stage.removeObstacle(obstacle);
                 } else if (obstacle.name.includes('bottom')) {
+                    this.audioManager.playBoundingSound();
                     this.character.vel.y = this.character.defaultMaxJumpVel;
                 } else {
                     if (!obstacle.colliding) {
