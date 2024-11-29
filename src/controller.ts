@@ -148,6 +148,7 @@ class Controller {
                 console.log('collide with obstacle ' + obstacle.name);
 
                 if (this.character.condition == 'robotic') {
+                    this.audioManager.playBreakSound();
                     stage.removeObstacle(obstacle);
                 } else if (obstacle.name.includes('bottom')) {
                     this.audioManager.playBoundingSound();
@@ -158,12 +159,14 @@ class Controller {
                         obstacle.collidedCnt++;
                     }
                     if (obstacle.collidedCnt >= 3) {
+                        this.audioManager.playBreakSound();
                         stage.removeObstacle(obstacle);
                     }
                     if (this.character.movement == 'punching') {
                         obstacle.punchedTime += delta;
                     }
                     if (obstacle.punchedTime > 1.5) {
+                        this.audioManager.playBreakSound();
                         stage.removeObstacle(obstacle);
                     }
                 }
@@ -215,10 +218,26 @@ class Controller {
             distanceValueElement.textContent = this.character.mesh.position.z.toFixed(0); // Display z position rounded to 2 decimals
         }
 
+        
+
+        this.enemy.tick(delta);
+        const enemyVel = this.enemyMinVel + (this.enemyMaxVel - this.enemyMinVel) *
+            ((this.character.mesh.position.z - this.enemyPos) / this.enemyDist);
+        console.log("enemy vel: ", enemyVel, "char pos: ", this.character.mesh.position.z, "enemy pos: ", this.enemyPos);
+        this.enemyPos += enemyVel * delta;
+        this.enemyPos = Math.max(this.enemyPos, this.character.mesh.position.z - this.enemyDist);
+        this.enemy.setPosition(0, 0, this.enemyPos);
+
+        const enemyBox = new THREE.Box3().setFromObject(this.enemy.mesh);
+        const distance = Math.abs(this.character.mesh.position.z - enemyBox.max.z);
+        if(distance < 2 && distance > 1.95) {
+            this.audioManager.playWarningSound();
+        }
+
         const distanceBarFill = document.getElementById('distance-bar-fill');
         const movingIcon = document.getElementById('s-icon');
         if (distanceBarFill && movingIcon) {
-            const distance = Math.abs(this.enemyPos - this.character.mesh.position.z);
+            
             const maxDistance = this.enemyDist; // Use maxDistance as a scaling factor
             const normalizedDistance = Math.min(distance / maxDistance, 1);
             distanceBarFill.style.height = `${normalizedDistance * 100}%`;
@@ -230,22 +249,9 @@ class Controller {
 
             distanceBarFill.style.backgroundColor = color;
 
-            // Move the s-icon to the top of the fill
-
         }
-
-        this.enemy.tick(delta);
-        const enemyVel = this.enemyMinVel + (this.enemyMaxVel - this.enemyMinVel) *
-            ((this.character.mesh.position.z - this.enemyPos) / this.enemyDist);
-        console.log("enemy vel: ", enemyVel, "char pos: ", this.character.mesh.position.z, "enemy pos: ", this.enemyPos);
-        this.enemyPos += enemyVel * delta;
-        this.enemyPos = Math.max(this.enemyPos, this.character.mesh.position.z - this.enemyDist);
-        this.enemy.setPosition(0, 0, this.enemyPos);
-        // console.log("enemy pos: ", this.enemyPos, "char pos: ", this.character.mesh.position.z);
-        // console.log("enemy pos: ", this.enemy.getBottomCenter());
-        // if(this.enemyPos > this.character.mesh.position.z){
-        //     document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by enemy' } }));
-        // }
+       
+        
         if (checkCollision(this.character, this.enemy)) {
             document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by enemy' } }));
         }

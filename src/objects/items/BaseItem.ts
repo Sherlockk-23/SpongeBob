@@ -13,14 +13,18 @@ interface Effect {
 abstract class BaseItem extends MovableObject {
     effect: Effect;
     initialPositionY: number;
-    light: THREE.PointLight;
+    outlineMesh: THREE.LineSegments;
 
     constructor(name: string, item_gltf: GLTF) {
         const clonedGLTF = cloneGLTF(item_gltf);
         super('item', name, clonedGLTF);
         this.init();
-        this.initialPositionY = this.mesh.position.y;
 
+        // 添加轮廓效果
+        const edges = new THREE.EdgesGeometry(this.mesh.geometry);
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
+        this.outlineMesh = new THREE.LineSegments(edges, lineMaterial);
+        this.mesh.add(this.outlineMesh);
     }
 
     init() {
@@ -28,11 +32,11 @@ abstract class BaseItem extends MovableObject {
     }
 
     tick(delta: number): void {
-
         // 上下浮动
         const floatAmplitude = 0.5; // 浮动幅度
-        const floatFrequency = 1; // 浮动频率
-        this.mesh.position.y += Math.sin(delta* 0.001 * floatFrequency) * floatAmplitude;
+        const floatFrequency = 3; // 浮动频率
+        this.mesh.position.y += Math.sin(Date.now() * 0.001 * floatFrequency) * floatAmplitude*delta;
+
 
         this.animate(delta);
         this.updateBoundingBox();

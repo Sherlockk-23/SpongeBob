@@ -160,7 +160,7 @@ class Game {
             this.Character = patrick;
 
             this.scene.getScene().add(this.Character.mesh);
-            this.Character.addBoundingBoxHelper(this.scene.getScene());
+            // this.Character.addBoundingBoxHelper(this.scene.getScene());
 
             patrick.mesh.position.set(0, 0, 3);
         }

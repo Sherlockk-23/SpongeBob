@@ -63,15 +63,17 @@ class Stage extends MovableObject {
         const stagePosition = this.length * stageNumber;
         this.scene = scene.getScene();
         this.scene.add(this.mesh);
-
-        this.ground = new Ground('ground', Stage.WIDTH * 10, this.length, this.textureDict['grass']);
+        if(this.theme == 'scary')
+            this.ground = new Ground('ground', Stage.WIDTH * 10, this.length, this.textureDict['colorful']);
+        else
+            this.ground = new Ground('ground', Stage.WIDTH * 10, this.length, this.textureDict['grass']);
         this.leftWall = new Wall('leftWall', Stage.LENGTH, this.length);
         this.rightWall = new Wall('rightWall', Stage.LENGTH, this.length);
         this.ceiling = new Ceiling('ceiling', Stage.WIDTH, this.length);
         if (this.theme == 'scary')
-            this.dome = new Dome('dome', Stage.WIDTH * 4, this.length, this.textureDict['flower']);
+            this.dome = new Dome('dome', Stage.WIDTH * 5, this.length, this.textureDict['flower']);
         else
-            this.dome = new Dome('dome', Stage.WIDTH * 4, this.length, this.textureDict['flower2']);
+            this.dome = new Dome('dome', Stage.WIDTH * 5, this.length, this.textureDict['flower2']);
         this.obstacleGenerator = obstacleGenerator;
         this.itemGenerator = itemGenerator;
 
@@ -207,11 +209,11 @@ class Stage extends MovableObject {
             this.mesh.add(item.mesh);
 
             const x = Math.random() * trackWidth - trackWidth / 2;
-            const y = 0; // For ground objects
+            const y = 0.5+Math.random()*1.5;
             const z = i * itemSpacing + Math.random() * itemSpacing;
 
             item.setPosition(x, y, z);
-            item.addBoundingBoxHelper(this.scene);
+            // item.addBoundingBoxHelper(this.scene);
         }
 
         this.items.sort((a, b) => a.getBottomCenter().z - b.getBottomCenter().z);

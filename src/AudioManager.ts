@@ -4,6 +4,9 @@ export class AudioManager {
     private static instance: AudioManager;
     private bgmAudio: Audio | null = null;
     private collisionAudio: Audio | null = null;
+    private pickItemAudio: Audio | null = null;
+    private breakAudio: Audio | null = null;
+    warningAudio: Audio | null = null;
     private audioLoader: AudioLoader;
     private listener: AudioListener;
 
@@ -75,18 +78,51 @@ export class AudioManager {
     }
     public async playPickItemSound(): Promise<void> {
         try {
-            if (!this.collisionAudio) {
-                this.collisionAudio = await this.loadAudio('assets/audio/pickItem.mp3', false);
+            if (!this.pickItemAudio) {
+                this.pickItemAudio = await this.loadAudio('assets/audio/pickItem.mp3', false);
             }
 
             // If the sound is already playing, stop it first
-            if (this.collisionAudio.isPlaying) {
-                this.collisionAudio.stop();
+            if (this.pickItemAudio.isPlaying) {
+                this.pickItemAudio.stop();
             }
 
-            this.collisionAudio.play();
+            this.pickItemAudio.play();
         } catch (error) {
-            console.error('Error playing collision sound:', error);
+            console.error('Error playing pickItemAudio: ', error);
+        }
+    }
+    public async playBreakSound(): Promise<void> {
+        try {
+            if (!this.breakAudio) {
+                this.breakAudio = await this.loadAudio('assets/audio/break.mp3', false);
+            }
+
+            // If the sound is already playing, stop it first
+            if (this.breakAudio.isPlaying) {
+                this.breakAudio.stop();
+            }
+
+            this.breakAudio.play();
+        } catch (error) {
+            console.error('Error playing breakAudio: ', error);
+        }
+    }
+
+    public async playWarningSound(): Promise<void> {
+        try {
+            if (!this.warningAudio) {
+                this.warningAudio = await this.loadAudio('assets/audio/warning.mp3', false);
+            }
+
+            // If the sound is already playing, stop it first
+            if (this.warningAudio.isPlaying) {
+                this.warningAudio.stop();
+            }
+
+            this.warningAudio.play();
+        } catch (error) {
+            console.error('Error playing warning sound:', error);
         }
     }
 
