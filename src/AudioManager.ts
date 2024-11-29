@@ -57,10 +57,26 @@ export class AudioManager {
         }
     }
 
-    public async playCollisionSound(): Promise<void> {
+    public async playBoundingSound(): Promise<void> {
         try {
             if (!this.collisionAudio) {
                 this.collisionAudio = await this.loadAudio('assets/audio/boing-6222.mp3', false);
+            }
+
+            // If the sound is already playing, stop it first
+            if (this.collisionAudio.isPlaying) {
+                this.collisionAudio.stop();
+            }
+
+            this.collisionAudio.play();
+        } catch (error) {
+            console.error('Error playing collision sound:', error);
+        }
+    }
+    public async playPickItemSound(): Promise<void> {
+        try {
+            if (!this.collisionAudio) {
+                this.collisionAudio = await this.loadAudio('assets/audio/pickItem.mp3', false);
             }
 
             // If the sound is already playing, stop it first

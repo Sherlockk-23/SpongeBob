@@ -197,7 +197,7 @@ abstract class BaseCharacter extends MovableObject {
                 this.rescale(1.3, 2.5, 1.3);
             }
         } else if (this.condition == 'dance') {
-
+            this.camera.closeUp();
         }
         this.cameraShake(1, 200);
     }
@@ -205,7 +205,6 @@ abstract class BaseCharacter extends MovableObject {
     updateMovement(delta: number = 0): void {
         this.punchingTime = Math.max(0, this.punchingTime - delta);
         if (this.movement == this.newMovement) return;
-        console.log('updateMovement debug dance', this.movement, this.newMovement);
         if (this.punchingTime > 0) return;
         this.movement = this.newMovement;
         let { animationId } = this.updateMovementAnimation(this.movement);
@@ -265,13 +264,23 @@ abstract class BaseCharacter extends MovableObject {
         console.log("debug robot", 'box:', this.getBottomCenter());
     }
 
+    updateCamera(delta:number){
+        if(this.inputHandler.isKeyPressed('q')){
+            this.camera.perspective = 'thirdPerson';
+        }
+        if(this.inputHandler.isKeyPressed('e')){
+            this.camera.perspective = 'secondPerson';
+        }
+        this.camera.update();
+    }
+
     tick(delta: number): void {
         this.updateAcceleration(delta);
         this.updateVelocity(delta);
         this.updatePosition(delta);
         this.updateBoundingBox();
         this.updateEffects(delta);
-        this.camera.update();
+        this.updateCamera(delta);
         console.log(this.name, 'position:', this.mesh.position);
         // console.log(this.name, 'velocity:', this.vel);
         this.updateMovement(delta);

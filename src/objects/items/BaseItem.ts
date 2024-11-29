@@ -12,11 +12,15 @@ interface Effect {
 
 abstract class BaseItem extends MovableObject {
     effect: Effect;
+    initialPositionY: number;
+    light: THREE.PointLight;
 
     constructor(name: string, item_gltf: GLTF) {
         const clonedGLTF = cloneGLTF(item_gltf);
         super('item', name, clonedGLTF);
         this.init();
+        this.initialPositionY = this.mesh.position.y;
+
     }
 
     init() {
@@ -25,10 +29,15 @@ abstract class BaseItem extends MovableObject {
 
     tick(delta: number): void {
 
-        //console.log(this.name, 'is ticking');
+        // 上下浮动
+        const floatAmplitude = 0.5; // 浮动幅度
+        const floatFrequency = 1; // 浮动频率
+        this.mesh.position.y += Math.sin(delta* 0.001 * floatFrequency) * floatAmplitude;
+
         this.animate(delta);
         this.updateBoundingBox();
     }
+
     abstract applyEffect(character: BaseCharacter): void;
 }
 
@@ -114,11 +123,11 @@ class danceItem extends BaseItem {
         this.effect = {
             duration: 3,
             apply: (char: BaseCharacter) => {
-                char.rotate('y', Math.PI);
+                // char.rotate('y', Math.PI);
                 char.updateCondition('dance');
             },
             remove: (char: BaseCharacter) => {
-                char.rotate('y', -Math.PI);
+                // char.rotate('y', -Math.PI);
                 char.updateCondition('normal');
 
             }

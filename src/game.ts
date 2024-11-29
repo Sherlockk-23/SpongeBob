@@ -151,7 +151,7 @@ class Game {
             this.Character = spongeBob;
 
             this.scene.getScene().add(this.Character.mesh);
-            this.Character.addBoundingBoxHelper(this.scene.getScene());
+            // this.Character.addBoundingBoxHelper(this.scene.getScene());
 
             spongeBob.mesh.position.set(0, 0, 3);
         } else {
