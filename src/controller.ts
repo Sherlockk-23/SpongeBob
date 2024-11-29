@@ -68,8 +68,8 @@ class Controller {
         this.stages.push(new Stage(this.scene, 'stage1', 0, this.obstacleGenerator, this.itemGenerator, this.textureDict));
         this.stageidx = 0;
 
-        this.enemy = new BaseEnemy('jellyKing', this.obstacleGenerator.gltfDict['bus']);
-        this.enemy.rescale(5, 5, 5);
+        this.enemy = new BaseEnemy('jellyKing', this.obstacleGenerator.gltfDict['fish']);
+        this.enemy.rescale(4, 4, 4);
         this.scene.getScene().add(this.enemy.mesh);
         this.enemy.setPosition(0, 0, -20);
         // this.character.mesh.add(this.enemy.mesh);

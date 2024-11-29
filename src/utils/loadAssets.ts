@@ -46,6 +46,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'building1TSCP',
         'building2TSCP',
         'bus',
+        'fish',
         // 'car1',//not usable
         'swimmingRing',
         'checkPoint',
@@ -92,7 +93,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'infoSign',
         'sauceTSCP',
         'sodaTSCP',
-        'discoball'
+        'discoball',
     ];
 
     const promises: Promise<void>[] = [];
