@@ -90,10 +90,12 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
     const itemPaths = [
         // 'burger',
         // 'checkpoint',
-        'infoSign',
+        // 'infoSign',
         'sauceTSCP',
         'sodaTSCP',
         'discoball',
+        'guess_box',
+        'xbox_controller_lp',
     ];
 
     const promises: Promise<void>[] = [];

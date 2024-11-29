@@ -69,7 +69,7 @@ class Controller {
         this.stageidx = 0;
 
         this.enemy = new BaseEnemy('jellyKing', this.obstacleGenerator.gltfDict['fish']);
-        this.enemy.rescale(4, 4, 4);
+        this.enemy.rescale(5, 4, 4);
         this.scene.getScene().add(this.enemy.mesh);
         this.enemy.setPosition(0, 0, -20);
         // this.character.mesh.add(this.enemy.mesh);
@@ -125,7 +125,7 @@ class Controller {
                 this.audioManager.playPickItemSound();
                 console.log('collide with item ', item.name);
                 item.applyEffect(this.character);
-                if (item.name.includes('info')) {
+                if (item.name.includes('xbox')) {
                     this.uicontroller.swapItem('metal');
                 } else if (item.name.includes('soda')) {
                     this.uicontroller.swapItem('green');

@@ -53,23 +53,36 @@ class ItemGenerator {
             theme = 'all';
         }
         //name pick randomly from themeDict[theme] by this.seed()
-        const { random, newSeed } = seededRandom(this.seed);
-        this.seed = newSeed;
-        name = this.themeDict[theme][Math.floor(random * this.themeDict[theme].length)];
+        // const { random, newSeed } = seededRandom(this.seed);
+        // this.seed = newSeed;
+        const random = Math.random();
+        // name = this.themeDict[theme][Math.floor(random * this.themeDict[theme].length)];
+        name = 'guess_box';
         if (name.includes('soda')) {
             item = new speedupItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
-        } else if (name.includes('info')) {
-            if (random > 0.5) {
-                item = new roboticItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
-            }
-            else {
-                item = new danceItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
-            }
+        } else if (name.includes('xbox')) {
+            item = new roboticItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
+
         } else if (name.includes('disco')) {
             item = new danceItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
         }
-        else {
+        else if (name.includes('sauce')) {
             item = new highJumpItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
+        }
+        else {
+            if (random < 0.25) {
+                item = new highJumpItem('sodaTSCP' + '_' + id, cloneGLTF(this.gltfDict[name]));
+            }
+            else if (random < 0.5) {
+                item = new speedupItem('sauceTSCP' + '_' + id, cloneGLTF(this.gltfDict[name]));
+            }
+            else if (random < 0.75) {
+                item = new roboticItem('xbox_controller_lp' + '_' + id, cloneGLTF(this.gltfDict[name]));
+            }
+            else {
+                item = new danceItem('discoball' + '_' + id, cloneGLTF(this.gltfDict[name]));
+            }
+            // console.log('debug random item generated', name, random);
         }
 
         if (isNaN(size.x) || isNaN(size.y) || isNaN(size.z)) {
