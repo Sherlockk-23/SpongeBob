@@ -58,8 +58,8 @@ class ItemGenerator {
         // const { random, newSeed } = seededRandom(this.seed);
         // this.seed = newSeed;
         const random = Math.random();
-        // name = this.themeDict[theme][Math.floor(random * this.themeDict[theme].length)];
-        name = 'guess_box';
+        name = this.themeDict[theme][Math.floor(random * this.themeDict[theme].length)];
+        //name = 'guess_box';
         if (name.includes('soda')) {
             item = new speedupItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
         } else if (name.includes('xbox')) {

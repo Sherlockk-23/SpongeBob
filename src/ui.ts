@@ -2,7 +2,7 @@
 
 class UIController {
   sceneContainer: HTMLElement;
-  
+
   pause_popup: HTMLElement;
 
   lose_popup: HTMLElement;
@@ -74,14 +74,14 @@ class UIController {
     console.log("pause in ui");
     displayElement(this.overlay, 0, 0.5, false, 500); // Dim the background
     displayElement(this.pause_popup, 0, 1, true, 500); // Show the popup
-    
+
   }
 
   resume() {
     // Hide the pause popup and overlay
     fadeElement(this.overlay, 0.5, 0, true, 500);
     fadeElement(this.pause_popup, 1, 0, true, 500);
-    
+
   }
 
   async countdown(count: number) {
@@ -94,7 +94,7 @@ class UIController {
   }
 
   returnToMain() {
-    window.location.href = 'index.html'; // Navigate to index.html
+    window.location.href = 'Character.html'; // Navigate to index.html
   }
 }
 
