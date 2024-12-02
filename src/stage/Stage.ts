@@ -25,7 +25,7 @@ class Stage extends MovableObject {
     items: BaseItem[] = [];
     itemGenerator: ItemGenerator;
     theme: string = 'normal';
-    themes: string[] = ['normal', 'TSCP', 'food', 'car', 'house', 'scary'];
+    themes: string[] = ['normal', 'bikini_bottom', 'food', 'car', 'house', 'statues'];
     length: number = 200;
 
     scene: THREE.Scene;
@@ -63,7 +63,7 @@ class Stage extends MovableObject {
         const stagePosition = this.length * stageNumber;
         this.scene = scene.getScene();
         this.scene.add(this.mesh);
-        if(this.theme == 'scary')
+        if (this.theme == 'scary')
             this.ground = new Ground('ground', Stage.WIDTH * 10, this.length, this.textureDict['colorful']);
         else
             this.ground = new Ground('ground', Stage.WIDTH * 10, this.length, this.textureDict['grass']);
@@ -209,7 +209,7 @@ class Stage extends MovableObject {
             this.mesh.add(item.mesh);
 
             const x = Math.random() * trackWidth - trackWidth / 2;
-            const y = 0.5+Math.random()*1.5;
+            const y = 0.5 + Math.random() * 1.5;
             const z = i * itemSpacing + Math.random() * itemSpacing;
 
             item.setPosition(x, y, z);

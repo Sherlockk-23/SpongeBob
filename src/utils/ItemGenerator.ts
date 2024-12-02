@@ -42,9 +42,11 @@ class ItemGenerator {
         this.sizeDict['sodaTSCP'] = new THREE.Vector3(0.6, 1, 0.6);
         this.sizeDict['sauceTSCP'] = new THREE.Vector3(0.6, 1, 0.6);
         this.sizeDict['infoSign'] = new THREE.Vector3(1, 1, 0.7);
+        this.sizeDict['xbox_controller_lp'] = new THREE.Vector3(0.6, 0.6, 0.6);
         this.rotationDict['sodaTSCP'] = new THREE.Vector3(0, Math.PI / 2, 0);
         this.rotationDict['sauceTSCP'] = new THREE.Vector3(0, Math.PI / 2, 0);
         this.rotationDict['infoSign'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotationDict['xbox_controller_lp'] = new THREE.Vector3(0, Math.PI, 0);
         console.log('generator initialized', this.themeDict);
     }
 
