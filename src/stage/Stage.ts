@@ -109,7 +109,7 @@ class Stage extends MovableObject {
         bbox.translate(position.clone().sub(obstacle.mesh.position));
 
         // Add some padding around the bounding box to prevent objects from being too close
-        const padding = 0.5; // Adjust this value to control minimum spacing between obstacles
+        const padding = 0.2; // Adjust this value to control minimum spacing between obstacles
         bbox.min.sub(new THREE.Vector3(padding, padding, padding));
         bbox.max.add(new THREE.Vector3(padding, padding, padding));
 

@@ -43,6 +43,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'car2',
         'chair1',
         'checkPoint',
+        'chum_bucket',
         'clock',
         'fish',
         'hat',
