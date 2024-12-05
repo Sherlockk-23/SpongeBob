@@ -3,8 +3,8 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { BaseItem } from '../objects/items/BaseItem';
 import { speedupItem, roboticItem, highJumpItem, danceItem } from '../objects/items/BaseItem';
-import { seededRandom } from './MathUtils';
-import { cloneGLTF } from './mesh';
+import { seededRandom } from '../utils/MathUtils';
+import { cloneGLTF } from '../utils/mesh';
 
 
 class ItemGenerator {

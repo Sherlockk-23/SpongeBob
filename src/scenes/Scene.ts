@@ -28,19 +28,19 @@ class Scene {
         directionalLight.shadow.camera.right = 50;
         directionalLight.shadow.camera.top = 50;
         directionalLight.shadow.camera.bottom = -50;
-        this.scene.add(directionalLight);
+        // this.scene.add(directionalLight);
 
         // 添加点光源
         const pointLight = new THREE.PointLight(0xffffff, 1, 100);
         pointLight.position.set(5, 5, 5);
         pointLight.castShadow = true; // 使点光源投射阴影
-        this.scene.add(pointLight);
+        // this.scene.add(pointLight);
 
         // 添加更多光源以确保地板被照亮
         const additionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
         additionalLight.position.set(-10, 10, -10);
         additionalLight.castShadow = true; // 使额外光源投射阴影
-        this.scene.add(additionalLight);
+        // this.scene.add(additionalLight);
 
     }
 

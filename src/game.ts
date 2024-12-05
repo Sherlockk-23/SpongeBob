@@ -18,8 +18,8 @@ import { BaseObstacle } from './objects/obstacles/BaseObstacle';
 
 import { Ground } from './objects/Ground.ts';
 
-import { ObstacleGenerator } from './utils/ObstacleGenerator';
-import { ItemGenerator } from './utils/ItemGenerator';
+import { ObstacleGenerator } from './stage/ObstacleGenerator';
+import { ItemGenerator } from './stage/ItemGenerator';
 import { Controller } from './controller.ts';
 
 import { Stage } from './stage/Stage.ts';

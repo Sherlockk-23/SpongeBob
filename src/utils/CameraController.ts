@@ -90,10 +90,10 @@ class CameraController {
                 this.camera.camera.position.x += moveSpeed;
                 break;
         }
-        console.log(this.camera.perspective);
-        console.log("position", this.camera.camera.position);
-        console.log("rotation", this.camera.camera.rotation);
-        console.log("up", this.camera.camera.up);
+        // console.log(this.camera.perspective);
+        // console.log("position", this.camera.camera.position);
+        // console.log("rotation", this.camera.camera.rotation);
+        // console.log("up", this.camera.camera.up);
     }
 }
 

@@ -2,8 +2,8 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { BaseObstacle } from '../objects/obstacles/BaseObstacle';
-import { seededRandom } from './MathUtils';
-import { cloneGLTF } from './mesh';
+import { seededRandom } from '../utils/MathUtils';
+import { cloneGLTF } from '../utils/mesh';
 
 function traverseAndSetShadows(object: THREE.Object3D) {
     object.traverse((child) => {

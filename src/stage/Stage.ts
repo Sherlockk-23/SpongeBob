@@ -7,8 +7,8 @@ import { Ceiling } from "../objects/Ceiling";
 import { Dome } from '../objects/Dome';
 import { BaseObstacle } from '../objects/obstacles/BaseObstacle';
 import { BaseItem } from '../objects/items/BaseItem';
-import { ObstacleGenerator } from '../utils/ObstacleGenerator';
-import { ItemGenerator } from '../utils/ItemGenerator';
+import { ObstacleGenerator } from './ObstacleGenerator';
+import { ItemGenerator } from './ItemGenerator';
 
 const groundoffset = 20;
 const MAX_PLACEMENT_ATTEMPTS = 10;

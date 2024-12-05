@@ -281,14 +281,14 @@ abstract class BaseCharacter extends MovableObject {
         this.updateBoundingBox();
         this.updateEffects(delta);
         this.updateCamera(delta);
-        console.log(this.name, 'position:', this.mesh.position);
+        // console.log(this.name, 'position:', this.mesh.position);
         // console.log(this.name, 'velocity:', this.vel);
         this.updateMovement(delta);
         // console.log(this.name, 'is', this.movement);
         this.animate(delta);
         this.getMovement();
 
-        console.log('debuging effects', this.waiting_effect, this.effects);
+        // console.log('debuging effects', this.waiting_effect, this.effects);
     }
 
     cameraShake(intensity: number, duration: number) {

@@ -17,8 +17,8 @@ import { Scene } from './scenes/Scene.ts';
 
 import { updateMovableBoundary, checkCollision } from './utils/Collision.ts';
 
-import { ObstacleGenerator } from './utils/ObstacleGenerator';
-import { ItemGenerator } from './utils/ItemGenerator';
+import { ObstacleGenerator } from './stage/ObstacleGenerator';
+import { ItemGenerator } from './stage/ItemGenerator';
 import { BaseEnemy } from './objects/enemies/BaseEnemy.ts';
 
 import { UIController } from './ui.ts';
@@ -42,6 +42,8 @@ class Controller {
     enemyPos: number = -20;
 
     enemy: BaseEnemy;
+
+    directionLight: THREE.DirectionalLight;
 
     uicontroller: UIController;
     private audioManager: AudioManager;
@@ -74,7 +76,25 @@ class Controller {
         this.enemy.setPosition(0, 0, -20);
         // this.character.mesh.add(this.enemy.mesh);
 
-        this.scene.getScene().fog = new THREE.Fog(0x87CEFA, 0.5, 50);
+        this.initFog();
+    }
+
+    initFog() {
+        this.scene.getScene().fog = new THREE.Fog(0x87CEFA, 0.5, 40);
+        // 添加平行光
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(30, 30, 50);
+        directionalLight.castShadow = true; // 使光源投射阴影
+        directionalLight.shadow.mapSize.width = 2048; // 阴影映射的宽度
+        directionalLight.shadow.mapSize.height = 2048; // 阴影映射的高度
+        directionalLight.shadow.camera.near = 0.5; // 阴影摄像机的近剪切面
+        directionalLight.shadow.camera.far = 500; // 阴影摄像机的远剪切面
+        directionalLight.shadow.camera.left = -50;
+        directionalLight.shadow.camera.right = 50;
+        directionalLight.shadow.camera.top = 50;
+        directionalLight.shadow.camera.bottom = -50;
+        this.directionLight = directionalLight;
+        this.scene.getScene().add(this.directionLight);
     }
 
     changeStage() {
@@ -183,10 +203,10 @@ class Controller {
     }
 
     updateFog() {
-        const fogStart = 0.5 + this.character.mesh.position.z * 0.1;
-        const fogEnd = 50 + this.character.mesh.position.z * 0.1;
-        this.scene.getScene().fog.near = fogStart;
-        this.scene.getScene().fog.far = fogEnd;
+        // 更新平行光的位置，使其随着角色的 z 位置移动
+        const lightOffset = 10; // 调整平行光距离角色的距离
+        this.directionLight.position.set(30, 30, this.character.mesh.position.z + lightOffset);
+    
     }
 
 
@@ -223,7 +243,7 @@ class Controller {
         this.enemy.tick(delta);
         const enemyVel = this.enemyMinVel + (this.enemyMaxVel - this.enemyMinVel) *
             ((this.character.mesh.position.z - this.enemyPos) / this.enemyDist);
-        console.log("enemy vel: ", enemyVel, "char pos: ", this.character.mesh.position.z, "enemy pos: ", this.enemyPos);
+        // console.log("enemy vel: ", enemyVel, "char pos: ", this.character.mesh.position.z, "enemy pos: ", this.enemyPos);
         this.enemyPos += enemyVel * delta;
         this.enemyPos = Math.max(this.enemyPos, this.character.mesh.position.z - this.enemyDist);
         this.enemy.setPosition(0, 0, this.enemyPos);
