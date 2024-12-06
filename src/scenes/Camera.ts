@@ -17,7 +17,7 @@ class PerspectiveCamera extends Camera {
   isShaking: boolean = false;
   isClosingup: boolean = false;
 
-  constructor(character_: BaseCharacter, aspectRatio: number = window.innerWidth / window.innerHeight, 
+  constructor(character_: BaseCharacter, aspectRatio: number = window.innerWidth / window.innerHeight,
     fov: number = 75, far: number = 1000) {
     super();
     this._camera = new THREE.PerspectiveCamera(
@@ -39,7 +39,7 @@ class PerspectiveCamera extends Camera {
     let cameraY = this.character.mesh.position.y + this.cameraDistance;
     let cameraZ = this.character.mesh.position.z - this.cameraDistance;
     this._camera.position.set(cameraX, cameraY, cameraZ);
-    this._camera.lookAt(new THREE.Vector3(this.character.mesh.position.x, 
+    this._camera.lookAt(new THREE.Vector3(this.character.mesh.position.x,
       this.character.mesh.position.y, this.character.mesh.position.z + this.cameraDistance));
     this._camera.up.set(0, 1, 0);
     this.perspective = "thirdPerson";
@@ -50,7 +50,7 @@ class PerspectiveCamera extends Camera {
     let cameraY = this.character.mesh.position.y + this.cameraDistance;
     let cameraZ = this.character.mesh.position.z;
     this._camera.position.set(cameraX, cameraY, cameraZ);
-    this._camera.lookAt(new THREE.Vector3(this.character.mesh.position.x, 
+    this._camera.lookAt(new THREE.Vector3(this.character.mesh.position.x,
       this.character.mesh.position.y, this.character.mesh.position.z + this.cameraDistance));
     this._camera.up.set(0, 1, 0);
     this.perspective = "firstPerson";
