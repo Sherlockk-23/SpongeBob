@@ -22,6 +22,7 @@ class ObstacleGenerator {
     themeDict: { [key: string]: string[] } = {};
     sizeDict: { [key: string]: THREE.Vector3 } = {};
     rotateDict: { [key: string]: THREE.Vector3 } = {};
+    velDict: { [key: string]: THREE.Vector3 } = {};
 
     constructor(gltfDict: { [key: string]: GLTF }) {
         console.log('generator created');
@@ -41,6 +42,7 @@ class ObstacleGenerator {
         this.initThemes();
         this.initSizeDict();
         this.initRotateDict();
+        this.initVelDict();
 
         //TODO : add more themes
     }
@@ -50,7 +52,7 @@ class ObstacleGenerator {
         this.themeDict['normal'] = ['bottom', 'hat', /*'clock', */'snailClock', 'swimmingRing'];
         this.themeDict['bikini_bottom'] = ['squidwardHouseTSCP', 'pineapple_house', 'lightHouseTSCP', 'krabTSCP', 'bottom', 'chum_bucket'];
         this.themeDict['food'] = ['burger', 'table', 'spatula', 'barrelTSCP', 'barrelTSCP', 'burger', 'burger', 'burger'];
-        this.themeDict['vehicles'] = ['car2', 'bus2TSCP', 'train', 'boatTSCP', 'boatTSCP'];
+        this.themeDict['vehicles'] = ['car2', 'bus2TSCP', 'train', 'boatTSCP', 'train'];
         this.themeDict['house'] = ['house1', 'pineapple_house', 'squidwardHouseTSCP', 'bottom'];
         this.themeDict['statues'] = ['patrickStatue', 'spongehengeTSCP', 'patrickStatue'];
     }
@@ -116,6 +118,14 @@ class ObstacleGenerator {
         this.rotateDict['house1'] = new THREE.Vector3(0, Math.PI, 0);
 
     }
+    initVelDict() {
+        this.themeDict['all'].forEach(name => {
+            this.velDict[name] = new THREE.Vector3(0, 0, 0);
+        });
+        this.velDict['train'] = new THREE.Vector3(0, 0, -1);
+        this.velDict['bus2TSCP'] = new THREE.Vector3(0, 0, -0.5);
+        this.velDict['boatTSCP'] = new THREE.Vector3(0.1, 0, 0);
+    }
 
     randomObstacle(id: number = -1, theme: string = 'normal', size: THREE.Vector3 = NaN): BaseObstacle {
         let obstacle: BaseObstacle;
@@ -147,6 +157,15 @@ class ObstacleGenerator {
         obstacle.rotate('x', this.rotateDict[name].x);
         obstacle.rotate('y', this.rotateDict[name].y);
         obstacle.rotate('z', this.rotateDict[name].z);
+
+        let vel = this.velDict[name].clone();
+        // add some random noise to vel
+        for (let i = 0; i < 3; i++) {
+            let noise  = (Math.random() - 0.5 )*1.5;
+            if (Math.random() > 0.5) noise = -noise;
+            vel.setComponent(i, vel.getComponent(i)*Math.exp(noise));
+        }
+        obstacle.vel = vel;
 
         return obstacle;
 

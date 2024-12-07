@@ -178,7 +178,7 @@ class Controller {
                         obstacle.colliding = true;
                         obstacle.collidedCnt++;
                     }
-                    if (obstacle.collidedCnt >= 3) {
+                    if (obstacle.collidedCnt >= obstacle.collideThreshold) {
                         this.audioManager.playBreakSound();
                         stage.removeObstacle(obstacle);
                     }

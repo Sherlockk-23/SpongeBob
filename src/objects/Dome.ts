@@ -2,7 +2,9 @@ import * as THREE from 'three';
 import { BaseObject } from './BaseObject';
 
 class Dome extends BaseObject {
-    constructor(name: string, width: number = 10, length: number = 10, texture: THREE.Texture = null) {
+    constructor(name: string, width: number = 10, length: number = 10,  texture: THREE.Texture = null, 
+        textureWidth: number = 1, textureHeight: number = 1)
+    {
         console.log('createDome');
         
         // 创建半圆柱体几何体
@@ -20,7 +22,7 @@ class Dome extends BaseObject {
         if (texture) {
             texture.wrapS = THREE.RepeatWrapping;
             texture.wrapT = THREE.RepeatWrapping;
-            texture.repeat.set(width / 10, length / 10); // 根据宽度和长度设置重复次数
+            texture.repeat.set(width / textureWidth, length / textureHeight); // 根据宽度和长度设置重复次数
             material = new THREE.MeshStandardMaterial({ map: texture, side: THREE.DoubleSide });
         } else {
             material = new THREE.MeshStandardMaterial({ color: 0x808080 });

@@ -215,20 +215,21 @@ abstract class BaseCharacter extends MovableObject {
     }
 
     applyEffect(effectName: string, effect: Effect) {
-        // if (this.effects[effectName]) {
-        //     this.effects[effectName].remove(this);
-        // }
-        // this.effects[effectName] = effect;
-        // effect.apply(this);
-
-        //only allow one effect at a time
-        for (const effectName in this.effects) {
-            const effect = this.effects[effectName];
-            effect.remove(this);
-            delete this.effects[effectName];
+        // allow a lot of effects
+        if (this.effects[effectName]) {
+            this.effects[effectName].remove(this);
         }
         this.effects[effectName] = effect;
         effect.apply(this);
+
+        //only allow one effect at a time
+        // for (const effectName in this.effects) {
+        //     const effect = this.effects[effectName];
+        //     effect.remove(this);
+        //     delete this.effects[effectName];
+        // }
+        // this.effects[effectName] = effect;
+        // effect.apply(this);
     }
 
     pickEffect(effectName: string, effect: Effect) {

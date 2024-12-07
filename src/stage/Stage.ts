@@ -25,7 +25,7 @@ class Stage extends MovableObject {
     items: BaseItem[] = [];
     itemGenerator: ItemGenerator;
     theme: string = 'normal';
-    themes: string[] = ['normal', 'bikini_bottom', 'food', 'car', 'house', 'statues'];
+    themes: string[] = ['normal', 'bikini_bottom', 'food', 'vehicles', 'house', 'statues'];
     length: number = 200;
 
     scene: THREE.Scene;
@@ -51,31 +51,32 @@ class Stage extends MovableObject {
         const stageGroup = new THREE.Group();
         super('stage', name, stageGroup);
         this.textureDict = textureDict;
+        this.obstacleGenerator = obstacleGenerator;
+        this.itemGenerator = itemGenerator;
+
         this.mesh = stageGroup;
         this.length = Stage.LENGTH;
         if (theme == 'all')
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        // this.theme = 'car';
+        this.theme = 'vehicles';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
         this.scene = scene.getScene();
         this.scene.add(this.mesh);
-        if (this.theme == 'scary')
-            this.ground = new Ground('ground', Stage.WIDTH * 10, this.length, this.textureDict['colorful']);
-        else
-            this.ground = new Ground('ground', Stage.WIDTH * 10, this.length, this.textureDict['grass']);
+
         this.leftWall = new Wall('leftWall', Stage.LENGTH, this.length);
         this.rightWall = new Wall('rightWall', Stage.LENGTH, this.length);
         this.ceiling = new Ceiling('ceiling', Stage.WIDTH, this.length);
-        if (this.theme == 'scary')
-            this.dome = new Dome('dome', Stage.WIDTH * 5, this.length, this.textureDict['flower']);
-        else
-            this.dome = new Dome('dome', Stage.WIDTH * 5, this.length, this.textureDict['flower2']);
-        this.obstacleGenerator = obstacleGenerator;
-        this.itemGenerator = itemGenerator;
+
+        let [texture,texwidth,texheight] = this.theme2texture(this.theme, true);
+        this.ground = new Ground('ground', Stage.WIDTH * 10, this.length, texture, texwidth, texheight);
+
+        [texture,texwidth,texheight] = this.theme2texture(this.theme, false);
+        this.dome = new Dome('dome', Stage.WIDTH * 5, this.length, texture, texwidth, texheight);
+
 
         this.ground.mesh.position.z = this.length / 2 - groundoffset;
         this.leftWall.mesh.position.z = this.length / 2 - groundoffset;
@@ -94,9 +95,56 @@ class Stage extends MovableObject {
         this.mesh.add(this.ceiling.mesh);
         this.mesh.add(this.dome.mesh);
 
+
+
         this.initStage();
         this.initObstacles(this.length, Stage.WIDTH);
         this.initItems(this.length, Stage.WIDTH);
+    }
+
+    theme2texture(theme:string, GroundOrDome:boolean): [THREE.Texture,number,number]{ 
+        let texture: THREE.Texture;
+        let texwidth: number;
+        let texheight: number;
+        if (GroundOrDome) {
+            if (theme == 'vehicles') {
+                texture = this.textureDict['road'];
+                texwidth = 7;
+                texheight = 7;
+            }else if(theme == 'bikini_bottom'){
+                texture = this.textureDict['sand'];
+                texwidth = 1;
+                texheight = 1;
+            }else if(theme == 'food'){
+                texture = this.textureDict['wood'];
+                texwidth = 2;
+                texheight = 2;
+            }else{
+                texture = this.textureDict['grass'];
+                texwidth = 1;
+                texheight = 1;
+            }
+        } else {
+            if (theme == 'statues') {
+                texture = this.textureDict['flower'];
+                texwidth = 10;
+                texheight = 10;
+            } else if(theme == 'bikini_bottom'){
+                texture = this.textureDict['colorful'];
+                texwidth = 1;
+                texheight = 1;
+            }else if(theme == 'food'){
+                texture = this.textureDict['block'];
+                texwidth = 5;
+                texheight = 5;
+            }
+            else {
+                texture = this.textureDict['flower2'];
+                texwidth = 10;
+                texheight = 10;
+            }
+        }
+        return [texture,texwidth,texheight];
     }
 
     initStage() {
@@ -308,12 +356,6 @@ class Stage extends MovableObject {
     }
 
     tick(delta: number) {
-        // this.obstacles.forEach((obstacle) => {
-        //     obstacle.tick(delta);
-        // });
-        // this.items.forEach((item) => {
-        //     item.tick(delta);
-        // });
         this.nearestObstacles.forEach((obstacle) => {
             obstacle.tick(delta);
         });

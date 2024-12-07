@@ -154,6 +154,10 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'particle',
         'flower',
         'flower2',
+        'sand',
+        'road',
+        'ice',
+        'colorful'
     ];
 
 
