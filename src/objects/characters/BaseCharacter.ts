@@ -16,6 +16,7 @@ abstract class BaseCharacter extends MovableObject {
     pos: THREE.Vector3;
     vel: THREE.Vector3;
     accel: THREE.Vector3;
+    force: THREE.Vector3;
     camera: PerspectiveCamera;
 
     waiting_effect: [string, Effect] = ['', { duration: 0, apply: (char: BaseCharacter) => { }, remove: (char: BaseCharacter) => { } }];
@@ -120,6 +121,7 @@ abstract class BaseCharacter extends MovableObject {
             this.vel.y = -this.defaultMaxJumpVel;
         }
         this.accel.y = -this.defaultGravity;
+        this.accel.add(this.force.clone());
     }
 
     updateVelocity(delta: number): void {
@@ -265,11 +267,11 @@ abstract class BaseCharacter extends MovableObject {
         console.log("debug robot", 'box:', this.getBottomCenter());
     }
 
-    updateCamera(delta:number){
-        if(this.inputHandler.isKeyPressed('q')){
+    updateCamera(delta: number) {
+        if (this.inputHandler.isKeyPressed('q')) {
             this.camera.perspective = 'thirdPerson';
         }
-        if(this.inputHandler.isKeyPressed('e')){
+        if (this.inputHandler.isKeyPressed('e')) {
             this.camera.perspective = 'secondPerson';
         }
         this.camera.update();

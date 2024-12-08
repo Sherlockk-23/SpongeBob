@@ -10,7 +10,7 @@ import { cloneGLTF } from '../utils/mesh';
 class ItemGenerator {
     seed: number = 0;
     gltfDict: { [key: string]: GLTF } = {};
-    themes: string[] = ['all', 'normal', 'bikini bottom', 'vehicles', 'food', 'statues'];
+    themes: string[] = ['all', 'normal', 'bikini_bottom', 'vehicles', 'windy_food', 'statues'];
     themeDict: { [key: string]: string[] } = {};
     sizeDict: { [key: string]: THREE.Vector3 } = {};
 

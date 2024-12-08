@@ -63,6 +63,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'tableTSCP',
         'tiki_wood',
         'train',
+        'wind_turbine',
         'wooden_fence',
     ];
 

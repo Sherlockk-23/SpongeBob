@@ -51,7 +51,7 @@ class ObstacleGenerator {
         // 这里各科调distribution !!!
         this.themeDict['normal'] = ['bottom', 'hat', /*'clock', */'snailClock', 'swimmingRing'];
         this.themeDict['bikini_bottom'] = ['squidwardHouseTSCP', 'pineapple_house', 'lightHouseTSCP', 'krabTSCP', 'bottom', 'chum_bucket'];
-        this.themeDict['food'] = ['burger', 'table', 'spatula', 'barrelTSCP', 'barrelTSCP', 'burger', 'burger', 'burger'];
+        this.themeDict['windy_food'] = ['burger', 'table', 'spatula', 'barrelTSCP'];
         this.themeDict['vehicles'] = ['car2', 'bus2TSCP', 'train', 'boatTSCP', 'train'];
         this.themeDict['house'] = ['house1', 'pineapple_house', 'squidwardHouseTSCP', 'bottom'];
         this.themeDict['statues'] = ['patrickStatue', 'spongehengeTSCP', 'patrickStatue'];
@@ -76,23 +76,30 @@ class ObstacleGenerator {
         this.sizeDict['car2'] = new THREE.Vector3(1, 1, 2);
         this.sizeDict['train'] = new THREE.Vector3(2, 2.5, 10);
 
-
-        this.sizeDict['burger'] = new THREE.Vector3(2, 2, 2)
-        this.sizeDict['hat'] = new THREE.Vector3(0.2, 0.5, 0.2);
+        //windy_food
+        this.sizeDict['burger'] = new THREE.Vector3(2, 2, 2);
         this.sizeDict['spatula'] = new THREE.Vector3(0.3, 1, 0.3);
+        this.sizeDict['barrelTSCP'] = new THREE.Vector3(1, 1, 1);
+        this.sizeDict['table'] = new THREE.Vector3(1, 0.5, 1);
+
+
+        this.sizeDict['hat'] = new THREE.Vector3(0.2, 0.5, 0.2);
         this.sizeDict['boat'] = new THREE.Vector3(1, 1, 2);
         this.sizeDict['karen'] = new THREE.Vector3(0.4, 1, 0.4);
         this.sizeDict['snailClock'] = new THREE.Vector3(1.6, 1.6, 0.8);
         this.sizeDict['house1'] = new THREE.Vector3(1, 2, 1);
         this.sizeDict['clock'] = new THREE.Vector3(2, 5, 2);
         this.sizeDict['bed'] = new THREE.Vector3(1, 1, 2);
-        this.sizeDict['chair1'] = new THREE.Vector3(2, 2, 2);
-        this.sizeDict['table'] = new THREE.Vector3(1, 0.5, 1);
-        this.sizeDict['spongehengeTSCP'] = new THREE.Vector3(1.2, 1.8, 0.35);
         this.sizeDict['tableTSCP'] = new THREE.Vector3(3, 1, 3);
-        this.sizeDict['wooden_fence'] = new THREE.Vector3(3, 1.2, 0.1);
+        this.sizeDict['chair1'] = new THREE.Vector3(2, 2, 2);
+        this.sizeDict['spongehengeTSCP'] = new THREE.Vector3(1.2, 1.8, 0.35);
+
         this.sizeDict['swimmingRing'] = new THREE.Vector3(1.5, 0.5, 1.5);
         this.sizeDict['checkPoint'] = new THREE.Vector3(1, 3.5, 1);
+
+        //decorations and environment
+        this.sizeDict['wind_turbine'] = new THREE.Vector3(1, 1, 1);
+        this.sizeDict['wooden_fence'] = new THREE.Vector3(3, 1.2, 0.1);
         console.log('generator initialized', this.themeDict);
     }
     initRotateDict() {
@@ -161,9 +168,9 @@ class ObstacleGenerator {
         let vel = this.velDict[name].clone();
         // add some random noise to vel
         for (let i = 0; i < 3; i++) {
-            let noise  = (Math.random() - 0.5 )*1.5;
+            let noise = (Math.random() - 0.5) * 1.5;
             if (Math.random() > 0.5) noise = -noise;
-            vel.setComponent(i, vel.getComponent(i)*Math.exp(noise));
+            vel.setComponent(i, vel.getComponent(i) * Math.exp(noise));
         }
         obstacle.vel = vel;
 

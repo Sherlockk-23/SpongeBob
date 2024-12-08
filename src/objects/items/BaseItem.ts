@@ -35,7 +35,7 @@ abstract class BaseItem extends MovableObject {
         // 上下浮动
         const floatAmplitude = 0.5; // 浮动幅度
         const floatFrequency = 3; // 浮动频率
-        this.mesh.position.y += Math.sin(Date.now() * 0.001 * floatFrequency) * floatAmplitude*delta;
+        this.mesh.position.y += Math.sin(Date.now() * 0.001 * floatFrequency) * floatAmplitude * delta;
 
 
         this.animate(delta);

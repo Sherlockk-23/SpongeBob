@@ -25,7 +25,7 @@ class Stage extends MovableObject {
     items: BaseItem[] = [];
     itemGenerator: ItemGenerator;
     theme: string = 'normal';
-    themes: string[] = ['normal', 'bikini_bottom', 'food', 'vehicles', 'house', 'statues'];
+    themes: string[] = ['normal', 'bikini_bottom', 'windy_food', 'vehicles', 'house', 'statues'];
     length: number = 200;
 
     scene: THREE.Scene;
@@ -38,6 +38,9 @@ class Stage extends MovableObject {
     itemPointerR: number = 0;
 
     textureDict: { [key: string]: THREE.Texture } = {};
+
+    specialIntervals: [number, number, string][] = [];
+
 
     static readonly LENGTH = 100;
     static readonly WIDTH = 5;
@@ -71,10 +74,10 @@ class Stage extends MovableObject {
         this.rightWall = new Wall('rightWall', Stage.LENGTH, this.length);
         this.ceiling = new Ceiling('ceiling', Stage.WIDTH, this.length);
 
-        let [texture,texwidth,texheight] = this.theme2texture(this.theme, true);
+        let [texture, texwidth, texheight] = this.theme2texture(this.theme, true);
         this.ground = new Ground('ground', Stage.WIDTH * 10, this.length, texture, texwidth, texheight);
 
-        [texture,texwidth,texheight] = this.theme2texture(this.theme, false);
+        [texture, texwidth, texheight] = this.theme2texture(this.theme, false);
         this.dome = new Dome('dome', Stage.WIDTH * 5, this.length, texture, texwidth, texheight);
 
 
@@ -102,7 +105,7 @@ class Stage extends MovableObject {
         this.initItems(this.length, Stage.WIDTH);
     }
 
-    theme2texture(theme:string, GroundOrDome:boolean): [THREE.Texture,number,number]{ 
+    theme2texture(theme: string, GroundOrDome: boolean): [THREE.Texture, number, number] {
         let texture: THREE.Texture;
         let texwidth: number;
         let texheight: number;
@@ -111,15 +114,15 @@ class Stage extends MovableObject {
                 texture = this.textureDict['road'];
                 texwidth = 7;
                 texheight = 7;
-            }else if(theme == 'bikini_bottom'){
+            } else if (theme == 'bikini_bottom') {
                 texture = this.textureDict['sand'];
                 texwidth = 1;
                 texheight = 1;
-            }else if(theme == 'food'){
+            } else if (theme == 'food') {
                 texture = this.textureDict['wood'];
                 texwidth = 2;
                 texheight = 2;
-            }else{
+            } else {
                 texture = this.textureDict['grass'];
                 texwidth = 1;
                 texheight = 1;
@@ -129,11 +132,11 @@ class Stage extends MovableObject {
                 texture = this.textureDict['flower'];
                 texwidth = 10;
                 texheight = 10;
-            } else if(theme == 'bikini_bottom'){
+            } else if (theme == 'bikini_bottom') {
                 texture = this.textureDict['colorful'];
                 texwidth = 1;
                 texheight = 1;
-            }else if(theme == 'food'){
+            } else if (theme == 'food') {
                 texture = this.textureDict['block'];
                 texwidth = 5;
                 texheight = 5;
@@ -144,7 +147,7 @@ class Stage extends MovableObject {
                 texheight = 10;
             }
         }
-        return [texture,texwidth,texheight];
+        return [texture, texwidth, texheight];
     }
 
     initStage() {
@@ -218,6 +221,21 @@ class Stage extends MovableObject {
             const z = i * obstacleSpacing;
 
             obstacle.setPosition(x, y, z);
+        }
+
+        for (let i = 0; i < numObstacles; i++) {
+            const obstacle = this.obstacleGenerator.centainObstacle('wind_turbine');
+            obstacle.rotate('y', -Math.PI / 2)
+            this.obstacles.push(obstacle);
+            this.mesh.add(obstacle.mesh);
+
+            const x = 4;
+            const y = 0;
+            const z = i * obstacleSpacing;
+
+            obstacle.setPosition(x, y, z);
+            this.specialIntervals.push([z - this.obstacleGenerator.sizeDict['wind_turbine'] / 2,
+            z + this.obstacleGenerator.sizeDict['wind_turbine'].z / 2, 'windy']);
         }
 
         for (let i = 0; i < numObstacles; i++) {

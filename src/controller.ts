@@ -178,7 +178,7 @@ class Controller {
                         obstacle.colliding = true;
                         obstacle.collidedCnt++;
                     }
-                    if (obstacle.collidedCnt >= obstacle.collideThreshold) {
+                    if (obstacle.collidedCnt >= obstacle.collidedThreshold) {
                         this.audioManager.playBreakSound();
                         stage.removeObstacle(obstacle);
                     }
@@ -195,6 +195,29 @@ class Controller {
             }
         }
     }
+
+    checkPositionState() {
+        for (let stage of this.stages) {
+            for (let interval of stage.specialIntervals) {
+                if (this.character.mesh.position.z > interval[0] && this.character.mesh.position.z < interval[1]) {
+                    if (interval[2] == 'windy') {
+                        const effect = {
+                            duration: 0.1,
+                            apply: (char: BaseCharacter) => {
+                                char.force.x = 0.5;
+                            },
+                            remove: (char: BaseCharacter) => {
+                                char.force.x -= 0.5;
+                            }
+                        };
+                        this.character.applyEffect('windy', effect);
+                    }
+                }
+            }
+
+        }
+    }
+
     checkToChangeStage() {
         // console.log(this.character.getBottomCenter().z, this.stages[this.stageidx].length);
         if (this.character.getBottomCenter().z + 70 > this.stages[this.stageidx].length + this.stages[this.stageidx].mesh.position.z) {
@@ -206,7 +229,7 @@ class Controller {
         // 更新平行光的位置，使其随着角色的 z 位置移动
         const lightOffset = 10; // 调整平行光距离角色的距离
         this.directionLight.position.set(30, 30, this.character.mesh.position.z + lightOffset);
-    
+
     }
 
 
@@ -238,7 +261,7 @@ class Controller {
             distanceValueElement.textContent = this.character.mesh.position.z.toFixed(0); // Display z position rounded to 2 decimals
         }
 
-        
+
 
         this.enemy.tick(delta);
         const enemyVel = this.enemyMinVel + (this.enemyMaxVel - this.enemyMinVel) *
@@ -250,14 +273,14 @@ class Controller {
 
         const enemyBox = new THREE.Box3().setFromObject(this.enemy.mesh);
         const distance = Math.abs(this.character.mesh.position.z - enemyBox.max.z);
-        if(distance < 2 && distance > 1.95) {
+        if (distance < 2 && distance > 1.95) {
             this.audioManager.playWarningSound();
         }
 
         const distanceBarFill = document.getElementById('distance-bar-fill');
         const movingIcon = document.getElementById('s-icon');
         if (distanceBarFill && movingIcon) {
-            
+
             const maxDistance = this.enemyDist; // Use maxDistance as a scaling factor
             const normalizedDistance = Math.min(distance / maxDistance, 1);
             distanceBarFill.style.height = `${normalizedDistance * 100}%`;
@@ -270,8 +293,8 @@ class Controller {
             distanceBarFill.style.backgroundColor = color;
 
         }
-       
-        
+
+
         if (checkCollision(this.character, this.enemy)) {
             document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by enemy' } }));
         }
