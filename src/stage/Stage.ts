@@ -63,7 +63,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        this.theme = 'water';
+        this.theme = 'windy_food';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -230,7 +230,7 @@ class Stage extends MovableObject {
                 if (Math.random() >= 0.5) {
                     const x = 6;
                     const y = -0.1;
-                    const z = i *  20;
+                    const z = i * 20;
                     if (Math.random() >= 0.5) {
                         const obstacle = this.obstacleGenerator.centainObstacle('mill1');
                         obstacle.rotate('y', Math.PI);
