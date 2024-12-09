@@ -18,7 +18,7 @@ function traverseAndSetShadows(object: THREE.Object3D) {
 class ObstacleGenerator {
     seed: number = 0;
     gltfDict: { [key: string]: GLTF } = {};
-    themes: string[] = ['all', 'normal', 'bikini_bottom', 'windy_food', 'vehicles', 'house', 'statues'];
+    themes: string[] = ['all', 'normal', 'bikini_bottom', 'windy_food', 'vehicles', 'water', 'statues'];
     themeDict: { [key: string]: string[] } = {};
     sizeDict: { [key: string]: THREE.Vector3 } = {};
     rotateDict: { [key: string]: THREE.Vector3 } = {};
@@ -53,7 +53,7 @@ class ObstacleGenerator {
         this.themeDict['bikini_bottom'] = ['squidwardHouseTSCP', 'pineapple_house', 'lightHouseTSCP', 'krabTSCP', 'bottom', 'chum_bucket'];
         this.themeDict['windy_food'] = ['burger', 'table', 'spatula', 'barrelTSCP'];
         this.themeDict['vehicles'] = ['car2', 'bus2TSCP', 'train', 'boatTSCP', 'train'];
-        this.themeDict['house'] = ['house1', 'pineapple_house', 'squidwardHouseTSCP', 'bottom'];
+        this.themeDict['water'] = ['swimmingRing', 'tiki_wood'];
         this.themeDict['statues'] = ['patrickStatue', 'spongehengeTSCP', 'patrickStatue'];
     }
 
@@ -124,6 +124,7 @@ class ObstacleGenerator {
         this.rotateDict['pineappleHouseTSCP'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotateDict['krabTSCP'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotateDict['house1'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['tiki_wood'] = new THREE.Vector3(0, Math.PI, 0);
 
     }
     initVelDict() {

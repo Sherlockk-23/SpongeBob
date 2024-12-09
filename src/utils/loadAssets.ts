@@ -91,7 +91,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         // 'infoSign',
         'sauceTSCP',
         'sodaTSCP',
-        'discoball',
+        'disco_ball',
         'guess_box',
         'xbox_controller_lp',
     ];

@@ -40,6 +40,8 @@ class ItemGenerator {
             this.rotationDict[name] = new THREE.Vector3(0, 0, 0);
         });
         this.sizeDict['sodaTSCP'] = new THREE.Vector3(0.6, 1, 0.6);
+        this.sizeDict['disco_ball'] = new THREE.Vector3(0.7, 0.05, 0.7);
+        this.rotationDict['disco_ball'] = new THREE.Vector3(-Math.PI / 3, 0, 0);
         this.sizeDict['sauceTSCP'] = new THREE.Vector3(0.6, 1, 0.6);
         this.sizeDict['infoSign'] = new THREE.Vector3(1, 1, 0.7);
         this.sizeDict['xbox_controller_lp'] = new THREE.Vector3(0.6, 0.6, 0.6);
