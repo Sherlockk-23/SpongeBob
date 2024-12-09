@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/pics/1.png">
+    <title>Instruction Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #ffe6f2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .instructions {
+            text-align: center;
+            background: #fff0f5;
+            border: 3px dashed #ff69b4;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .instructions h1 {
+            color: #ff1493;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .instructions p {
+            color: #333;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #ff69b4;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .button-container button:hover {
+            background-color: #ff1493;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="instructions">
+        <h1>Gameplay Instructions</h1>
+        <p>w - Jump</p>
+        <p>d - Move Right</p>
+        <p>a - Move Left</p>
+        <p>s - Quick Land</p>
+        <p>j - Punch</p>
+        <p>k - Use Item</p>
+    </div>
+    <div class="button-container">
+        <button onclick="location.href='Character.html'">Go to Character Selection</button>
+    </div>
+</body>
+
+</html>

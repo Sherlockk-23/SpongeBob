@@ -25,7 +25,7 @@ class Stage extends MovableObject {
     items: BaseItem[] = [];
     itemGenerator: ItemGenerator;
     theme: string = 'normal';
-    themes: string[] = ['normal', 'bikini_bottom', 'windy_food', 'vehicles', 'house', 'statues'];
+    themes: string[] = ['normal', 'bikini_bottom', 'windy_food', 'vehicles', 'water', 'statues'];
     length: number = 200;
 
     scene: THREE.Scene;
@@ -63,7 +63,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        this.theme = 'windy_food';
+        this.theme = 'water';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -75,8 +75,8 @@ class Stage extends MovableObject {
         this.ceiling = new Ceiling('ceiling', Stage.WIDTH, this.length);
 
         let [texture, texwidth, texheight] = this.theme2texture(this.theme, true);
+        // this.ground = new Ground('ground', Stage.WIDTH * 10, this.length, texture, texwidth, texheight);
         this.ground = new Ground('ground', Stage.WIDTH * 10, this.length, texture, texwidth, texheight);
-
         [texture, texwidth, texheight] = this.theme2texture(this.theme, false);
         this.dome = new Dome('dome', Stage.WIDTH * 5, this.length, texture, texwidth, texheight);
 
