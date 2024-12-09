@@ -244,7 +244,7 @@ abstract class BaseCharacter extends MovableObject {
 
     updateEffects(delta: number) {
         // check apply
-        if (this.inputHandler.isKeyPressed('1')) {
+        if (this.inputHandler.isKeyPressed('k')) {
             if (this.waiting_effect[0] != '') {
                 this.applyEffect(this.waiting_effect[0], this.waiting_effect[1]);
                 this.waiting_effect = ['', { duration: 0, apply: (char: BaseCharacter) => { }, remove: (char: BaseCharacter) => { } }];
