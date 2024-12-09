@@ -46,7 +46,13 @@ class ParticleSystem {
     duration: number;
     elapsedTime: number;
 
-    constructor(position: THREE.Vector3, particleCount: number = 100, duration: number = 1) {
+    constructor() {
+        this.duration = 0;
+        this.elapsedTime = 0;
+        this.velocities = [];
+    }
+
+    createBreakEffect(position: THREE.Vector3, particleCount: number = 100, duration: number = 1) {
         this.duration = duration;
         this.elapsedTime = 0;
 
@@ -69,6 +75,29 @@ class ParticleSystem {
         this.particles = new THREE.Points(geometry, material);
     }
 
+    createWindEffect(boxMin: THREE.Vector3, boxMax: THREE.Vector3, particleCount: number = 100, duration: number = 1, direction: THREE.Vector3 = new THREE.Vector3(1, 0, 0)) {
+        this.duration = duration;
+        this.elapsedTime = 0;
+
+        const geometry = new THREE.BufferGeometry();
+        const positions: number[] = [];
+        this.velocities = [];
+
+        for (let i = 0; i < particleCount; i++) {
+            const x = THREE.MathUtils.lerp(boxMin.x, boxMax.x, Math.random());
+            const y = THREE.MathUtils.lerp(boxMin.y, boxMax.y, Math.random());
+            const z = THREE.MathUtils.lerp(boxMin.z, boxMax.z, Math.random());
+            positions.push(x, y, z);
+            this.velocities.push(direction.clone().multiplyScalar(Math.random() * 2));
+        }
+
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+
+        const material = new THREE.PointsMaterial({ color: 0x87CEFA, size: 0.1, transparent: true, opacity: 0.5 });
+        this.particles = new THREE.Points(geometry, material);
+        console.log('particles', this.particles);
+    }
+
     update(delta: number): boolean {
         this.elapsedTime += delta;
         if (this.elapsedTime >= this.duration) {
@@ -85,6 +114,19 @@ class ParticleSystem {
 
         return true;
     }
+
+    addToUpdateList(scene: THREE.Scene) {
+        const clock = new THREE.Clock();
+        const update = () => {
+          const delta = clock.getDelta();
+          if (this.update(delta)) {
+            requestAnimationFrame(update);
+          } else {
+            scene.remove(this.particles);
+          }
+        };
+        update();
+      }
 }
 
 export { ParticleSystem };

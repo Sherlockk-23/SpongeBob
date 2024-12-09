@@ -21,33 +21,26 @@ abstract class BaseObject {
     const bbox = new THREE.Box3().setFromObject(this.mesh);
     const size = bbox.getSize(new THREE.Vector3());
     this.boundingBoxHelper = new THREE.BoxHelper(this.mesh, 0xff0000);
-    // this.mesh.add(this.boundingBoxHelper);
+    // this.mesh.add(this.boundingBoxHelper);null
   }
 
-  destruct(scene: THREE.Scene = NaN) {
+  destruct(scene: THREE.Scene=null) {
     if (scene && (this.type === 'item' || this.type === 'obstacle')) {
       console.log(this.name, 'is destructing');
       // 创建粒子系统
-
-      const particleSystem = new ParticleSystem(this.getCenter());
+      const particleSystem = new ParticleSystem();
+      particleSystem.createBreakEffect(this.getCenter());
       scene.add(particleSystem.particles);
 
-      // 更新粒子系统
-      const clock = new THREE.Clock();
-      const animate = () => {
-        requestAnimationFrame(animate);
-        const delta = clock.getDelta();
-        if (!particleSystem.update(delta)) {
-          scene.remove(particleSystem.particles);
-        }
-      };
-      animate();
+      // 将粒子系统添加到场景的更新列表中
+      particleSystem.addToUpdateList(scene);
     } 
     this.mesh.parent?.remove(this.mesh);
     this.boundingBoxHelper.parent?.remove(this.boundingBoxHelper);
     disposeMeshes(this.mesh);
-    
   }
+
+
 
   rescale(targetWidth: number, targetHeight: number, targetDepth: number) {
     // if(this.type === 'character'){

@@ -23,6 +23,8 @@ import { BaseEnemy } from './objects/enemies/BaseEnemy.ts';
 
 import { UIController } from './ui.ts';
 
+import { ParticleSystem } from './utils/mesh.ts';
+
 
 class Controller {
 
@@ -207,12 +209,20 @@ class Controller {
                             duration: 0.3,
                             apply: (char: BaseCharacter) => {
                                 char.force.x -= 3;
+                                
                             },
                             remove: (char: BaseCharacter) => {
                                 char.force.x += 3;
                             }
                         };
                         this.character.applyEffect('windy', effect);
+
+                        const particleSystem = new ParticleSystem();
+                        const boxMin = new THREE.Vector3(this.character.mesh.position.x - 5, this.character.mesh.position.y - 5, this.character.mesh.position.z - 5);
+                        const boxMax = new THREE.Vector3(this.character.mesh.position.x + 5, this.character.mesh.position.y + 5, this.character.mesh.position.z + 5);
+                        particleSystem.createWindEffect(boxMin, boxMax, 50, 0.5, new THREE.Vector3(-2, 0, 0));
+                        this.scene.getScene().add(particleSystem.particles);
+                        particleSystem.addToUpdateList(this.scene.getScene());
                     }
                     if (interval[2] == 'wind_from_right') {
                         const effect = {
@@ -225,6 +235,13 @@ class Controller {
                             }
                         };
                         this.character.applyEffect('windy', effect);
+                        const particleSystem = new ParticleSystem();
+                        const boxMin = new THREE.Vector3(this.character.mesh.position.x - 5, this.character.mesh.position.y - 5, this.character.mesh.position.z - 5);
+                        const boxMax = new THREE.Vector3(this.character.mesh.position.x + 5, this.character.mesh.position.y + 5, this.character.mesh.position.z + 5);
+                        particleSystem.createWindEffect(boxMin, boxMax, 50, 0.5, new THREE.Vector3(2, 0, 0));
+                        this.scene.getScene().add(particleSystem.particles);
+                        particleSystem.addToUpdateList(this.scene.getScene());
+
                     }
                 }
             }
@@ -259,7 +276,7 @@ class Controller {
         this.checkPositionState();
         this.checkCollisionObstacles(this.stages[this.stageidx], delta);
         this.checkCollisionItems(this.stages[this.stageidx]);
-        console.log(this.stageidx);
+        // console.log(this.stageidx);
         if (this.stageidx > 0) {
             this.stages[this.stageidx - 1].tick(delta);
             this.stages[this.stageidx - 1].updateNearestList(this.character.mesh.position.clone(), 20);
