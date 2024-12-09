@@ -199,27 +199,29 @@ class Controller {
     checkPositionState() {
         for (let stage of this.stages) {
             for (let interval of stage.specialIntervals) {
-                if (this.character.mesh.position.z > interval[0] && this.character.mesh.position.z < interval[1]) {
+                if (this.character.mesh.position.z > interval[0] + stage.mesh.position.z
+                     && this.character.mesh.position.z < interval[1] + stage.mesh.position.z
+                    ) {
                     if (interval[2] == 'wind_from_left') {
                         const effect = {
-                            duration: 0.1,
+                            duration: 0.3,
                             apply: (char: BaseCharacter) => {
-                                char.force.x = -3;
+                                char.force.x -= 3;
                             },
                             remove: (char: BaseCharacter) => {
-                                char.force.x = 0;
+                                char.force.x += 3;
                             }
                         };
                         this.character.applyEffect('windy', effect);
                     }
                     if (interval[2] == 'wind_from_right') {
                         const effect = {
-                            duration: 0.1,
+                            duration: 0.3,
                             apply: (char: BaseCharacter) => {
-                                char.force.x = 3;
+                                char.force.x +=3;
                             },
                             remove: (char: BaseCharacter) => {
-                                char.force.x = 0;
+                                char.force.x -=3;
                             }
                         };
                         this.character.applyEffect('windy', effect);

@@ -48,7 +48,8 @@ abstract class BaseCharacter extends MovableObject {
     defaultMinVel: number = 0.1;
     defaultMaxJumpVel: number = 4.2;
     defaultDeaccel: number = 5;
-    defaultAccel: number = 1.5;
+    defaultAccelZ: number = 1.5;
+    defaultAccelX: number = 2.5;
     defaultGravity: number = 2;
 
     inputHandler: InputHandler;
@@ -83,38 +84,43 @@ abstract class BaseCharacter extends MovableObject {
         this.newMovement = movement;
     }
 
-    updateAcceleration(delta: number, acceleration: number = this.defaultAccel, deceleration: number = this.defaultDeaccel) {
+    updateAcceleration(delta: number) {
         if (this.inputHandler.isKeyPressed('w') || true) {
-            this.accel.z = acceleration;
+            this.accel.z = this.defaultAccelZ;
         } else if (this.inputHandler.isKeyPressed('s')) {
-            this.accel.z = -acceleration;
+            this.accel.z = this.defaultAccelZ;
             this.updateMovementTmp('running');
         } else {
             if (Math.abs(this.vel.z) < this.defaultMinVel) {
                 this.accel.z = 0;
                 this.vel.z = 0;
             } else if (this.vel.z > 0) {
-                this.accel.z = -deceleration;
+                this.accel.z = -this.defaultDeaccel;
             } else {
-                this.accel.z = deceleration;
+                this.accel.z = this.defaultDeaccel;
             }
             this.updateMovementTmp('walking');
         }
 
         if (this.inputHandler.isKeyPressed('a')) {
-            this.accel.x = acceleration;
+            this.accel.x = this.defaultAccelX;
+            this.accel.x += this.force.x;
         } else if (this.inputHandler.isKeyPressed('d')) {
-            this.accel.x = -acceleration;
+            this.accel.x = -this.defaultAccelX;
+            this.accel.x += this.force.x;
         } else {
-            if (Math.abs(this.vel.x) < this.defaultMinVel) {
+            if (Math.abs(this.vel.x) < this.defaultMinVel && this.force.x == 0) {
                 this.accel.x = 0;
                 this.vel.x = 0;
-            } else if (this.vel.x > 0) {
-                this.accel.x = -deceleration;
-            } else {
-                this.accel.x = deceleration;
+            } else if (this.vel.x > 0 && this.force.x == 0) {
+                this.accel.x = -this.defaultAccelX;
+            } else if(this.vel.x < 0 && this.force.x == 0) {
+                this.accel.x = this.defaultAccelX;
+            }else{
+                this.accel.x = this.force.x;
             }
         }
+
         if (this.inputHandler.isKeyPressed('w') && this.onGround()) {
             this.vel.y = this.defaultMaxJumpVel / 2;
         }
@@ -122,12 +128,13 @@ abstract class BaseCharacter extends MovableObject {
             this.vel.y = -this.defaultMaxJumpVel;
         }
         this.accel.y = -this.defaultGravity;
-        this.accel.add(this.force);
+
     }
 
     updateVelocity(delta: number): void {
         this.vel.add(this.accel.clone().multiplyScalar(delta));
         // this.vel.clampLength(0, this.defaultMaxVel);
+        // this.vel.add(this.force.clone().multiplyScalar(delta));
         this.vel.x = Math.min(Math.max(this.vel.x, -this.defaultMaxVel), this.defaultMaxVel);
         this.vel.y = Math.min(Math.max(this.vel.y, -this.defaultMaxJumpVel), this.defaultMaxJumpVel);
         this.vel.z = Math.min(Math.max(this.vel.z, -this.defaultMaxVel), this.defaultMaxVel);
@@ -292,7 +299,11 @@ abstract class BaseCharacter extends MovableObject {
         this.animate(delta);
         this.getMovement();
 
-        // console.log('debuging effects', this.waiting_effect, this.effects);
+        console.log('debuging wind', this.name, 'position:', this.mesh.position);
+        console.log('debuging wind', this.effects);
+        console.log('debuging wind, force=', this.force);
+        console.log('debuging wind, accel=', this.accel);
+        console.log('debuging wind, vel=', this.vel);
     }
 
     cameraShake(intensity: number, duration: number) {

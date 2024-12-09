@@ -226,11 +226,11 @@ class Stage extends MovableObject {
 
         if (this.theme == 'windy_food') {
 
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 5; i++) {
                 if (Math.random() >= 0.5) {
                     const x = 6;
-                    const y = 0;
-                    const z = i * obstacleSpacing * 5;
+                    const y = -0.1;
+                    const z = i *  20;
                     if (Math.random() >= 0.5) {
                         const obstacle = this.obstacleGenerator.centainObstacle('mill1');
                         obstacle.rotate('y', Math.PI);
@@ -251,8 +251,8 @@ class Stage extends MovableObject {
                 }
                 else {
                     const x = -6;
-                    const y = 0;
-                    const z = i * obstacleSpacing * 5;
+                    const y = -0.1;
+                    const z = i * 20;
                     if (Math.random() >= 0.5) {
                         const obstacle = this.obstacleGenerator.centainObstacle('mill1');
                         this.obstacles.push(obstacle);
