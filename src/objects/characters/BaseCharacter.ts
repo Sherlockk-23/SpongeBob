@@ -65,6 +65,7 @@ abstract class BaseCharacter extends MovableObject {
         this.pos = new THREE.Vector3(0, 0, 0);
         this.vel = new THREE.Vector3(0, 0, 0);
         this.accel = new THREE.Vector3(0, 0, 0);
+        this.force = new THREE.Vector3(0, 0, 0);
         this.inputHandler = new InputHandler();
 
         this.condition = 'normal';
@@ -121,7 +122,7 @@ abstract class BaseCharacter extends MovableObject {
             this.vel.y = -this.defaultMaxJumpVel;
         }
         this.accel.y = -this.defaultGravity;
-        this.accel.add(this.force.clone());
+        this.accel.add(this.force);
     }
 
     updateVelocity(delta: number): void {

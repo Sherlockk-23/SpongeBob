@@ -200,14 +200,26 @@ class Controller {
         for (let stage of this.stages) {
             for (let interval of stage.specialIntervals) {
                 if (this.character.mesh.position.z > interval[0] && this.character.mesh.position.z < interval[1]) {
-                    if (interval[2] == 'windy') {
+                    if (interval[2] == 'wind_from_left') {
                         const effect = {
                             duration: 0.1,
                             apply: (char: BaseCharacter) => {
-                                char.force.x = 0.5;
+                                char.force.x = -3;
                             },
                             remove: (char: BaseCharacter) => {
-                                char.force.x -= 0.5;
+                                char.force.x = 0;
+                            }
+                        };
+                        this.character.applyEffect('windy', effect);
+                    }
+                    if (interval[2] == 'wind_from_right') {
+                        const effect = {
+                            duration: 0.1,
+                            apply: (char: BaseCharacter) => {
+                                char.force.x = 3;
+                            },
+                            remove: (char: BaseCharacter) => {
+                                char.force.x = 0;
                             }
                         };
                         this.character.applyEffect('windy', effect);
@@ -242,6 +254,7 @@ class Controller {
 
         this.stages[this.stageidx].updateNearestList(this.character.mesh.position.clone(), 20);
         this.stages[this.stageidx].tick(delta);
+        this.checkPositionState();
         this.checkCollisionObstacles(this.stages[this.stageidx], delta);
         this.checkCollisionItems(this.stages[this.stageidx]);
         console.log(this.stageidx);

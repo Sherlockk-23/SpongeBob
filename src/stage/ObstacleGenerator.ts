@@ -18,7 +18,7 @@ function traverseAndSetShadows(object: THREE.Object3D) {
 class ObstacleGenerator {
     seed: number = 0;
     gltfDict: { [key: string]: GLTF } = {};
-    themes: string[] = ['all', 'normal', 'bikini_bottom', 'food', 'vehicles', 'house', 'statues'];
+    themes: string[] = ['all', 'normal', 'bikini_bottom', 'windy_food', 'vehicles', 'house', 'statues'];
     themeDict: { [key: string]: string[] } = {};
     sizeDict: { [key: string]: THREE.Vector3 } = {};
     rotateDict: { [key: string]: THREE.Vector3 } = {};
@@ -98,7 +98,8 @@ class ObstacleGenerator {
         this.sizeDict['checkPoint'] = new THREE.Vector3(1, 3.5, 1);
 
         //decorations and environment
-        this.sizeDict['wind_turbine'] = new THREE.Vector3(1, 1, 1);
+        this.sizeDict['mill1'] = new THREE.Vector3(5, 5, 5);
+        this.sizeDict['mill2'] = new THREE.Vector3(5, 5, 5);
         this.sizeDict['wooden_fence'] = new THREE.Vector3(3, 1.2, 0.1);
         console.log('generator initialized', this.themeDict);
     }

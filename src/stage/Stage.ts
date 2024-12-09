@@ -63,7 +63,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        this.theme = 'vehicles';
+        this.theme = 'windy_food';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -223,20 +223,57 @@ class Stage extends MovableObject {
             obstacle.setPosition(x, y, z);
         }
 
-        for (let i = 0; i < numObstacles; i++) {
-            const obstacle = this.obstacleGenerator.centainObstacle('wind_turbine');
-            obstacle.rotate('y', -Math.PI / 2)
-            this.obstacles.push(obstacle);
-            this.mesh.add(obstacle.mesh);
 
-            const x = 4;
-            const y = 0;
-            const z = i * obstacleSpacing;
+        if (this.theme == 'windy_food') {
 
-            obstacle.setPosition(x, y, z);
-            this.specialIntervals.push([z - this.obstacleGenerator.sizeDict['wind_turbine'] / 2,
-            z + this.obstacleGenerator.sizeDict['wind_turbine'].z / 2, 'windy']);
+            for (let i = 0; i < 20; i++) {
+                if (Math.random() >= 0.5) {
+                    const x = 6;
+                    const y = 0;
+                    const z = i * obstacleSpacing * 5;
+                    if (Math.random() >= 0.5) {
+                        const obstacle = this.obstacleGenerator.centainObstacle('mill1');
+                        obstacle.rotate('y', Math.PI);
+                        this.obstacles.push(obstacle);
+                        this.mesh.add(obstacle.mesh);
+                        obstacle.setPosition(x, y, z);
+                        this.specialIntervals.push([z - this.obstacleGenerator.sizeDict['mill1'].z / 2,
+                        z + this.obstacleGenerator.sizeDict['mill1'].z / 2, 'wind_from_left']);
+                    }
+                    else {
+                        const obstacle = this.obstacleGenerator.centainObstacle('mill2');
+                        this.obstacles.push(obstacle);
+                        this.mesh.add(obstacle.mesh);
+                        obstacle.setPosition(x, y, z);
+                        this.specialIntervals.push([z - this.obstacleGenerator.sizeDict['mill2'].z / 2,
+                        z + this.obstacleGenerator.sizeDict['mill2'].z / 2, 'wind_from_left']);
+                    }
+                }
+                else {
+                    const x = -6;
+                    const y = 0;
+                    const z = i * obstacleSpacing * 5;
+                    if (Math.random() >= 0.5) {
+                        const obstacle = this.obstacleGenerator.centainObstacle('mill1');
+                        this.obstacles.push(obstacle);
+                        this.mesh.add(obstacle.mesh);
+                        obstacle.setPosition(x, y, z);
+                        this.specialIntervals.push([z - this.obstacleGenerator.sizeDict['mill1'].z / 2,
+                        z + this.obstacleGenerator.sizeDict['mill1'].z / 2, 'wind_from_right']);
+                    }
+                    else {
+                        const obstacle = this.obstacleGenerator.centainObstacle('mill2');
+                        obstacle.rotate('y', Math.PI);
+                        this.obstacles.push(obstacle);
+                        this.mesh.add(obstacle.mesh);
+                        obstacle.setPosition(x, y, z);
+                        this.specialIntervals.push([z - this.obstacleGenerator.sizeDict['mill2'].z / 2,
+                        z + this.obstacleGenerator.sizeDict['mill2'].z / 2, 'wind_from_right']);
+                    }
+                }
+            }
         }
+
 
         for (let i = 0; i < numObstacles; i++) {
             const obstacle = this.obstacleGenerator.randomObstacle(i, this.theme);
