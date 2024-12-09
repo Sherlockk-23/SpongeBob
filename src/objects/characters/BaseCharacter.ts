@@ -115,10 +115,10 @@ abstract class BaseCharacter extends MovableObject {
                 this.accel.x = deceleration;
             }
         }
-        if (this.inputHandler.isKeyPressed(' ') && this.onGround()) {
+        if (this.inputHandler.isKeyPressed('w') && this.onGround()) {
             this.vel.y = this.defaultMaxJumpVel / 2;
         }
-        if (this.inputHandler.isKeyPressed('c') && !this.onGround()) {
+        if (this.inputHandler.isKeyPressed('s') && !this.onGround()) {
             this.vel.y = -this.defaultMaxJumpVel;
         }
         this.accel.y = -this.defaultGravity;
