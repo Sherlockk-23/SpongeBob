@@ -281,7 +281,10 @@ class Stage extends MovableObject {
                 if (position) {
                     this.obstacles.push(obstacle);
                     this.mesh.add(obstacle.mesh);
-                    obstacle.setPosition(position.x, position.y + 20, position.z);
+                    if(obstacle.name.includes('rock'))
+                        obstacle.setPosition(position.x, position.y + 30, position.z);
+                    else
+                        obstacle.setPosition(position.x, position.y, position.z);
                 } else {
                     // If we couldn't place the obstacle, clean it up
                     obstacle.destruct();
@@ -319,7 +322,7 @@ class Stage extends MovableObject {
     }
 
     initItems(trackLength: number, trackWidth: number) {
-        const itemSpacing = 20; // Change this to change density
+        const itemSpacing = 30; // Change this to change density
         const numItems = Math.floor(trackLength / itemSpacing);
         // const numItems = 10;
         for (let i = 0; i < numItems; i++) {
@@ -336,7 +339,8 @@ class Stage extends MovableObject {
             // item.addBoundingBoxHelper(this.scene);
         }
 
-        const numstars = 3;
+        const starSpacing = 40; // Change this to change density
+        const numstars = Math.floor(trackLength / starSpacing);
         for (let i = 0; i < numstars; i++) {
             const item = this.itemGenerator.centainItem('star', i);
             this.items.push(item);
@@ -344,7 +348,7 @@ class Stage extends MovableObject {
 
             const x = Math.random() * trackWidth - trackWidth / 2;
             const y = 0.8 + Math.random() * 1.5;
-            const z = i * trackLength/numstars + Math.random() * itemSpacing;
+            const z = i * starSpacing + Math.random() * starSpacing;
 
             item.setPosition(x, y, z);
         }

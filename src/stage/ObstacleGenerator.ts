@@ -55,7 +55,7 @@ class ObstacleGenerator {
         this.themeDict['vehicles'] = ['car2', 'bus2TSCP', 'train', 'boatTSCP', 'train'];
         this.themeDict['water'] = ['swimmingRing', 'tiki_wood'];
         // this.themeDict['statues'] = ['patrickStatue', 'spongehengeTSCP', 'patrickStatue'];
-        this.themeDict['statues'] = ['rock'];
+        this.themeDict['statues'] = ['rock', 'patrickStatue', 'spongehengeTSCP'];
     }
 
     initSizeDict() {

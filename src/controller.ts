@@ -102,16 +102,18 @@ class Controller {
     }
 
     getTheme(){
-        if(this.collectedStars < 5)
-           return 'statues';
-        else if(this.collectedStars < 10)
+        if(this.collectedStars < 3)
+           return 'normal';
+        else if(this.collectedStars < 8)
            return 'food';
-        else if(this.collectedStars < 15)
+        else if(this.collectedStars < 12)
            return 'windy_food';
-        else if(this.collectedStars < 20)
+        else if(this.collectedStars < 16)
            return 'vehicles';
-        else
+        else if(this.collectedStars < 20)
            return 'biki_bottom';
+        else
+              return 'statues';
     }
 
     changeStage() {
@@ -170,7 +172,10 @@ class Controller {
                     this.uicontroller.swapItem('pink');
                 }else if(item.name.includes('star')){
                     this.collectedStars += 1;
-                    // console.log('collected stars: ', this.collectedStars);
+                    const starCountElement = document.getElementById('star-count');
+                    if (starCountElement) {
+                        starCountElement.textContent = this.collectedStars.toFixed(0);
+                    }
                 }
                 // item.applyEffect(this.character);
                 stage.removeItem(item);
@@ -220,6 +225,8 @@ class Controller {
         for (let stage of this.stages) {
             if (stage.theme == 'statues') {
                 for (let obstacle of stage.nearestObstacles) {
+                    if (!obstacle.name.includes('rock')) 
+                        continue;
                     if (this.character.mesh.position.z > obstacle.mesh.position.z - 1.5
                         && this.character.mesh.position.z < obstacle.mesh.position.z + 1.5
                         && this.character.mesh.position.y < obstacle.getBottomCenter().y

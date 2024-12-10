@@ -85,11 +85,11 @@ abstract class BaseCharacter extends MovableObject {
     }
 
     updateAcceleration(delta: number) {
-        if (this.inputHandler.isKeyPressed('w') || true) {
+        if (this.inputHandler.isKeyPressed('w')) {
             this.accel.z = this.defaultAccelZ;
         } else if (this.inputHandler.isKeyPressed('s')) {
             this.accel.z = this.defaultAccelZ;
-            this.updateMovementTmp('running');
+            // this.updateMovementTmp('running');
         } else {
             if (Math.abs(this.vel.z) < this.defaultMinVel) {
                 this.accel.z = 0;
@@ -99,7 +99,7 @@ abstract class BaseCharacter extends MovableObject {
             } else {
                 this.accel.z = this.defaultDeaccel;
             }
-            this.updateMovementTmp('walking');
+            // this.updateMovementTmp('walking');
         }
 
         if (this.inputHandler.isKeyPressed('a')) {
@@ -121,7 +121,7 @@ abstract class BaseCharacter extends MovableObject {
             }
         }
 
-        if (this.inputHandler.isKeyPressed('w') && this.onGround()) {
+        if (this.inputHandler.isKeyPressed(' ') && this.onGround()) {
             this.vel.y = this.defaultMaxJumpVel / 2;
         }
         if (this.inputHandler.isKeyPressed('s') && !this.onGround()) {
