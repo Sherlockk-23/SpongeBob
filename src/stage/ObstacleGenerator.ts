@@ -18,7 +18,7 @@ function traverseAndSetShadows(object: THREE.Object3D) {
 class ObstacleGenerator {
     seed: number = 0;
     gltfDict: { [key: string]: GLTF } = {};
-    themes: string[] = ['all', 'normal', 'bikini_bottom', 'windy_food', 'vehicles', 'water', 'statues'];
+    themes: string[] = ['all', 'normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues'];
     themeDict: { [key: string]: string[] } = {};
     sizeDict: { [key: string]: THREE.Vector3 } = {};
     rotateDict: { [key: string]: THREE.Vector3 } = {};
@@ -49,11 +49,13 @@ class ObstacleGenerator {
 
     initThemes() {
         // 这里各科调distribution !!!
-        this.themeDict['normal'] = ['bottom', 'hat', /*'clock', */'snailClock', 'swimmingRing'];
+        // this.themeDict['normal'] = ['bottom', 'hat', /*'clock', */'snailClock', 'swimmingRing'];
+        this.themeDict['normal'] = ['jelly_fish'];
         this.themeDict['bikini_bottom'] = ['squidwardHouseTSCP', 'pineapple_house', 'lightHouseTSCP', 'krabTSCP', 'bottom', 'chum_bucket'];
         this.themeDict['windy_food'] = ['burger', 'table', 'spatula', 'barrelTSCP'];
         this.themeDict['vehicles'] = ['car2', 'bus2TSCP', 'train', 'boatTSCP', 'train'];
-        this.themeDict['water'] = ['swimmingRing', 'tiki_wood'];
+        // this.themeDict['dungeon'] = ['pillar', 'tiki_wood'];
+        this.themeDict['dungeon'] = ['tiki_wood'];
         // this.themeDict['statues'] = ['patrickStatue', 'spongehengeTSCP', 'patrickStatue'];
         this.themeDict['statues'] = ['rock'];
     }
@@ -85,6 +87,11 @@ class ObstacleGenerator {
 
         //statues
         this.sizeDict['rock'] = new THREE.Vector3(3, 3, 3);
+
+        //dungeon
+        this.sizeDict['pillar'] = new THREE.Vector3(1.4, 4, 1.4);
+        this.sizeDict['tiki_wood'] = new THREE.Vector3(1.75, 1.75, 1.75);
+        this.sizeDict['jelly_fish'] = new THREE.Vector3(1.2, 1.8, 1.2);
 
 
         this.sizeDict['hat'] = new THREE.Vector3(0.2, 0.5, 0.2);
@@ -139,6 +146,8 @@ class ObstacleGenerator {
         this.velDict['bus2TSCP'] = new THREE.Vector3(0, 0, -0.5);
         this.velDict['boatTSCP'] = new THREE.Vector3(0.1, 0, 0);
         this.velDict['rock'] = new THREE.Vector3(0, -5, 0);
+        this.velDict['tiki_wood'] = new THREE.Vector3(0, -1, 0);
+        this.velDict['jelly_fish'] = new THREE.Vector3(1, 0, 0);
     }
 
     randomObstacle(id: number = -1, theme: string = 'normal', size: THREE.Vector3 = NaN): BaseObstacle {

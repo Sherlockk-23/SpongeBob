@@ -25,7 +25,7 @@ class Stage extends MovableObject {
     items: BaseItem[] = [];
     itemGenerator: ItemGenerator;
     theme: string = 'normal';
-    themes: string[] = ['normal', 'bikini_bottom', 'windy_food', 'vehicles', 'water', 'statues'];
+    themes: string[] = ['normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues'];
     length: number = 200;
 
     scene: THREE.Scene;
@@ -47,7 +47,7 @@ class Stage extends MovableObject {
     static readonly HEIGHT = 15;
     static readonly START_Z = 0;
 
-    constructor(scene: Scene, name: string, stageNumber: number, 
+    constructor(scene: Scene, name: string, stageNumber: number,
         obstacleGenerator: ObstacleGenerator, itemGenerator: ItemGenerator,
         textureDict: { [key: string]: THREE.Texture } = {}, theme = 'all') {
 
@@ -63,7 +63,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        this.theme = 'statues';
+        this.theme = 'dungeon';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -288,6 +288,28 @@ class Stage extends MovableObject {
                 }
             }
         }
+        else if (this.theme == 'dungeon') {
+            for (let i = 0; i < this.length / 1.75; i++) {
+                const x = [-2.635, -0.875, 0.875, 2.635];
+                const y = 0;
+                const z = i * 1.75;
+                for (let j = 0; j < 4; j++) {
+                    const obstacle = this.obstacleGenerator.randomObstacle(i * 4 + j, this.theme);
+                    this.obstacles.push(obstacle);
+                    this.mesh.add(obstacle.mesh);
+                    obstacle.setPosition(x[j], y, z);
+                }
+            }
+            for (let i = 0; i < this.length / 7.5; i++) {
+                const x = 0;
+                const y = 1.5;
+                const z = i * 7.5;
+                const obstacle = this.obstacleGenerator.randomObstacle(i, 'normal');
+                this.obstacles.push(obstacle);
+                this.mesh.add(obstacle.mesh);
+                obstacle.setPosition(x, y, z);
+            }
+        }
         else {
             for (let i = 0; i < numObstacles; i++) {
                 const obstacle = this.obstacleGenerator.randomObstacle(i, this.theme);
@@ -344,7 +366,7 @@ class Stage extends MovableObject {
 
             const x = Math.random() * trackWidth - trackWidth / 2;
             const y = 0.8 + Math.random() * 1.5;
-            const z = i * trackLength/numstars + Math.random() * itemSpacing;
+            const z = i * trackLength / numstars + Math.random() * itemSpacing;
 
             item.setPosition(x, y, z);
         }

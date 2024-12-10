@@ -17,14 +17,14 @@ abstract class BaseObject {
     this.mesh = new THREE.Object3D();
     this.mesh.add(mesh);
     this.mesh.castShadow = true;
-    this.mesh.receiveShadow=true;
+    this.mesh.receiveShadow = true;
     const bbox = new THREE.Box3().setFromObject(this.mesh);
     const size = bbox.getSize(new THREE.Vector3());
     this.boundingBoxHelper = new THREE.BoxHelper(this.mesh, 0xff0000);
     // this.mesh.add(this.boundingBoxHelper);null
   }
 
-  destruct(scene: THREE.Scene=null) {
+  destruct(scene: THREE.Scene = null) {
     if (scene && (this.type === 'item' || this.type === 'obstacle')) {
       console.log(this.name, 'is destructing');
       // 创建粒子系统
@@ -34,7 +34,7 @@ abstract class BaseObject {
 
       // 将粒子系统添加到场景的更新列表中
       particleSystem.addToUpdateList(scene);
-    } 
+    }
     this.mesh.parent?.remove(this.mesh);
     this.boundingBoxHelper.parent?.remove(this.boundingBoxHelper);
     disposeMeshes(this.mesh);
@@ -98,11 +98,18 @@ abstract class BaseObject {
     return center;
   }
 
-  getBottomCenter() :THREE.Vector3{
+  getBottomCenter(): THREE.Vector3 {
     const bbox = new THREE.Box3().setFromObject(this.mesh);
     const center = bbox.getCenter(new THREE.Vector3());
     const bottomCenter = new THREE.Vector3(center.x, bbox.min.y, center.z);
     return bottomCenter;
+  }
+
+  getTopCenter(): THREE.Vector3 {
+    const bbox = new THREE.Box3().setFromObject(this.mesh);
+    const center = bbox.getCenter(new THREE.Vector3());
+    const topCenter = new THREE.Vector3(center.x, bbox.max.y, center.z);
+    return topCenter;
   }
 
   setPosition(x: number, y: number, z: number) {
@@ -189,7 +196,7 @@ abstract class MovableObject extends BaseObject {
 
     const children = this.mesh.children;
     children.forEach(child => {
-      if (child instanceof THREE.Camera ) {
+      if (child instanceof THREE.Camera) {
 
       } else {
         this.mesh.remove(child);

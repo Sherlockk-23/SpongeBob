@@ -31,12 +31,46 @@ class BaseObstacle extends MovableObject {
     }
 
     ensureOnGround() {
-        if (this.getBottomCenter().y <= 0) {
-            this.vel.y = 0;
+        if (this.name.includes('rock')) {
+            if (this.getBottomCenter().y <= 0) {
+                this.vel.y = 0;
+            }
+        }
+
+    }
+
+    rebound() {
+        if (this.name.includes('tiki')) {
+            if (this.getTopCenter().y <= 0.15) {
+                this.vel.y = -this.vel.y;
+            }
+            if (this.getBottomCenter().y >= 0.1) {
+                this.vel.y = -this.vel.y;
+            }
         }
     }
 
-
+    jellyfishMotion() {
+        if (this.name.includes('jelly_fish')) {
+            //move in a circle
+            if (this.getBottomCenter().y <= 1.5 && this.getBottomCenter().x <= -3) {
+                this.vel.y = 0;
+                this.vel.x = 1;
+            }
+            if (this.getBottomCenter().y <= 1.5 && this.getBottomCenter().x >= 3) {
+                this.vel.y = 1;
+                this.vel.x = 0;
+            }
+            if (this.getBottomCenter().y >= 3 && this.getBottomCenter().x >= 3) {
+                this.vel.y = 0;
+                this.vel.x = -1;
+            }
+            if (this.getBottomCenter().y >= 3 && this.getBottomCenter().x <= -3) {
+                this.vel.y = -1;
+                this.vel.x = 0;
+            }
+        }
+    }
 
     tick(delta: number): void {
 
@@ -45,6 +79,8 @@ class BaseObstacle extends MovableObject {
         this.updatePosition(delta);
         this.updateBoundingBox();
         this.ensureOnGround();
+        this.rebound();
+        this.jellyfishMotion();
     }
 }
 
