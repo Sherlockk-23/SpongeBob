@@ -10,7 +10,7 @@ import { cloneGLTF } from '../utils/mesh';
 class ItemGenerator {
     seed: number = 0;
     gltfDict: { [key: string]: GLTF } = {};
-    themes: string[] = ['all', 'normal', 'bikini_bottom', 'vehicles', 'windy_food', 'statues'];
+    themes: string[] = ['all', 'normal', 'bikini_bottom', 'vehicles', 'windy_food', 'statues', 'dungeon'];
     themeDict: { [key: string]: string[] } = {};
     sizeDict: { [key: string]: THREE.Vector3 } = {};
 
@@ -52,7 +52,7 @@ class ItemGenerator {
         this.rotationDict['infoSign'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotationDict['xbox_controller_lp'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotationDict['star'] = new THREE.Vector3(0, 0, 0);
-    
+
         console.log('generator initialized', this.themeDict);
     }
 
@@ -120,10 +120,10 @@ class ItemGenerator {
             item = new roboticItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
         } else if (name.includes('sauce')) {
             item = new highJumpItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
-        }else if(name.includes('star')){
+        } else if (name.includes('star')) {
             item = new starItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
         }
-        else{
+        else {
             item = new danceItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
         }
         if (isNaN(size.x) || isNaN(size.y) || isNaN(size.z)) {
