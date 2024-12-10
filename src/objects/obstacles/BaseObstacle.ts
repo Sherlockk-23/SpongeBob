@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { MovableObject } from '../BaseObject';
-import {cloneGLTF} from '../../utils/mesh';
+import { cloneGLTF } from '../../utils/mesh';
 
 class BaseObstacle extends MovableObject {
 
@@ -20,14 +20,20 @@ class BaseObstacle extends MovableObject {
     }
 
     init() {
-        this.collidedCnt=0;
-        this.colliding=false;
-        this.punchedTime=0;
+        this.collidedCnt = 0;
+        this.colliding = false;
+        this.punchedTime = 0;
         this.vel = new THREE.Vector3(0, 0, 0);
     }
 
     updatePosition(delta: number) {
         this.mesh.position.add(this.vel.clone().multiplyScalar(delta));
+    }
+
+    ensureOnGround() {
+        if (this.getBottomCenter().y <= 0) {
+            this.vel.y = 0;
+        }
     }
 
 
@@ -38,6 +44,7 @@ class BaseObstacle extends MovableObject {
         this.animate(delta);
         this.updatePosition(delta);
         this.updateBoundingBox();
+        this.ensureOnGround();
     }
 }
 

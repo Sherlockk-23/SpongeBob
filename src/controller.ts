@@ -216,18 +216,45 @@ class Controller {
         }
     }
 
+    checkSquash() {
+        for (let stage of this.stages) {
+            if (stage.theme == 'statues') {
+                for (let obstacle of stage.nearestObstacles) {
+                    if (this.character.mesh.position.z > obstacle.mesh.position.z - 1.5
+                        && this.character.mesh.position.z < obstacle.mesh.position.z + 1.5
+                        && this.character.mesh.position.y < obstacle.getBottomCenter().y
+                        && this.character.mesh.position.y > obstacle.getBottomCenter().y - 2
+                        && this.character.mesh.position.x > obstacle.mesh.position.x - 1.5
+                        && this.character.mesh.position.x < obstacle.mesh.position.x + 1.5
+                    ) {
+                        const effect = {
+                            duration: 3,
+                            apply: (char: BaseCharacter) => {
+                                char.updateCondition('squashed');
+                            },
+                            remove: (char: BaseCharacter) => {
+                                char.updateCondition('normal');
+                            }
+                        };
+                        this.character.applyEffect('squashed', effect)
+                    }
+                }
+            }
+        }
+    }
+
     checkPositionState() {
         for (let stage of this.stages) {
             for (let interval of stage.specialIntervals) {
                 if (this.character.mesh.position.z > interval[0] + stage.mesh.position.z
-                     && this.character.mesh.position.z < interval[1] + stage.mesh.position.z
-                    ) {
+                    && this.character.mesh.position.z < interval[1] + stage.mesh.position.z
+                ) {
                     if (interval[2] == 'wind_from_left') {
                         const effect = {
                             duration: 0.3,
                             apply: (char: BaseCharacter) => {
                                 char.force.x -= 3;
-                                
+
                             },
                             remove: (char: BaseCharacter) => {
                                 char.force.x += 3;
@@ -246,10 +273,10 @@ class Controller {
                         const effect = {
                             duration: 0.3,
                             apply: (char: BaseCharacter) => {
-                                char.force.x +=3;
+                                char.force.x += 3;
                             },
                             remove: (char: BaseCharacter) => {
-                                char.force.x -=3;
+                                char.force.x -= 3;
                             }
                         };
                         this.character.applyEffect('windy', effect);
@@ -291,7 +318,10 @@ class Controller {
 
         this.stages[this.stageidx].updateNearestList(this.character.mesh.position.clone(), 20);
         this.stages[this.stageidx].tick(delta);
+
+        this.checkSquash();
         this.checkPositionState();
+
         this.checkCollisionObstacles(this.stages[this.stageidx], delta);
         this.checkCollisionItems(this.stages[this.stageidx]);
         // console.log(this.stageidx);

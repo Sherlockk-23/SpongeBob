@@ -60,6 +60,9 @@ class SpongeBob extends BaseCharacter {
             case 'dance':
                 animationId = 12;
                 break;
+            case 'squshed':
+                animationId = 0;
+                break;
             case 'walking':
                 if (this.condition == 'robotic') {
                     animationId = 9;

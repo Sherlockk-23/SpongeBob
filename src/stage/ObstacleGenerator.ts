@@ -54,7 +54,8 @@ class ObstacleGenerator {
         this.themeDict['windy_food'] = ['burger', 'table', 'spatula', 'barrelTSCP'];
         this.themeDict['vehicles'] = ['car2', 'bus2TSCP', 'train', 'boatTSCP', 'train'];
         this.themeDict['water'] = ['swimmingRing', 'tiki_wood'];
-        this.themeDict['statues'] = ['patrickStatue', 'spongehengeTSCP', 'patrickStatue'];
+        // this.themeDict['statues'] = ['patrickStatue', 'spongehengeTSCP', 'patrickStatue'];
+        this.themeDict['statues'] = ['rock'];
     }
 
     initSizeDict() {
@@ -81,6 +82,9 @@ class ObstacleGenerator {
         this.sizeDict['spatula'] = new THREE.Vector3(0.3, 1, 0.3);
         this.sizeDict['barrelTSCP'] = new THREE.Vector3(1, 1, 1);
         this.sizeDict['table'] = new THREE.Vector3(1, 0.5, 1);
+
+        //statues
+        this.sizeDict['rock'] = new THREE.Vector3(3, 3, 3);
 
 
         this.sizeDict['hat'] = new THREE.Vector3(0.2, 0.5, 0.2);
@@ -134,6 +138,7 @@ class ObstacleGenerator {
         this.velDict['train'] = new THREE.Vector3(0, 0, -1);
         this.velDict['bus2TSCP'] = new THREE.Vector3(0, 0, -0.5);
         this.velDict['boatTSCP'] = new THREE.Vector3(0.1, 0, 0);
+        this.velDict['rock'] = new THREE.Vector3(0, -5, 0);
     }
 
     randomObstacle(id: number = -1, theme: string = 'normal', size: THREE.Vector3 = NaN): BaseObstacle {
