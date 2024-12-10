@@ -35,9 +35,9 @@ abstract class BaseCharacter extends MovableObject {
         'down': 0
     };
 
-    //condition can be normal, robotic, highjump, scary, dead, dance
+    //condition can be normal, robotic, highjump, scary, dead, dance, squashed
     condition: string = 'normal';
-    //movement can be walking, running, jumping, idle, punching, dance
+    //movement can be walking, running, jumping, idle, punching, dance, squashed
     movement: string;
     movementUpdated: boolean = false;
     newMovement: string;
@@ -114,9 +114,9 @@ abstract class BaseCharacter extends MovableObject {
                 this.vel.x = 0;
             } else if (this.vel.x > 0 && this.force.x == 0) {
                 this.accel.x = -this.defaultAccelX;
-            } else if(this.vel.x < 0 && this.force.x == 0) {
+            } else if (this.vel.x < 0 && this.force.x == 0) {
                 this.accel.x = this.defaultAccelX;
-            }else{
+            } else {
                 this.accel.x = this.force.x;
             }
         }
@@ -141,7 +141,7 @@ abstract class BaseCharacter extends MovableObject {
     }
 
     updatePosition(delta: number): void {
-        if (this.condition == 'dance') {
+        if (this.condition == 'dance' || this.condition == 'squashed') {
             this.vel.set(0, 0, 0);
             this.accel.set(0, 0, 0);
             return;
@@ -189,6 +189,9 @@ abstract class BaseCharacter extends MovableObject {
         if (this.condition == 'dance') {
             this.updateMovementTmp('dance');
         }
+        if (this.condition == 'squashed') {
+            this.updateMovementTmp('squashed');
+        }
     }
 
     updateCondition(condition: string): void {
@@ -208,6 +211,8 @@ abstract class BaseCharacter extends MovableObject {
             }
         } else if (this.condition == 'dance') {
             this.camera.closeUp();
+        } else if (this.condition == 'squashed') {
+            this.camera.shake(1, 200);
         }
         this.cameraShake(1, 200);
     }

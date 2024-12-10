@@ -56,6 +56,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'patrickStatue',
         'pattyWagon',
         'pineapple_house',
+        'rock',
         'snailClock',
         'spatula',
         'spongehengeTSCP',

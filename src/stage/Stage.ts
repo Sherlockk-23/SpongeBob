@@ -63,7 +63,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        this.theme = 'windy_food';
+        this.theme = 'statues';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -274,22 +274,39 @@ class Stage extends MovableObject {
             }
         }
 
-
-        for (let i = 0; i < numObstacles; i++) {
-            const obstacle = this.obstacleGenerator.randomObstacle(i, this.theme);
-
-            // Try to find a valid position for the obstacle
-            const position = this.findValidPosition(obstacle, trackWidth, i * obstacleSpacing, obstacleSpacing);
-
-            if (position) {
-                this.obstacles.push(obstacle);
-                this.mesh.add(obstacle.mesh);
-                obstacle.setPosition(position.x, position.y, position.z);
-            } else {
-                // If we couldn't place the obstacle, clean it up
-                obstacle.destruct();
+        if (this.theme == 'statues') {
+            for (let i = 0; i < numObstacles; i++) {
+                const obstacle = this.obstacleGenerator.randomObstacle(i, this.theme);
+                const position = this.findValidPosition(obstacle, trackWidth, i * 4, 4);
+                if (position) {
+                    this.obstacles.push(obstacle);
+                    this.mesh.add(obstacle.mesh);
+                    obstacle.setPosition(position.x, position.y + 20, position.z);
+                } else {
+                    // If we couldn't place the obstacle, clean it up
+                    obstacle.destruct();
+                }
             }
         }
+        else {
+            for (let i = 0; i < numObstacles; i++) {
+                const obstacle = this.obstacleGenerator.randomObstacle(i, this.theme);
+
+                // Try to find a valid position for the obstacle
+                const position = this.findValidPosition(obstacle, trackWidth, i * obstacleSpacing, obstacleSpacing);
+
+                if (position) {
+                    this.obstacles.push(obstacle);
+                    this.mesh.add(obstacle.mesh);
+                    obstacle.setPosition(position.x, position.y, position.z);
+                } else {
+                    // If we couldn't place the obstacle, clean it up
+                    obstacle.destruct();
+                }
+            }
+        }
+
+
         // delete obstacle close to end
         this.obstacles.sort((a, b) => a.getBottomCenter().z - b.getBottomCenter().z);
         while (this.obstacles.length > 0 && this.obstacles[this.obstacles.length - 1].getBottomCenter().z > this.length) {
