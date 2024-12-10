@@ -45,6 +45,8 @@ class Controller {
 
     enemy: BaseEnemy;
 
+    collectedStars: number = 0;
+
     directionLight: THREE.DirectionalLight;
 
     uicontroller: UIController;
@@ -69,7 +71,7 @@ class Controller {
             stage.destruct();
         }
         this.stages = [];
-        this.stages.push(new Stage(this.scene, 'stage1', 0, this.obstacleGenerator, this.itemGenerator, this.textureDict));
+        this.stages.push(new Stage(this.scene, 'stage1', 0, this.obstacleGenerator, this.itemGenerator, this.textureDict, this.getTheme()));
         this.stageidx = 0;
 
         this.enemy = new BaseEnemy('jellyKing', this.obstacleGenerator.gltfDict['fish']);
@@ -99,11 +101,24 @@ class Controller {
         this.scene.getScene().add(this.directionLight);
     }
 
+    getTheme(){
+        if(this.collectedStars < 5)
+           return 'statues';
+        else if(this.collectedStars < 10)
+           return 'food';
+        else if(this.collectedStars < 15)
+           return 'windy_food';
+        else if(this.collectedStars < 20)
+           return 'vehicles';
+        else
+           return 'biki_bottom';
+    }
+
     changeStage() {
         console.log('change stage');
         this.stageidx += 1;
-        this.stages.push(new Stage(this.scene, 'stage' + (this.stageidx + 1), this.stageidx,
-            this.obstacleGenerator, this.itemGenerator, this.textureDict));
+        this.stages.push(new Stage(this.scene, 'stage' + (this.stageidx + 1), this.stageidx, 
+            this.obstacleGenerator, this.itemGenerator, this.textureDict, this.getTheme()));
         this.stages[this.stageidx].mesh.position.z =
             this.stages[this.stageidx - 1].mesh.position.z + this.stages[this.stageidx - 1].length;
         if (this.stageidx > 1) {
@@ -153,6 +168,9 @@ class Controller {
                     this.uicontroller.swapItem('green');
                 } else if (item.name.includes('sauce')) {
                     this.uicontroller.swapItem('pink');
+                }else if(item.name.includes('star')){
+                    this.collectedStars += 1;
+                    // console.log('collected stars: ', this.collectedStars);
                 }
                 // item.applyEffect(this.character);
                 stage.removeItem(item);

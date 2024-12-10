@@ -143,4 +143,17 @@ class danceItem extends BaseItem {
     }
 }
 
-export { BaseItem, speedupItem, roboticItem, highJumpItem, danceItem };
+class starItem extends BaseItem {
+    // do nothing
+    constructor(name: string, item_gltf: GLTF) {
+        super(name, item_gltf);
+        this.effect = {
+            duration: 1,
+            apply: (char: BaseCharacter) => {},
+            remove: (char: BaseCharacter) => {}
+        };
+    }
+    applyEffect(character: BaseCharacter): void {}
+}
+
+export { BaseItem, speedupItem, roboticItem, highJumpItem, danceItem, starItem };

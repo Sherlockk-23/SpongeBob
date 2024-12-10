@@ -47,7 +47,7 @@ class Stage extends MovableObject {
     static readonly HEIGHT = 15;
     static readonly START_Z = 0;
 
-    constructor(scene: Scene, name: string, stageNumber: number,
+    constructor(scene: Scene, name: string, stageNumber: number, 
         obstacleGenerator: ObstacleGenerator, itemGenerator: ItemGenerator,
         textureDict: { [key: string]: THREE.Texture } = {}, theme = 'all') {
 
@@ -63,7 +63,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        this.theme = 'windy_food';
+        // this.theme = 'windy_food';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -317,6 +317,19 @@ class Stage extends MovableObject {
 
             item.setPosition(x, y, z);
             // item.addBoundingBoxHelper(this.scene);
+        }
+
+        const numstars = 3;
+        for (let i = 0; i < numstars; i++) {
+            const item = this.itemGenerator.centainItem('star', i);
+            this.items.push(item);
+            this.mesh.add(item.mesh);
+
+            const x = Math.random() * trackWidth - trackWidth / 2;
+            const y = 0.8 + Math.random() * 1.5;
+            const z = i * trackLength/numstars + Math.random() * itemSpacing;
+
+            item.setPosition(x, y, z);
         }
 
         this.items.sort((a, b) => a.getBottomCenter().z - b.getBottomCenter().z);

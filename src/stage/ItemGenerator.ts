@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
-import { BaseItem } from '../objects/items/BaseItem';
+import { BaseItem, starItem } from '../objects/items/BaseItem';
 import { speedupItem, roboticItem, highJumpItem, danceItem } from '../objects/items/BaseItem';
 import { seededRandom } from '../utils/MathUtils';
 import { cloneGLTF } from '../utils/mesh';
@@ -45,10 +45,14 @@ class ItemGenerator {
         this.sizeDict['sauceTSCP'] = new THREE.Vector3(0.6, 1, 0.6);
         this.sizeDict['infoSign'] = new THREE.Vector3(1, 1, 0.7);
         this.sizeDict['xbox_controller_lp'] = new THREE.Vector3(0.6, 0.6, 0.6);
+        this.sizeDict['star'] = new THREE.Vector3(0.6, 0.6, 0.6);
+
         this.rotationDict['sodaTSCP'] = new THREE.Vector3(0, Math.PI / 2, 0);
         this.rotationDict['sauceTSCP'] = new THREE.Vector3(0, Math.PI / 2, 0);
         this.rotationDict['infoSign'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotationDict['xbox_controller_lp'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotationDict['star'] = new THREE.Vector3(0, 0, 0);
+    
         console.log('generator initialized', this.themeDict);
     }
 
@@ -114,8 +118,13 @@ class ItemGenerator {
             item = new speedupItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
         } else if (name.includes('info')) {
             item = new roboticItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
-        } else {
+        } else if (name.includes('sauce')) {
             item = new highJumpItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
+        }else if(name.includes('star')){
+            item = new starItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
+        }
+        else{
+            item = new danceItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
         }
         if (isNaN(size.x) || isNaN(size.y) || isNaN(size.z)) {
             size = this.sizeDict[name];

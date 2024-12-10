@@ -94,6 +94,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'disco_ball',
         'guess_box',
         'xbox_controller_lp',
+        'star',
     ];
 
     const promises: Promise<void>[] = [];

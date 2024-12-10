@@ -299,11 +299,11 @@ abstract class BaseCharacter extends MovableObject {
         this.animate(delta);
         this.getMovement();
 
-        console.log('debuging wind', this.name, 'position:', this.mesh.position);
-        console.log('debuging wind', this.effects);
-        console.log('debuging wind, force=', this.force);
-        console.log('debuging wind, accel=', this.accel);
-        console.log('debuging wind, vel=', this.vel);
+        // console.log('debuging wind', this.name, 'position:', this.mesh.position);
+        // console.log('debuging wind', this.effects);
+        // console.log('debuging wind, force=', this.force);
+        // console.log('debuging wind, accel=', this.accel);
+        // console.log('debuging wind, vel=', this.vel);
     }
 
     cameraShake(intensity: number, duration: number) {
