@@ -104,11 +104,13 @@ class Controller {
     getTheme(){
         if(this.collectedStars < 3)
            return 'normal';
-        else if(this.collectedStars < 8)
+        else if(this.collectedStars < 6)
            return 'food';
+        else if(this.collectedStars < 9)
+            return 'dungeon';
         else if(this.collectedStars < 12)
            return 'windy_food';
-        else if(this.collectedStars < 16)
+        else if(this.collectedStars < 15)
            return 'vehicles';
         else if(this.collectedStars < 20)
            return 'biki_bottom';

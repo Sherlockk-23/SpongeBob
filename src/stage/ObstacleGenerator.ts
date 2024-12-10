@@ -18,7 +18,7 @@ function traverseAndSetShadows(object: THREE.Object3D) {
 class ObstacleGenerator {
     seed: number = 0;
     gltfDict: { [key: string]: GLTF } = {};
-    themes: string[] = ['all', 'normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues'];
+    themes: string[] = ['all', 'normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues' ,'food'];
     themeDict: { [key: string]: string[] } = {};
     sizeDict: { [key: string]: THREE.Vector3 } = {};
     rotateDict: { [key: string]: THREE.Vector3 } = {};
@@ -53,6 +53,7 @@ class ObstacleGenerator {
         this.themeDict['normal'] = ['jelly_fish'];
         this.themeDict['bikini_bottom'] = ['squidwardHouseTSCP', 'pineapple_house', 'lightHouseTSCP', 'krabTSCP', 'bottom', 'chum_bucket'];
         this.themeDict['windy_food'] = ['burger', 'table', 'spatula', 'barrelTSCP'];
+        this.themeDict['food'] = ['burger', 'burger', 'table', 'spatula', 'barrelTSCP'];
         this.themeDict['vehicles'] = ['car2', 'bus2TSCP', 'train', 'boatTSCP', 'train'];
         // this.themeDict['dungeon'] = ['pillar', 'tiki_wood'];
         this.themeDict['dungeon'] = ['tiki_wood'];

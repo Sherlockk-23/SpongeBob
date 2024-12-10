@@ -63,7 +63,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        this.theme = 'dungeon';
+        // this.theme = 'food';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -361,7 +361,7 @@ class Stage extends MovableObject {
             // item.addBoundingBoxHelper(this.scene);
         }
 
-        const starSpacing = 40; // Change this to change density
+        const starSpacing = 30; // Change this to change density
         const numstars = Math.floor(trackLength / starSpacing);
         for (let i = 0; i < numstars; i++) {
             const item = this.itemGenerator.centainItem('star', i);
@@ -369,7 +369,7 @@ class Stage extends MovableObject {
             this.mesh.add(item.mesh);
 
             const x = Math.random() * trackWidth - trackWidth / 2;
-            const y = 0.8 + Math.random() * 1.5;
+            const y = 0.5 + Math.random() * 1.5;
             const z = i * starSpacing + Math.random() * starSpacing;
 
             item.setPosition(x, y, z);

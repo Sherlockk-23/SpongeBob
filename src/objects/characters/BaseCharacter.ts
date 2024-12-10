@@ -88,7 +88,7 @@ abstract class BaseCharacter extends MovableObject {
         if (this.inputHandler.isKeyPressed('w')) {
             this.accel.z = this.defaultAccelZ;
         } else if (this.inputHandler.isKeyPressed('s')) {
-            this.accel.z = this.defaultAccelZ;
+            this.accel.z = -this.defaultAccelZ;
             // this.updateMovementTmp('running');
         } else {
             if (Math.abs(this.vel.z) < this.defaultMinVel) {
@@ -124,7 +124,7 @@ abstract class BaseCharacter extends MovableObject {
         if (this.inputHandler.isKeyPressed(' ') && this.onGround()) {
             this.vel.y = this.defaultMaxJumpVel / 2;
         }
-        if (this.inputHandler.isKeyPressed('s') && !this.onGround()) {
+        if (this.inputHandler.isKeyPressed('c') && !this.onGround()) {
             this.vel.y = -this.defaultMaxJumpVel;
         }
         this.accel.y = -this.defaultGravity;
