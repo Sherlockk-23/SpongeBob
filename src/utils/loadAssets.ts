@@ -80,7 +80,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
     ];
 
     const characterPaths = [
-        'spongeBobWalk',
+        'spongebobWalk',
         'roboBob1',
         'roboBob2',
         'doodleBob',
