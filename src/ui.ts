@@ -37,7 +37,7 @@ class UIController {
   }
 
   loadingScreen() {
-    const loadingImages = ["assets/pics/GaryRound.gif", "assets/pics/JellyJump.gif", "assets/pics/SpongeBobWalk.gif", "assets/pics/PatrickRun.gif"];
+    const loadingImages = ["assets_/pics/GaryRound.gif", "assets_/pics/JellyJump.gif", "assets_/pics/SpongeBobWalk.gif", "assets_/pics/PatrickRun.gif"];
     const randomImage = loadingImages[Math.floor(Math.random() * loadingImages.length)];
     this.loadingIcon.src = randomImage;
     displayElement(this.loading);
@@ -53,7 +53,7 @@ class UIController {
     }
     console.log("debuging effects. fello from ui's item ", item);
     this.current_item = item;
-    this.itemIcon.src = `assets/pics/items/${item}.png`;
+    this.itemIcon.src = `assets_/pics/items/${item}.png`;
   }
 
 

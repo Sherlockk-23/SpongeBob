@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>SpongeBob Run - Game</title>
-    <link rel="icon" type="image/png" href="assets/pics/1.png">
+    <link rel="icon" type="image/png" href="assets_/pics/1.png">
     <style>
         body {
             margin: 0;
@@ -27,19 +27,19 @@
         <div class="distance" id="distance">
             <div id="distance-bar">
                 <div id="distance-bar-fill"></div>
-                <img id="j-icon" src="assets/pics/j_icon.png" alt="Bottom Icon" />
-                <img id="s-icon" src="assets/pics/s_icon.jpg" alt="Moving Icon" />
+                <img id="j-icon" src="assets_/pics/j_icon.png" alt="Bottom Icon" />
+                <img id="s-icon" src="assets_/pics/s_icon.jpg" alt="Moving Icon" />
             </div>
 
             <div class="score-container">
-                <img src="assets/pics/gary_icon.png" alt="Gary Icon" class="score-icon" />
+                <img src="assets_/pics/gary_icon.png" alt="Gary Icon" class="score-icon" />
                 <div class="distance__value" id="distance-value">0</div>
             </div>
         </div>
 
         <div class="object-container">
             <img id="item-icon" alt="Collected Item Icon" class="item-icon" />
-            <img src="assets/pics/bubble.png" alt="Bubble Icon" class="bubble-icon" />
+            <img src="assets_/pics/bubble.png" alt="Bubble Icon" class="bubble-icon" />
         </div>
 
         <div class="overlay" id="overlay" style="display: none;"></div>
@@ -62,9 +62,9 @@
         const selectedCharacter = localStorage.getItem('selectedCharacter');
         const movingIcon = document.getElementById('s-icon');
         if (selectedCharacter === 'spongebob') {
-            movingIcon.src = "assets/pics/s_icon.jpg";
+            movingIcon.src = "assets_/pics/s_icon.jpg";
         } else if (selectedCharacter === 'patrick') {
-            movingIcon.src = "assets/pics/p_icon.jpg";
+            movingIcon.src = "assets_/pics/p_icon.jpg";
         }
     </script>
 </body>

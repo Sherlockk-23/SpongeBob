@@ -55,7 +55,6 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'mill1',
         'mill2',
         'patrickStatue',
-        'pattyWagon',
         'pillar',
         'pineapple_house',
         'rock',
@@ -106,7 +105,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
 
     characterPaths.forEach((path) => {
         promises.push(
-            gltfPromise(`assets/models/Bobs/${path}/scene.gltf`).then((gltf) => {
+            gltfPromise(`assets_/models/Bobs/${path}/scene.gltf`).then((gltf) => {
                 traverseAndSetShadows(gltf.scene);
                 gltfCharactorDict[path] = gltf;
                 console.log('Loaded GLTF model:', path, gltf);
@@ -116,7 +115,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
 
     obstaclePaths.forEach((path) => {
         promises.push(
-            gltfPromise(`assets/models/obstacles/${path}/scene.gltf`).then((gltf) => {
+            gltfPromise(`assets_/models/obstacles/${path}/scene.gltf`).then((gltf) => {
                 traverseAndSetShadows(gltf.scene);
                 gltfObstacleDict[path] = gltf;
                 console.log('Loaded GLTF model:', path, gltf);
@@ -143,7 +142,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
 
     itemPaths.forEach((path) => {
         promises.push(
-            gltfPromise(`assets/models/items/${path}/scene.gltf`).then((gltf) => {
+            gltfPromise(`assets_/models/items/${path}/scene.gltf`).then((gltf) => {
                 traverseAndSetShadows(gltf.scene);
                 gltfItemDict[path] = gltf;
                 console.log('Loaded GLTF model:', path, gltf);
@@ -187,7 +186,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
 
     texturePaths.forEach((path) => {
         promises.push(
-            texturePromise(`assets/textures/${path}.png`).then((texture) => {
+            texturePromise(`assets_/textures/${path}.png`).then((texture) => {
                 textureDict[path] = texture;
                 console.log('Loaded texture:', path);
             })

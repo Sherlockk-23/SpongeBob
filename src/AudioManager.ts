@@ -52,7 +52,7 @@ export class AudioManager {
     public async loadAndPlayBGM(): Promise<void> {
         try {
             if (!this.bgmAudio) {
-                this.bgmAudio = await this.loadAudio('assets/audio/the-big-heist-188391.mp3', true);
+                this.bgmAudio = await this.loadAudio('assets_/audio/the-big-heist-188391.mp3', true);
             }
             this.bgmAudio.play();
         } catch (error) {
@@ -63,7 +63,7 @@ export class AudioManager {
     public async playBoundingSound(): Promise<void> {
         try {
             if (!this.collisionAudio) {
-                this.collisionAudio = await this.loadAudio('assets/audio/boing-6222.mp3', false);
+                this.collisionAudio = await this.loadAudio('assets_/audio/boing-6222.mp3', false);
             }
 
             // If the sound is already playing, stop it first
@@ -79,7 +79,7 @@ export class AudioManager {
     public async playPickItemSound(): Promise<void> {
         try {
             if (!this.pickItemAudio) {
-                this.pickItemAudio = await this.loadAudio('assets/audio/pickItem.mp3', false);
+                this.pickItemAudio = await this.loadAudio('assets_/audio/pickItem.mp3', false);
             }
 
             // If the sound is already playing, stop it first
@@ -95,7 +95,7 @@ export class AudioManager {
     public async playBreakSound(): Promise<void> {
         try {
             if (!this.breakAudio) {
-                this.breakAudio = await this.loadAudio('assets/audio/break.mp3', false);
+                this.breakAudio = await this.loadAudio('assets_/audio/break.mp3', false);
             }
 
             // If the sound is already playing, stop it first
@@ -112,7 +112,7 @@ export class AudioManager {
     public async playWarningSound(): Promise<void> {
         try {
             if (!this.warningAudio) {
-                this.warningAudio = await this.loadAudio('assets/audio/warning.mp3', false);
+                this.warningAudio = await this.loadAudio('assets_/audio/warning.mp3', false);
             }
 
             // If the sound is already playing, stop it first
