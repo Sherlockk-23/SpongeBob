@@ -1,0 +1,11 @@
+Model Information:
+* title:	Star
+* source:	https://sketchfab.com/3d-models/star-b092c1d27d954c8e9c051299ef74038d
+* author:	JeremyW (https://sketchfab.com/JeremyW)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Star" (https://sketchfab.com/3d-models/star-b092c1d27d954c8e9c051299ef74038d) by JeremyW (https://sketchfab.com/JeremyW) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

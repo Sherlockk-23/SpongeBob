@@ -84,7 +84,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'roboBob1',
         'roboBob2',
         'doodleBob',
-        'spongeBobDraw',
+        'spongebobDraw',
         'phantomBob',
         'realBob',
         'scaryBob1',
@@ -151,7 +151,7 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
 
     itemPaths.forEach((path) => {
         promises.push(
-            gltfPromise(`assets_/models/items/${path}/scene.gltf`).then((gltf) => {
+            gltfPromise(`assets_/models/Items/${path}/scene.gltf`).then((gltf) => {
                 traverseAndSetShadows(gltf.scene);
                 gltfItemDict[path] = gltf;
                 console.log('Loaded GLTF model:', path, gltf);
