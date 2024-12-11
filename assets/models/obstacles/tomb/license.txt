@@ -1,0 +1,11 @@
+Model Information:
+* title:	Stylized Tomb
+* source:	https://sketchfab.com/3d-models/stylized-tomb-c5de58f39dee4e3fb5e8896b3a2f80c6
+* author:	Wah Marco (https://sketchfab.com/Wahmarco)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Stylized Tomb" (https://sketchfab.com/3d-models/stylized-tomb-c5de58f39dee4e3fb5e8896b3a2f80c6) by Wah Marco (https://sketchfab.com/Wahmarco) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

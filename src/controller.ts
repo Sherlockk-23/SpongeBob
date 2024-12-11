@@ -102,16 +102,20 @@ class Controller {
     }
 
     getTheme(){
-        if(this.collectedStars < 5)
-           return 'statues';
-        else if(this.collectedStars < 10)
+        if(this.collectedStars < 1)
+           return 'normal';
+        else if(this.collectedStars < 4)
            return 'food';
-        else if(this.collectedStars < 15)
+        else if(this.collectedStars < 7)
+            return 'dungeon';
+        else if(this.collectedStars < 11)
            return 'windy_food';
-        else if(this.collectedStars < 20)
+        else if(this.collectedStars < 15)
            return 'vehicles';
+        else if(this.collectedStars < 20)
+           return 'bikini_bottom';
         else
-           return 'biki_bottom';
+              return 'statues';
     }
 
     changeStage() {
@@ -170,7 +174,10 @@ class Controller {
                     this.uicontroller.swapItem('pink');
                 }else if(item.name.includes('star')){
                     this.collectedStars += 1;
-                    // console.log('collected stars: ', this.collectedStars);
+                    const starCountElement = document.getElementById('star-count');
+                    if (starCountElement) {
+                        starCountElement.textContent = this.collectedStars.toFixed(0);
+                    }
                 }
                 // item.applyEffect(this.character);
                 stage.removeItem(item);
@@ -220,8 +227,10 @@ class Controller {
         for (let stage of this.stages) {
             if (stage.theme == 'statues') {
                 for (let obstacle of stage.nearestObstacles) {
-                    if (this.character.mesh.position.z > obstacle.mesh.position.z - 1.5
-                        && this.character.mesh.position.z < obstacle.mesh.position.z + 1.5
+                    if (!obstacle.name.includes('rock')) 
+                        continue;
+                    if (this.character.mesh.position.z > stage.mesh.position.z+obstacle.mesh.position.z - 1.5
+                        && this.character.mesh.position.z < stage.mesh.position.z+obstacle.mesh.position.z + 1.5
                         && this.character.mesh.position.y < obstacle.getBottomCenter().y
                         && this.character.mesh.position.y > obstacle.getBottomCenter().y - 2
                         && this.character.mesh.position.x > obstacle.mesh.position.x - 1.5
