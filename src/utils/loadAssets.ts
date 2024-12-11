@@ -69,6 +69,15 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'tiki_wood',
         'train',
         'wooden_fence',
+        'krabDollar',
+        'krabMenu',
+        'mrKrab',
+        'krabPack',
+        'krabTable',
+        'jellyNet',
+        'jellyfish3',
+        'butterfly',
+        'tomb'
     ];
 
     const characterPaths = [

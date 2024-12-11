@@ -40,7 +40,7 @@ class PerspectiveCamera extends Camera {
     let cameraZ = this.character.mesh.position.z - this.cameraDistance;
     this._camera.position.set(cameraX, cameraY, cameraZ);
     this._camera.lookAt(new THREE.Vector3(this.character.mesh.position.x,
-      this.character.mesh.position.y, this.character.mesh.position.z + this.cameraDistance));
+      this.character.mesh.position.y + this.cameraDistance/2, this.character.mesh.position.z + this.cameraDistance));
     this._camera.up.set(0, 1, 0);
     this.perspective = "thirdPerson";
   }

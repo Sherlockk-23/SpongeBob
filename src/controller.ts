@@ -102,18 +102,18 @@ class Controller {
     }
 
     getTheme(){
-        if(this.collectedStars < 3)
+        if(this.collectedStars < 1)
            return 'normal';
-        else if(this.collectedStars < 6)
+        else if(this.collectedStars < 4)
            return 'food';
-        else if(this.collectedStars < 9)
+        else if(this.collectedStars < 7)
             return 'dungeon';
-        else if(this.collectedStars < 12)
+        else if(this.collectedStars < 11)
            return 'windy_food';
         else if(this.collectedStars < 15)
            return 'vehicles';
         else if(this.collectedStars < 20)
-           return 'biki_bottom';
+           return 'bikini_bottom';
         else
               return 'statues';
     }
@@ -229,8 +229,8 @@ class Controller {
                 for (let obstacle of stage.nearestObstacles) {
                     if (!obstacle.name.includes('rock')) 
                         continue;
-                    if (this.character.mesh.position.z > obstacle.mesh.position.z - 1.5
-                        && this.character.mesh.position.z < obstacle.mesh.position.z + 1.5
+                    if (this.character.mesh.position.z > stage.mesh.position.z+obstacle.mesh.position.z - 1.5
+                        && this.character.mesh.position.z < stage.mesh.position.z+obstacle.mesh.position.z + 1.5
                         && this.character.mesh.position.y < obstacle.getBottomCenter().y
                         && this.character.mesh.position.y > obstacle.getBottomCenter().y - 2
                         && this.character.mesh.position.x > obstacle.mesh.position.x - 1.5
