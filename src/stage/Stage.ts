@@ -63,7 +63,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        this.theme = 'dungeon';
+        this.theme = 'vehicles';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
