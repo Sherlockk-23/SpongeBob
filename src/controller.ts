@@ -140,8 +140,10 @@ class Controller {
             'down': 0
         };
         let stage = this.stages[this.stageidx];
-        for (let obstacle of stage.nearestObstacles) {
-            updateMovableBoundary(this.character, obstacle, movableBoundary);
+        if (this.character.condition!='robotic') {
+            for (let obstacle of stage.nearestObstacles) {
+                updateMovableBoundary(this.character, obstacle, movableBoundary);
+            }
         }
         movableBoundary['up'] = Math.min(movableBoundary['up'], stage.ceiling.mesh.position.y);
         movableBoundary['down'] = Math.max(movableBoundary['down'], stage.ground.mesh.position.y);
@@ -149,8 +151,10 @@ class Controller {
         movableBoundary['right'] = Math.min(movableBoundary['right'], stage.rightWall.mesh.position.x);
         if (this.stageidx > 0)
             stage = this.stages[this.stageidx - 1];
-        for (let obstacle of stage.nearestObstacles) {
-            updateMovableBoundary(this.character, obstacle, movableBoundary);
+        if (this.character.condition!='robotic') {
+            for (let obstacle of stage.nearestObstacles) {
+                updateMovableBoundary(this.character, obstacle, movableBoundary);
+            }
         }
         movableBoundary['up'] = Math.min(movableBoundary['up'], stage.ceiling.mesh.position.y);
         movableBoundary['down'] = Math.max(movableBoundary['down'], stage.ground.mesh.position.y);
