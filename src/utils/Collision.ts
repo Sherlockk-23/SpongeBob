@@ -13,7 +13,11 @@ function checkCollision(object1: BaseObject, object2: BaseObject): boolean {
 
 function updateMovableBoundary(character: BaseCharacter, obstacle: BaseObject, movableBoundary: { [key: string]: number }): void {
     const obstacleBbox = new THREE.Box3().setFromObject(obstacle.mesh);
-    const delta = 0.15;
+    let delta = 0.1;
+    // for tiki, make it broader
+    if(obstacle.name.includes('tiki')){
+        delta = 0.2;
+    }
     for (const direction in movableBoundary) {
         const boundary = movableBoundary[direction];
         // to check if the obstacle will give a tighter boundary

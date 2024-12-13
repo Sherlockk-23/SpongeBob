@@ -52,6 +52,9 @@ class Controller {
     uicontroller: UIController;
     private audioManager: AudioManager;
 
+    enterSpecialStageLol: boolean = false;  
+    alreadyEnteredSpecialStage: boolean = false;
+
     constructor(scene: Scene, character: BaseCharacter, obstacleGenerator: ObstacleGenerator,
         itemGenerator: ItemGenerator, textureDict: { [key: string]: THREE.Texture } = {},
         uiController: UIController) {
@@ -102,6 +105,9 @@ class Controller {
     }
 
     getTheme(){
+        if (this.enterSpecialStageLol) {
+            return 'special';
+        }
         if(this.collectedStars < 1)
            return 'normal';
         else if(this.collectedStars < 4)
@@ -115,7 +121,7 @@ class Controller {
         else if(this.collectedStars < 20)
            return 'bikini_bottom';
         else
-              return 'statues';
+            return 'statues';
     }
 
     changeStage() {
@@ -132,7 +138,7 @@ class Controller {
 
     getCharactorMovableBoundary() {
         let movableBoundary: { [key: string]: number } = {
-            'forward': 1000,
+            'forward': 10000,
             'backward': -1000,
             'left': -1000,
             'right': 1000,
@@ -309,7 +315,7 @@ class Controller {
 
     checkToChangeStage() {
         // console.log(this.character.getBottomCenter().z, this.stages[this.stageidx].length);
-        if (this.character.getBottomCenter().z + 70 > this.stages[this.stageidx].length + this.stages[this.stageidx].mesh.position.z) {
+        if (this.character.getBottomCenter().z + 40 > this.stages[this.stageidx].length + this.stages[this.stageidx].mesh.position.z) {
             this.changeStage();
         }
     }
@@ -319,6 +325,34 @@ class Controller {
         const lightOffset = 10; // 调整平行光距离角色的距离
         this.directionLight.position.set(30, 30, this.character.mesh.position.z + lightOffset);
 
+    }
+
+    checkToEnterSpecialStage() {
+        if(this.character.mesh.position.z > 2000 )
+            this.enterSpecialStageLol = true;       
+        if(this.character.mesh.position.z < this.enemyPos - 5)
+            this.enterSpecialStageLol = true;
+        if(this.character.mesh.position.z < -5)
+            this.enterSpecialStageLol = true;
+
+        if (this.enterSpecialStageLol && !this.alreadyEnteredSpecialStage) {
+            // deconstruct this stage, and construct a special stage
+            this.alreadyEnteredSpecialStage = true;
+            this.enemyMinVel = this.enemyMaxVel=0;
+            this.enemyPos = -100;
+            this.enemy.setPosition(0, 0, this.enemyPos);
+            this.enemy.destruct();
+            for (let stage of this.stages) {
+                this.scene.getScene().remove(stage.mesh);
+                stage.destruct();
+            }
+            this.stages = [];
+            const stage = new Stage(this.scene, 'special', 0, this.obstacleGenerator, this.itemGenerator, this.textureDict, 'special');
+            stage.mesh.position.z = 0;
+            this.character.mesh.position.z = 0;
+            this.stages.push(stage);
+            this.stageidx = 0;
+        }
     }
 
 
@@ -388,10 +422,11 @@ class Controller {
         }
 
 
-        if (checkCollision(this.character, this.enemy)) {
+        if (checkCollision(this.character, this.enemy) && !this.enterSpecialStageLol) {
             document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by enemy' } }));
         }
 
+        this.checkToEnterSpecialStage();
 
     }
 

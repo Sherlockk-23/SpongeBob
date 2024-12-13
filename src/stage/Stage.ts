@@ -25,7 +25,7 @@ class Stage extends MovableObject {
     items: BaseItem[] = [];
     itemGenerator: ItemGenerator;
     theme: string = 'normal';
-    themes: string[] = ['normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues'];
+    themes: string[] = ['normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues','special'];
     length: number = 200;
 
     scene: THREE.Scene;
@@ -63,7 +63,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        this.theme = 'vehicles';
+        // this.theme = 'normal';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -93,10 +93,13 @@ class Stage extends MovableObject {
         this.ceiling.setCeiling(Stage.HEIGHT);
 
         this.mesh.add(this.ground.mesh);
-        this.mesh.add(this.leftWall.mesh);
-        this.mesh.add(this.rightWall.mesh);
-        this.mesh.add(this.ceiling.mesh);
-        this.mesh.add(this.dome.mesh);
+
+        if(this.theme!='special'){
+            this.mesh.add(this.leftWall.mesh);
+            this.mesh.add(this.rightWall.mesh);
+            this.mesh.add(this.ceiling.mesh);
+            this.mesh.add(this.dome.mesh);
+        }
 
 
 
@@ -110,6 +113,7 @@ class Stage extends MovableObject {
         let texwidth: number;
         let texheight: number;
         if (GroundOrDome) {
+            // ground
             if (theme == 'vehicles') {
                 texture = this.textureDict['road'];
                 texwidth = 7;
@@ -122,7 +126,12 @@ class Stage extends MovableObject {
                 texture = this.textureDict['wood'];
                 texwidth = 2;
                 texheight = 2;
-            } else {
+            } else if(theme == 'special'){
+                texture = this.textureDict['particle'];
+                texwidth = 3;
+                texheight = 3;
+            }
+            else {
                 texture = this.textureDict['grass'];
                 texwidth = 1;
                 texheight = 1;
@@ -194,6 +203,16 @@ class Stage extends MovableObject {
     }
 
     initObstacles(trackLength: number, trackWidth: number) {
+        if(this.theme == 'special'){
+            const obstacle = this.obstacleGenerator.centainObstacle('realBob');
+            this.obstacles.push(obstacle);
+            this.mesh.add(obstacle.mesh);
+            obstacle.setPosition(0, 0, 0);
+            this.obstaclePointerL = 0;
+            this.obstaclePointerR = 1;
+            return;
+        }
+
         const obstacleSpacing = 1.5; // Change this to change density
         const numObstacles = Math.floor(trackLength / obstacleSpacing);
         // const numObstacles = 40;
@@ -368,6 +387,11 @@ class Stage extends MovableObject {
     }
 
     initItems(trackLength: number, trackWidth: number) {
+        if(this.theme == 'special'){
+            this.itemPointerL = 0;
+            this.itemPointerR = 1;
+            return;
+        }
         const itemSpacing = 30; // Change this to change density
         const numItems = Math.floor(trackLength / itemSpacing);
         // const numItems = 10;
@@ -466,6 +490,7 @@ class Stage extends MovableObject {
         this.leftWall.destruct();
         this.rightWall.destruct();
         this.ceiling.destruct();
+        this.dome.destruct();
 
         this.obstacles.forEach((obstacle) => {
             obstacle.destruct();
