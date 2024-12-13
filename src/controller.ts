@@ -52,7 +52,7 @@ class Controller {
     uicontroller: UIController;
     private audioManager: AudioManager;
 
-    enterSpecialStageLol: boolean = false;  
+    enterSpecialStageLol: boolean = false;
     alreadyEnteredSpecialStage: boolean = false;
 
     constructor(scene: Scene, character: BaseCharacter, obstacleGenerator: ObstacleGenerator,
@@ -104,22 +104,22 @@ class Controller {
         this.scene.getScene().add(this.directionLight);
     }
 
-    getTheme(){
+    getTheme() {
         if (this.enterSpecialStageLol) {
             return 'special';
         }
-        if(this.collectedStars < 1)
-           return 'normal';
-        else if(this.collectedStars < 4)
-           return 'food';
-        else if(this.collectedStars < 7)
+        if (this.collectedStars < 1)
+            return 'normal';
+        else if (this.collectedStars < 4)
+            return 'food';
+        else if (this.collectedStars < 7)
             return 'dungeon';
-        else if(this.collectedStars < 11)
-           return 'windy_food';
-        else if(this.collectedStars < 15)
-           return 'vehicles';
-        else if(this.collectedStars < 20)
-           return 'bikini_bottom';
+        else if (this.collectedStars < 11)
+            return 'windy_food';
+        else if (this.collectedStars < 15)
+            return 'vehicles';
+        else if (this.collectedStars < 20)
+            return 'bikini_bottom';
         else
             return 'statues';
     }
@@ -127,7 +127,7 @@ class Controller {
     changeStage() {
         console.log('change stage');
         this.stageidx += 1;
-        this.stages.push(new Stage(this.scene, 'stage' + (this.stageidx + 1), this.stageidx, 
+        this.stages.push(new Stage(this.scene, 'stage' + (this.stageidx + 1), this.stageidx,
             this.obstacleGenerator, this.itemGenerator, this.textureDict, this.getTheme()));
         this.stages[this.stageidx].mesh.position.z =
             this.stages[this.stageidx - 1].mesh.position.z + this.stages[this.stageidx - 1].length;
@@ -146,7 +146,7 @@ class Controller {
             'down': 0
         };
         let stage = this.stages[this.stageidx];
-        if (this.character.condition!='robotic') {
+        if (this.character.condition != 'robotic') {
             for (let obstacle of stage.nearestObstacles) {
                 updateMovableBoundary(this.character, obstacle, movableBoundary);
             }
@@ -157,7 +157,7 @@ class Controller {
         movableBoundary['right'] = Math.min(movableBoundary['right'], stage.rightWall.mesh.position.x);
         if (this.stageidx > 0)
             stage = this.stages[this.stageidx - 1];
-        if (this.character.condition!='robotic') {
+        if (this.character.condition != 'robotic') {
             for (let obstacle of stage.nearestObstacles) {
                 updateMovableBoundary(this.character, obstacle, movableBoundary);
             }
@@ -182,7 +182,7 @@ class Controller {
                     this.uicontroller.swapItem('green');
                 } else if (item.name.includes('sauce')) {
                     this.uicontroller.swapItem('pink');
-                }else if(item.name.includes('star')){
+                } else if (item.name.includes('star')) {
                     this.collectedStars += 1;
                     const starCountElement = document.getElementById('star-count');
                     if (starCountElement) {
@@ -233,14 +233,36 @@ class Controller {
         }
     }
 
+    checkCollisonPhantom() {
+        for (let stage of this.stages) {
+            for (let obstacle of stage.nearestObstacles) {
+                if (checkCollision(this.character, obstacle) && obstacle.name.includes('phantom')) {
+                    const effect = {
+                        duration: 3,
+                        apply: (char: BaseCharacter) => {
+                            char.updateCondition('confusion');
+                            this.character.rotate('y', Math.PI);
+                        },
+                        remove: (char: BaseCharacter) => {
+                            char.updateCondition('normal');
+                            this.character.rotate('y', Math.PI);
+                        }
+                    };
+                    this.character.applyEffect('confusion', effect);
+                }
+            }
+        }
+
+    }
+
     checkSquash() {
         for (let stage of this.stages) {
             if (stage.theme == 'statues') {
                 for (let obstacle of stage.nearestObstacles) {
-                    if (!obstacle.name.includes('rock')) 
+                    if (!obstacle.name.includes('dog') && !obstacle.name.includes('cat'))
                         continue;
-                    if (this.character.mesh.position.z > stage.mesh.position.z+obstacle.mesh.position.z - 1.5
-                        && this.character.mesh.position.z < stage.mesh.position.z+obstacle.mesh.position.z + 1.5
+                    if (this.character.mesh.position.z > stage.mesh.position.z + obstacle.mesh.position.z - 1.5
+                        && this.character.mesh.position.z < stage.mesh.position.z + obstacle.mesh.position.z + 1.5
                         && this.character.mesh.position.y < obstacle.getBottomCenter().y
                         && this.character.mesh.position.y > obstacle.getBottomCenter().y - 2
                         && this.character.mesh.position.x > obstacle.mesh.position.x - 1.5
@@ -315,7 +337,7 @@ class Controller {
 
     checkToChangeStage() {
         // console.log(this.character.getBottomCenter().z, this.stages[this.stageidx].length);
-        if (this.character.getBottomCenter().z + 40 > this.stages[this.stageidx].length + this.stages[this.stageidx].mesh.position.z) {
+        if (this.character.getBottomCenter().z + 70 > this.stages[this.stageidx].length + this.stages[this.stageidx].mesh.position.z) {
             this.changeStage();
         }
     }
@@ -328,17 +350,17 @@ class Controller {
     }
 
     checkToEnterSpecialStage() {
-        if(this.character.mesh.position.z > 2000 )
-            this.enterSpecialStageLol = true;       
-        if(this.character.mesh.position.z < this.enemyPos - 5)
+        if (this.character.mesh.position.z > 2000)
             this.enterSpecialStageLol = true;
-        if(this.character.mesh.position.z < -5)
+        if (this.character.mesh.position.z < this.enemyPos - 5)
+            this.enterSpecialStageLol = true;
+        if (this.character.mesh.position.z < -5)
             this.enterSpecialStageLol = true;
 
         if (this.enterSpecialStageLol && !this.alreadyEnteredSpecialStage) {
             // deconstruct this stage, and construct a special stage
             this.alreadyEnteredSpecialStage = true;
-            this.enemyMinVel = this.enemyMaxVel=0;
+            this.enemyMinVel = this.enemyMaxVel = 0;
             this.enemyPos = -100;
             this.enemy.setPosition(0, 0, this.enemyPos);
             this.enemy.destruct();
@@ -368,6 +390,7 @@ class Controller {
 
         this.checkSquash();
         this.checkPositionState();
+        this.checkCollisonPhantom();
 
         this.checkCollisionObstacles(this.stages[this.stageidx], delta);
         this.checkCollisionItems(this.stages[this.stageidx]);
