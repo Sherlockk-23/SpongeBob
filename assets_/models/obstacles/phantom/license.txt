@@ -1,0 +1,11 @@
+Model Information:
+* title:	Monster - Blue Fire Phantom
+* source:	https://sketchfab.com/3d-models/monster-blue-fire-phantom-9777e72ee2614a4ab024ca54300c0d10
+* author:	Rayo (https://sketchfab.com/Rayo)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Monster - Blue Fire Phantom" (https://sketchfab.com/3d-models/monster-blue-fire-phantom-9777e72ee2614a4ab024ca54300c0d10) by Rayo (https://sketchfab.com/Rayo) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
