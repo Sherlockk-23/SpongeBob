@@ -63,7 +63,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        this.theme = 'statues';
+        // this.theme = 'dungeon';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -127,9 +127,17 @@ class Stage extends MovableObject {
                 texwidth = 2;
                 texheight = 2;
             } else if (theme == 'special') {
-                texture = this.textureDict['particle'];
+                texture = this.textureDict['woodwet'];
                 texwidth = 3;
                 texheight = 3;
+            } else if (theme == 'dungeon') {
+                texture = this.textureDict['afiPat2'];
+                texwidth = 3;
+                texheight = 3;
+            } else if (theme == 'statues') {
+                texture = this.textureDict['artgorl'];
+                texwidth = 20;
+                texheight = 20;
             }
             else {
                 texture = this.textureDict['grass'];
@@ -138,7 +146,7 @@ class Stage extends MovableObject {
             }
         } else {
             if (theme == 'statues') {
-                texture = this.textureDict['flower'];
+                texture = this.textureDict['cute'];
                 texwidth = 10;
                 texheight = 10;
             } else if (theme == 'bikini_bottom') {
@@ -149,6 +157,14 @@ class Stage extends MovableObject {
                 texture = this.textureDict['block'];
                 texwidth = 5;
                 texheight = 5;
+            } else if (theme == 'dungeon') {
+                texture = this.textureDict['afiPat'];
+                texwidth = 3;
+                texheight = 3;
+            } else if (theme == 'normal') {
+                texture = this.textureDict['flower2'];
+                texwidth = 10;
+                texheight = 10;
             }
             else {
                 texture = this.textureDict['flower2'];

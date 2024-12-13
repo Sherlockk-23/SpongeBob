@@ -66,8 +66,8 @@ class ObstacleGenerator {
         this.themeDecorateDict['bikini_bottom'] = ['building1TSCP', 'building2TSCP'];
         this.themeDecorateDict['windy_food'] = ['building1TSCP', 'building2TSCP'];
         this.themeDecorateDict['vehicles'] = ['building1TSCP', 'building2TSCP'];
-        this.themeDecorateDict['dungeon'] = ['building1TSCP', 'building2TSCP'];
-        this.themeDecorateDict['statues'] = ['rock', 'tomb', 'patrickStatue', 'spongehengeTSCP'];
+        this.themeDecorateDict['dungeon'] = ['patrickStatue', 'spongehengeTSCP','tomb'];
+        this.themeDecorateDict['statues'] = ['cow','rabbit'];
     }
 
     initSizeDict() {
@@ -108,6 +108,7 @@ class ObstacleGenerator {
         this.sizeDict['cat'] = new THREE.Vector3(3, 3, 3);
         this.sizeDict['dog'] = new THREE.Vector3(3, 3, 3);
         this.sizeDict['rabbit'] = new THREE.Vector3(2, 2, 2);
+        this.sizeDict['cow'] = new THREE.Vector3(2, 2, 2);
 
 
         //dungeon
@@ -115,6 +116,9 @@ class ObstacleGenerator {
         this.sizeDict['tikiToren'] = new THREE.Vector3(1.75, 3, 1.75);
         this.sizeDict['tiki_wood'] = new THREE.Vector3(1.75, 1.75, 1.75);
         this.sizeDict['phantom'] = new THREE.Vector3(1, 1.5, 1);
+        this.sizeDict['spongehengeTSCP'] = new THREE.Vector3(2.4, 3.6, 0.7);
+        this.sizeDict['patrickStatue'] = new THREE.Vector3(2, 3, 2);
+        this.sizeDict['tomb'] = new THREE.Vector3(2, 2, 2);
 
         //initial
         this.sizeDict['jelly_fish'] = new THREE.Vector3(1.2, 1.8, 1.2);
@@ -136,7 +140,6 @@ class ObstacleGenerator {
         this.sizeDict['bed'] = new THREE.Vector3(1, 1, 2);
         this.sizeDict['tableTSCP'] = new THREE.Vector3(3, 1, 3);
         this.sizeDict['chair1'] = new THREE.Vector3(2, 2, 2);
-        this.sizeDict['spongehengeTSCP'] = new THREE.Vector3(1.2, 1.8, 0.35);
 
         this.sizeDict['swimmingRing'] = new THREE.Vector3(1.5, 0.5, 1.5);
         this.sizeDict['checkPoint'] = new THREE.Vector3(1, 3.5, 1);
@@ -181,6 +184,7 @@ class ObstacleGenerator {
         this.rotateDict['cat'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotateDict['dog'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotateDict['rabbit'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['cow'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotateDict['phantom'] = new THREE.Vector3(0, Math.PI, 0);
 
 
