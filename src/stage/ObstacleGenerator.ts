@@ -18,7 +18,7 @@ function traverseAndSetShadows(object: THREE.Object3D) {
 class ObstacleGenerator {
     seed: number = 0;
     gltfDict: { [key: string]: GLTF } = {};
-    themes: string[] = ['all', 'normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues', 'food'];
+    themes: string[] = ['all', 'normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues', 'food', 'special'];
     themeDict: { [key: string]: string[] } = {};
     themeDecorateDict: { [key: string]: string[] } = {};
     sizeDict: { [key: string]: THREE.Vector3 } = {};
@@ -58,8 +58,8 @@ class ObstacleGenerator {
         this.themeDict['food'] = ['burger', 'burger', 'table', 'spatula', 'barrelTSCP'];
         this.themeDict['vehicles'] = ['car2', 'bus2TSCP', 'train', 'train', 'boatTSCP', 'train'];
         this.themeDict['dungeon'] = ['tiki_wood'];
-        // this.themeDict['statues'] = ['rock', 'rock', 'rock', 'patrickStatue', 'spongehengeTSCP'];
-        this.themeDict['statues'] = ['shiba', 'cat', 'dog'];
+        this.themeDict['statues'] = ['rock', 'rock', 'rock', 'patrickStatue', 'spongehengeTSCP'];
+        this.themeDict['special'] = ['realBob'];
 
         // decoration dict
         this.themeDecorateDict['normal'] = ['swimmingRing', 'jellyNet', 'jellyfish3'];
@@ -122,6 +122,9 @@ class ObstacleGenerator {
         this.sizeDict['jellyNet'] = new THREE.Vector3(1.2, 2.5, 1.2);
         this.sizeDict['jellyfish3'] = new THREE.Vector3(1.5, 2, 1.5);
 
+        // special
+        this.sizeDict['realBob'] = new THREE.Vector3(10, 20, 10);
+
 
         this.sizeDict['hat'] = new THREE.Vector3(0.2, 0.5, 0.2);
         this.sizeDict['boat'] = new THREE.Vector3(1, 1, 2);
@@ -182,6 +185,8 @@ class ObstacleGenerator {
         this.rotateDict['krabPack'] = new THREE.Vector3(0, Math.PI / 2, 0);
         this.rotateDict['krabDollar'] = new THREE.Vector3(0, -Math.PI / 2, 0);
         this.rotateDict['krabMenu'] = new THREE.Vector3(0, Math.PI, 0);
+
+        this.rotateDict['realBob'] = new THREE.Vector3(0, Math.PI, 0);
     }
     initVelDict() {
         this.themeDict['all'].forEach(name => {
