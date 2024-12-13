@@ -130,11 +130,11 @@ class Stage extends MovableObject {
                 texture = this.textureDict['woodwet'];
                 texwidth = 3;
                 texheight = 3;
-            }else if (theme == 'dungeon') {
+            } else if (theme == 'dungeon') {
                 texture = this.textureDict['afiPat2'];
                 texwidth = 3;
                 texheight = 3;
-            }else if(theme == 'statues'){
+            } else if (theme == 'statues') {
                 texture = this.textureDict['artgorl'];
                 texwidth = 20;
                 texheight = 20;
@@ -157,11 +157,11 @@ class Stage extends MovableObject {
                 texture = this.textureDict['block'];
                 texwidth = 5;
                 texheight = 5;
-            }else if (theme == 'dungeon') {
+            } else if (theme == 'dungeon') {
                 texture = this.textureDict['afiPat'];
                 texwidth = 3;
                 texheight = 3;
-            }else if (theme == 'normal') {
+            } else if (theme == 'normal') {
                 texture = this.textureDict['flower2'];
                 texwidth = 10;
                 texheight = 10;

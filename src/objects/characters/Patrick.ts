@@ -48,10 +48,13 @@ class Patrick extends BaseCharacter {
                     animationId = 12;
                 break;
             case 'dance':
-                animationId = 12;
+                animationId = 13;
+                break;
+            case 'confusion':
+                animationId = 3;
                 break;
             case 'squashed':
-                animationId = 0;
+                animationId = 6;
                 break;
             case 'walking':
                 if (this.condition == 'robotic') {

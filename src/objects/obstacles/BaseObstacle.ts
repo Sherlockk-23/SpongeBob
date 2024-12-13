@@ -2,20 +2,24 @@ import * as THREE from 'three';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { MovableObject } from '../BaseObject';
 import { cloneGLTF } from '../../utils/mesh';
+import { AudioManager } from '../../AudioManager';
 
 class BaseObstacle extends MovableObject {
 
     collidedCnt: number = 0;
     colliding: boolean = false;
     collidedThreshold: number = 100;
-
+    audioManager: AudioManager;
     punchedTime: number = 0;
 
     vel: THREE.Vector3;
 
+    counter: number = 0;
+
     constructor(name: string, obstacle_gltf: GLTF) {
         const clonedGLTF = cloneGLTF(obstacle_gltf);
         super('obstacle', name, clonedGLTF);
+        this.audioManager = AudioManager.getInstance();
         this.init();
     }
 
@@ -34,6 +38,10 @@ class BaseObstacle extends MovableObject {
         if (this.name.includes('rock') || this.name.includes('shiba') || this.name.includes('dog') || this.name.includes('cat')) {
             if (this.getBottomCenter().y <= 0) {
                 this.vel.y = 0;
+                if (this.counter == 0) {
+                    this.audioManager.playFallSound();
+                    this.counter += 1;
+                }
             }
         }
 
