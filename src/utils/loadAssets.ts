@@ -187,6 +187,9 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'afiPat',
         'afiPat1',
         'afiPat2',
+        'bears',
+        'seaweed',
+        'sea1'
     ];
 
 

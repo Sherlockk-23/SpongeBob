@@ -25,7 +25,7 @@ class Stage extends MovableObject {
     items: BaseItem[] = [];
     itemGenerator: ItemGenerator;
     theme: string = 'normal';
-    themes: string[] = ['normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues', 'special'];
+    themes: string[] = ['normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues', 'special','final'];
     length: number = 200;
 
     scene: THREE.Scene;
@@ -63,7 +63,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        // this.theme = 'dungeon';
+        // this.theme = 'final';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -290,7 +290,7 @@ class Stage extends MovableObject {
         }
 
 
-        if (this.theme == 'windy_food') {
+        if (this.theme == 'windy_food' || this.theme == 'final') {
 
             for (let i = 0; i < 5; i++) {
                 if (Math.random() >= 0.5) {
@@ -360,6 +360,35 @@ class Stage extends MovableObject {
 
 
 
+                obstacle.setPosition(x, y, z);
+            }
+        }
+
+        if(this.theme == 'final'){
+            for (let i = 0; i < numObstacles; i++) {
+                const obstacle = this.obstacleGenerator.randomObstacle(i, this.theme);
+                const position = this.findValidPosition(obstacle, trackWidth, i * 4, 4);
+                if (position) {
+                    this.obstacles.push(obstacle);
+                    this.mesh.add(obstacle.mesh);
+                    if (obstacle.name.includes('dog') || obstacle.name.includes('cat')) {
+                        obstacle.setPosition(position.x, position.y + 30, position.z);
+                        this.addGroundImage(position.x, position.y, position.z);
+                    }
+                    else
+                        obstacle.setPosition(position.x, position.y, position.z);
+                } else {
+                    // If we couldn't place the obstacle, clean it up
+                    obstacle.destruct();
+                }
+            }
+            for (let i = 0; i < this.length / 7.5; i++) {
+                const x = 0;
+                const y = 1.5;
+                const z = i * 7.5;
+                const obstacle = this.obstacleGenerator.randomObstacle(i, 'phantom');
+                this.obstacles.push(obstacle);
+                this.mesh.add(obstacle.mesh);
                 obstacle.setPosition(x, y, z);
             }
         }

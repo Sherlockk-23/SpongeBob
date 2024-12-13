@@ -18,7 +18,7 @@ function traverseAndSetShadows(object: THREE.Object3D) {
 class ObstacleGenerator {
     seed: number = 0;
     gltfDict: { [key: string]: GLTF } = {};
-    themes: string[] = ['all', 'normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues', 'food', 'special', 'phantom'];
+    themes: string[] = ['all', 'normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues', 'food', 'special', 'phantom','final'];
     themeDict: { [key: string]: string[] } = {};
     themeDecorateDict: { [key: string]: string[] } = {};
     sizeDict: { [key: string]: THREE.Vector3 } = {};
@@ -58,6 +58,7 @@ class ObstacleGenerator {
         this.themeDict['vehicles'] = ['car2', 'bus2TSCP', 'train', 'train', 'boatTSCP', 'train'];
         this.themeDict['dungeon'] = ['tiki_wood', 'tiki_wood', 'tiki_wood', 'tikiToren'];
         this.themeDict['statues'] = ['cat', 'dog', 'cat', 'dog', 'shiba', 'rabbit'];
+        this.themeDict['final'] = ['car2','burger','lightHouseTSCP','jelly_fish','cat','dog'];
         this.themeDict['special'] = ['realBob'];
 
         // decoration dict
@@ -68,6 +69,7 @@ class ObstacleGenerator {
         this.themeDecorateDict['vehicles'] = ['building1TSCP', 'building2TSCP'];
         this.themeDecorateDict['dungeon'] = ['patrickStatue', 'spongehengeTSCP','tomb'];
         this.themeDecorateDict['statues'] = ['cow','rabbit'];
+        this.themeDecorateDict['final'] = ['mrKrab'];
     }
 
     initSizeDict() {

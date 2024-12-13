@@ -120,8 +120,10 @@ class Controller {
             return 'vehicles';
         else if (this.collectedStars < 20)
             return 'bikini_bottom';
-        else
+        else if(this.collectedStars < 25)
             return 'statues';
+        else
+            return 'final';
     }
 
     changeStage() {
