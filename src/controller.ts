@@ -337,7 +337,7 @@ class Controller {
 
     checkToChangeStage() {
         // console.log(this.character.getBottomCenter().z, this.stages[this.stageidx].length);
-        if (this.character.getBottomCenter().z + 40 > this.stages[this.stageidx].length + this.stages[this.stageidx].mesh.position.z) {
+        if (this.character.getBottomCenter().z + 70 > this.stages[this.stageidx].length + this.stages[this.stageidx].mesh.position.z) {
             this.changeStage();
         }
     }

@@ -63,7 +63,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        this.theme = 'dungeon';
+        this.theme = 'normal';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -212,6 +212,7 @@ class Stage extends MovableObject {
                 planeMesh.position.set(x, y + Math.random() / 100, z);
 
                 planeMesh.rotation.x = -Math.PI / 2; // Lay flat on the ground
+                planeMesh.rotation.z = Math.PI;
 
                 this.mesh.add(planeMesh);
             });
@@ -223,8 +224,8 @@ class Stage extends MovableObject {
                 const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
 
                 planeMesh.position.set(x, y + Math.random() / 100, z);
-                this.counter += 1;
                 planeMesh.rotation.x = -Math.PI / 2; // Lay flat on the ground
+                planeMesh.rotation.z = Math.PI;
 
                 this.mesh.add(planeMesh);
             });
@@ -382,7 +383,7 @@ class Stage extends MovableObject {
                 const x = 0;
                 const y = 1.5;
                 const z = i * 7.5;
-                const obstacle = this.obstacleGenerator.randomObstacle(i, 'normal');
+                const obstacle = this.obstacleGenerator.randomObstacle(i, 'phantom');
                 this.obstacles.push(obstacle);
                 this.mesh.add(obstacle.mesh);
                 obstacle.setPosition(x, y, z);

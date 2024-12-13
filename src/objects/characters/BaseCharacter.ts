@@ -27,7 +27,7 @@ abstract class BaseCharacter extends MovableObject {
 
     // used to tell the 6 boundary of the character for position update
     movableBoundary: { [key: string]: number } = {
-        'forward': 1000,
+        'forward': 10000,
         'backward': -1000,
         'left': -1000,
         'right': 1000,
@@ -186,8 +186,8 @@ abstract class BaseCharacter extends MovableObject {
         this.vel.x = Math.min(Math.max(this.vel.x, -this.defaultMaxVel), this.defaultMaxVel);
         this.vel.y = Math.min(Math.max(this.vel.y, -this.defaultMaxJumpVel), this.defaultMaxJumpVel);
         this.vel.z = Math.min(Math.max(this.vel.z, -this.defaultMaxVel), this.defaultMaxVel);
-        if( this.condition == 'robotic')
-            this.vel.z = Math.min(Math.max(this.vel.z, -this.defaultMaxVel/2), this.defaultMaxVel/2);
+        if (this.condition == 'robotic')
+            this.vel.z = Math.min(Math.max(this.vel.z, -this.defaultMaxVel / 2), this.defaultMaxVel / 2);
     }
 
     updatePosition(delta: number): void {
