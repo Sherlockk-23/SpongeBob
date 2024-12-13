@@ -113,15 +113,15 @@ class Controller {
         else if (this.collectedStars < 4)
             return 'food';
         else if (this.collectedStars < 7)
-            return 'dungeon';
+            return 'vehicles';
         else if (this.collectedStars < 11)
             return 'windy_food';
         else if (this.collectedStars < 15)
-            return 'vehicles';
+            return 'dungeon';
         else if (this.collectedStars < 20)
-            return 'bikini_bottom';
-        else if(this.collectedStars < 25)
             return 'statues';
+        else if(this.collectedStars < 25)
+            return 'bikini_bottom';
         else
             return 'final';
     }

@@ -46,11 +46,12 @@ abstract class BaseCharacter extends MovableObject {
     delta: number = 0.05;
     defaultMaxVel: number = 3.5;
     defaultMinVel: number = 0.1;
-    defaultMaxJumpVel: number = 4.2;
+    defaultMaxJumpVel: number = 4.5;
     defaultDeaccel: number = 5;
-    defaultAccelZ: number = 1.5;
-    defaultAccelX: number = 2.5;
-    defaultGravity: number = 2;
+    defaultAccelZ: number = 4;
+    defaultAccelX: number = 4;
+    defaultVelX: number = 3;
+    defaultGravity: number = 8;
 
     inputHandler: InputHandler;
 
@@ -89,7 +90,7 @@ abstract class BaseCharacter extends MovableObject {
             if (this.inputHandler.isKeyPressed('s')) {
                 this.accel.z = this.defaultAccelZ;
             } else if (this.inputHandler.isKeyPressed('w')) {
-                this.accel.z = -this.defaultAccelZ;
+                this.accel.z = -this.defaultAccelZ/2;
                 // this.updateMovementTmp('running');
             } else {
                 if (Math.abs(this.vel.z) < this.defaultMinVel) {
@@ -104,10 +105,16 @@ abstract class BaseCharacter extends MovableObject {
             }
 
             if (this.inputHandler.isKeyPressed('d')) {
-                this.accel.x = this.defaultAccelX;
+                // this.accel.x = this.defaultAccelX;
+                this.vel.x = this.defaultVelX;
+                if(this.force.x < 0)
+                    this.vel.x = this.defaultVelX / 2;
                 this.accel.x += this.force.x;
             } else if (this.inputHandler.isKeyPressed('a')) {
-                this.accel.x = -this.defaultAccelX;
+                // this.accel.x = -this.defaultAccelX;
+                this.vel.x = -this.defaultVelX;
+                if(this.force.x > 0)
+                    this.vel.x = -this.defaultVelX / 2;
                 this.accel.x += this.force.x;
             } else {
                 if (Math.abs(this.vel.x) < this.defaultMinVel && this.force.x == 0) {
@@ -149,10 +156,16 @@ abstract class BaseCharacter extends MovableObject {
             }
 
             if (this.inputHandler.isKeyPressed('a')) {
-                this.accel.x = this.defaultAccelX;
+                // this.accel.x = this.defaultAccelX;
+                this.vel.x = this.defaultVelX;
+                if(this.force.x < 0)
+                    this.vel.x = this.defaultVelX / 2;
                 this.accel.x += this.force.x;
             } else if (this.inputHandler.isKeyPressed('d')) {
-                this.accel.x = -this.defaultAccelX;
+                // this.accel.x = -this.defaultAccelX;
+                this.vel.x = -this.defaultVelX;
+                if(this.force.x > 0)
+                    this.vel.x = -this.defaultVelX / 2;
                 this.accel.x += this.force.x;
             } else {
                 if (Math.abs(this.vel.x) < this.defaultMinVel && this.force.x == 0) {
@@ -168,12 +181,16 @@ abstract class BaseCharacter extends MovableObject {
             }
 
             if (this.inputHandler.isKeyPressed(' ') && this.onGround()) {
-                this.vel.y = this.defaultMaxJumpVel / 2;
+                this.vel.y = this.defaultMaxJumpVel ;
             }
             if (this.inputHandler.isKeyPressed('c') && !this.onGround()) {
                 this.vel.y = -this.defaultMaxJumpVel;
             }
             this.accel.y = -this.defaultGravity;
+        }
+
+        if(this.inputHandler.isKeyPressed('\\')){
+            this.updateCondition('robotic');
         }
 
 

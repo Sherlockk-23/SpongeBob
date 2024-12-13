@@ -89,7 +89,7 @@ class ObstacleGenerator {
         this.sizeDict['busTSCP'] = new THREE.Vector3(6, 2, 2);
         this.sizeDict['bus2TSCP'] = new THREE.Vector3(5, 2, 2);
         this.sizeDict['car2'] = new THREE.Vector3(1, 1, 2);
-        this.sizeDict['train'] = new THREE.Vector3(2, 2.5, 10);
+        this.sizeDict['train'] = new THREE.Vector3(2, 3, 10);
 
         //windy_food
         this.sizeDict['burger'] = new THREE.Vector3(2, 2, 2);
@@ -123,7 +123,7 @@ class ObstacleGenerator {
         this.sizeDict['tomb'] = new THREE.Vector3(2, 2, 2);
 
         //initial
-        this.sizeDict['jelly_fish'] = new THREE.Vector3(1.2, 1.8, 1.2);
+        this.sizeDict['jelly_fish'] = new THREE.Vector3(1.2, 2, 1.2);
 
         //normal
         this.sizeDict['jellyNet'] = new THREE.Vector3(1.2, 2.5, 1.2);
