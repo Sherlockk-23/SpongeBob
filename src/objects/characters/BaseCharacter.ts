@@ -122,10 +122,10 @@ abstract class BaseCharacter extends MovableObject {
                 }
             }
 
-            if (this.inputHandler.isKeyPressed('c') && this.onGround()) {
+            if (this.inputHandler.isKeyPressed(' ') && this.onGround()) {
                 this.vel.y = this.defaultMaxJumpVel / 2;
             }
-            if (this.inputHandler.isKeyPressed(' ') && !this.onGround()) {
+            if (this.inputHandler.isKeyPressed('c') && !this.onGround()) {
                 this.vel.y = -this.defaultMaxJumpVel;
             }
             this.accel.y = -this.defaultGravity;
