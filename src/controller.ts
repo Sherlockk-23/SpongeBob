@@ -277,6 +277,7 @@ class Controller {
                                 char.updateCondition('normal');
                             }
                         };
+                        this.audioManager.playSqueakSound();
                         this.character.applyEffect('squashed', effect)
                     }
                 }

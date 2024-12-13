@@ -3,6 +3,7 @@ import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { MovableObject } from '../BaseObject';
 import { cloneGLTF } from '../../utils/mesh';
 import { BaseCharacter } from '../characters/BaseCharacter';
+import { AudioManager } from '../../AudioManager';
 
 interface Effect {
     duration: number;
@@ -14,10 +15,12 @@ abstract class BaseItem extends MovableObject {
     effect: Effect;
     initialPositionY: number;
     outlineMesh: THREE.LineSegments;
+    audioManager: AudioManager;
 
     constructor(name: string, item_gltf: GLTF) {
         const clonedGLTF = cloneGLTF(item_gltf);
         super('item', name, clonedGLTF);
+        this.audioManager = AudioManager.getInstance();
         this.init();
 
         // 添加轮廓效果
@@ -140,6 +143,7 @@ class danceItem extends BaseItem {
 
     applyEffect(character: BaseCharacter): void {
         character.applyEffect('dance', this.effect);
+        this.audioManager.playDanceSound();
     }
 }
 
@@ -149,11 +153,11 @@ class starItem extends BaseItem {
         super(name, item_gltf);
         this.effect = {
             duration: 1,
-            apply: (char: BaseCharacter) => {},
-            remove: (char: BaseCharacter) => {}
+            apply: (char: BaseCharacter) => { },
+            remove: (char: BaseCharacter) => { }
         };
     }
-    applyEffect(character: BaseCharacter): void {}
+    applyEffect(character: BaseCharacter): void { }
 }
 
 export { BaseItem, speedupItem, roboticItem, highJumpItem, danceItem, starItem };

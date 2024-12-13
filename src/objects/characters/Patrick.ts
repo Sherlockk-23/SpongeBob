@@ -50,6 +50,9 @@ class Patrick extends BaseCharacter {
             case 'dance':
                 animationId = 12;
                 break;
+            case 'confusion':
+                animationId = 0;
+                break;
             case 'squashed':
                 animationId = 0;
                 break;

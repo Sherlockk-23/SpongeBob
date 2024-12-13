@@ -6,6 +6,11 @@ export class AudioManager {
     private collisionAudio: Audio | null = null;
     private pickItemAudio: Audio | null = null;
     private breakAudio: Audio | null = null;
+    private windAudio: Audio | null = null;
+    private fallAudio: Audio | null = null;
+    private squeakAudio: Audio | null = null;
+    private roboticAudio: Audio | null = null;
+    private danceAudio: Audio | null = null;
     warningAudio: Audio | null = null;
     private audioLoader: AudioLoader;
     private listener: AudioListener;
@@ -123,6 +128,91 @@ export class AudioManager {
             this.warningAudio.play();
         } catch (error) {
             console.error('Error playing warning sound:', error);
+        }
+    }
+
+    public async playWindSound(): Promise<void> {
+        try {
+            if (!this.windAudio) {
+                this.windAudio = await this.loadAudio('assets_/audio/wind.mp3', false);
+            }
+
+            // If the sound is already playing, stop it first
+            if (this.windAudio.isPlaying) {
+                this.windAudio.stop();
+            }
+
+            this.windAudio.play();
+        } catch (error) {
+            console.error('Error playing windAudio: ', error);
+        }
+    }
+
+    public async playFallSound(): Promise<void> {
+        try {
+            if (!this.fallAudio) {
+                this.fallAudio = await this.loadAudio('assets_/audio/fall.mp3', false);
+            }
+
+            // If the sound is already playing, stop it first
+            if (this.fallAudio.isPlaying) {
+                this.fallAudio.stop();
+            }
+
+            this.fallAudio.play();
+        } catch (error) {
+            console.error('Error playing warning sound:', error);
+        }
+    }
+
+    public async playSqueakSound(): Promise<void> {
+        try {
+            if (!this.squeakAudio) {
+                this.squeakAudio = await this.loadAudio('assets_/audio/squeak.mp3', false);
+            }
+
+            // If the sound is already playing, stop it first
+            if (this.squeakAudio.isPlaying) {
+                this.squeakAudio.stop();
+            }
+
+            this.squeakAudio.play();
+        } catch (error) {
+            console.error('Error playing squeakAudio: ', error);
+        }
+    }
+
+    public async playRoboticSound(): Promise<void> {
+        try {
+            if (!this.roboticAudio) {
+                this.roboticAudio = await this.loadAudio('assets_/audio/robotic.mp3', false);
+            }
+
+            // If the sound is already playing, stop it first
+            if (this.roboticAudio.isPlaying) {
+                this.roboticAudio.stop();
+            }
+
+            this.roboticAudio.play();
+        } catch (error) {
+            console.error('Error playing roboticAudio: ', error);
+        }
+    }
+
+    public async playDanceSound(): Promise<void> {
+        try {
+            if (!this.danceAudio) {
+                this.danceAudio = await this.loadAudio('assets_/audio/dance.mp3', false);
+            }
+
+            // If the sound is already playing, stop it first
+            if (this.danceAudio.isPlaying) {
+                this.danceAudio.stop();
+            }
+
+            this.danceAudio.play();
+        } catch (error) {
+            console.error('Error playing danceAudio: ', error);
         }
     }
 
