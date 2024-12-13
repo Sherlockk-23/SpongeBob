@@ -31,7 +31,7 @@ class BaseObstacle extends MovableObject {
     }
 
     ensureOnGround() {
-        if (this.name.includes('rock')) {
+        if (this.name.includes('rock') || this.name.includes('shiba') || this.name.includes('dog') || this.name.includes('cat')) {
             if (this.getBottomCenter().y <= 0) {
                 this.vel.y = 0;
             }
@@ -50,8 +50,8 @@ class BaseObstacle extends MovableObject {
         }
     }
 
-    jellyfishMotion() {
-        if (this.name.includes('jelly_fish')) {
+    jellyfish_and_phantomMotion() {
+        if (this.name.includes('jelly_fish') || this.name.includes('phantom')) {
             //move in a circle
             if (this.getBottomCenter().y <= 1.5 && this.getBottomCenter().x <= -3) {
                 this.vel.y = 0;
@@ -80,7 +80,7 @@ class BaseObstacle extends MovableObject {
         this.updateBoundingBox();
         this.ensureOnGround();
         this.rebound();
-        this.jellyfishMotion();
+        this.jellyfish_and_phantomMotion();
     }
 }
 

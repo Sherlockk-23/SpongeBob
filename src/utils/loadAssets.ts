@@ -41,10 +41,12 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'burger',
         'bus2TSCP',
         'car2',
+        'cat',
         'chair1',
         'checkPoint',
         'chum_bucket',
         'clock',
+        'dog',
         'fish',
         'hat',
         'house1',
@@ -55,9 +57,11 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
         'mill1',
         'mill2',
         'patrickStatue',
+        'phantom',
         'pillar',
         'pineapple_house',
         'rock',
+        'shiba',
         'snailClock',
         'spatula',
         'spongehengeTSCP',
@@ -80,7 +84,6 @@ async function loadAssets(gltfCharactorDict: { [key: string]: GLTF }, gltfObstac
     ];
 
     const characterPaths = [
-        'spongebobWalk',
         'roboBob1',
         'roboBob2',
         'doodleBob',

@@ -43,7 +43,7 @@ class Stage extends MovableObject {
 
 
     static readonly LENGTH = 100;
-    static readonly WIDTH = 5;
+    static readonly WIDTH = 7;
     static readonly HEIGHT = 15;
     static readonly START_Z = 0;
 
@@ -63,7 +63,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        this.theme = 'bikini_bottom';
+        this.theme = 'dungeon';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -193,6 +193,36 @@ class Stage extends MovableObject {
         return null; // Could not find valid position after maximum attempts
     }
 
+    private addGroundImage(x: number, y: number, z: number): void {
+        const textureLoader = new THREE.TextureLoader();
+        if (Math.random() > 0.5) {
+            textureLoader.load('../assets_/pics/cat.png', (texture) => {
+                const planeGeometry = new THREE.PlaneGeometry(3, 3); // Adjust size as needed
+                const planeMaterial = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+                const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+                planeMesh.position.set(x, y + Math.random() / 100, z);
+
+                planeMesh.rotation.x = -Math.PI / 2; // Lay flat on the ground
+
+                this.mesh.add(planeMesh);
+            });
+        }
+        else {
+            textureLoader.load('../assets_/pics/dog.png', (texture) => {
+                const planeGeometry = new THREE.PlaneGeometry(3, 3); // Adjust size as needed
+                const planeMaterial = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+                const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+
+                planeMesh.position.set(x, y + Math.random() / 100, z);
+                this.counter += 1;
+                planeMesh.rotation.x = -Math.PI / 2; // Lay flat on the ground
+
+                this.mesh.add(planeMesh);
+            });
+        }
+
+    }
+
     initObstacles(trackLength: number, trackWidth: number) {
         const obstacleSpacing = 1.5; // Change this to change density
         const numObstacles = Math.floor(trackLength / obstacleSpacing);
@@ -272,7 +302,7 @@ class Stage extends MovableObject {
                     }
                 }
             }
-        }else{
+        } else {
             // not windy_food, get some decoration
             const decorationSpacing = 5; // Change this to change density
             const num_decorations = Math.floor(trackLength / decorationSpacing);
@@ -282,17 +312,17 @@ class Stage extends MovableObject {
                 this.mesh.add(obstacle.mesh);
 
                 let x = 6;
-                if(Math.random() > 0.5)
+                if (Math.random() > 0.5)
                     x = -6;
-                x += (Math.random()-0.5) * 2;
+                x += (Math.random() - 0.5) * 2;
 
                 let y = 0;
                 if (obstacle.name.includes('Menu') || obstacle.name.includes('jellyfish3'))
                     y = 2 + (Math.random()) * 2;
 
-                const z = i * decorationSpacing + (Math.random()-0.5) * decorationSpacing;
+                const z = i * decorationSpacing + (Math.random() - 0.5) * decorationSpacing;
 
-                
+
 
                 obstacle.setPosition(x, y, z);
             }
@@ -305,8 +335,10 @@ class Stage extends MovableObject {
                 if (position) {
                     this.obstacles.push(obstacle);
                     this.mesh.add(obstacle.mesh);
-                    if(obstacle.name.includes('rock'))
+                    if (obstacle.name.includes('dog') || obstacle.name.includes('cat')) {
                         obstacle.setPosition(position.x, position.y + 30, position.z);
+                        this.addGroundImage(position.x, position.y, position.z);
+                    }
                     else
                         obstacle.setPosition(position.x, position.y, position.z);
                 } else {

@@ -37,7 +37,7 @@ abstract class BaseCharacter extends MovableObject {
 
     //condition can be normal, robotic, highjump, scary, dead, dance, squashed
     condition: string = 'normal';
-    //movement can be walking, running, jumping, idle, punching, dance, squashed
+    //movement can be walking, running, jumping, idle, punching, dance, squashed, confusion
     movement: string;
     movementUpdated: boolean = false;
     newMovement: string;
@@ -85,49 +85,97 @@ abstract class BaseCharacter extends MovableObject {
     }
 
     updateAcceleration(delta: number) {
-        if (this.inputHandler.isKeyPressed('w')) {
-            this.accel.z = this.defaultAccelZ;
-        } else if (this.inputHandler.isKeyPressed('s')) {
-            this.accel.z = -this.defaultAccelZ;
-            // this.updateMovementTmp('running');
-        } else {
-            if (Math.abs(this.vel.z) < this.defaultMinVel) {
-                this.accel.z = 0;
-                this.vel.z = 0;
-            } else if (this.vel.z > 0) {
-                this.accel.z = -this.defaultDeaccel;
+        if (this.condition == 'confusion') {
+            if (this.inputHandler.isKeyPressed('s')) {
+                this.accel.z = this.defaultAccelZ;
+            } else if (this.inputHandler.isKeyPressed('w')) {
+                this.accel.z = -this.defaultAccelZ;
+                // this.updateMovementTmp('running');
             } else {
-                this.accel.z = this.defaultDeaccel;
+                if (Math.abs(this.vel.z) < this.defaultMinVel) {
+                    this.accel.z = 0;
+                    this.vel.z = 0;
+                } else if (this.vel.z > 0) {
+                    this.accel.z = -this.defaultDeaccel;
+                } else {
+                    this.accel.z = this.defaultDeaccel;
+                }
+                // this.updateMovementTmp('walking');
             }
-            // this.updateMovementTmp('walking');
-        }
 
-        if (this.inputHandler.isKeyPressed('a')) {
-            this.accel.x = this.defaultAccelX;
-            this.accel.x += this.force.x;
-        } else if (this.inputHandler.isKeyPressed('d')) {
-            this.accel.x = -this.defaultAccelX;
-            this.accel.x += this.force.x;
-        } else {
-            if (Math.abs(this.vel.x) < this.defaultMinVel && this.force.x == 0) {
-                this.accel.x = 0;
-                this.vel.x = 0;
-            } else if (this.vel.x > 0 && this.force.x == 0) {
-                this.accel.x = -this.defaultAccelX;
-            } else if (this.vel.x < 0 && this.force.x == 0) {
+            if (this.inputHandler.isKeyPressed('d')) {
                 this.accel.x = this.defaultAccelX;
+                this.accel.x += this.force.x;
+            } else if (this.inputHandler.isKeyPressed('a')) {
+                this.accel.x = -this.defaultAccelX;
+                this.accel.x += this.force.x;
             } else {
-                this.accel.x = this.force.x;
+                if (Math.abs(this.vel.x) < this.defaultMinVel && this.force.x == 0) {
+                    this.accel.x = 0;
+                    this.vel.x = 0;
+                } else if (this.vel.x > 0 && this.force.x == 0) {
+                    this.accel.x = -this.defaultAccelX;
+                } else if (this.vel.x < 0 && this.force.x == 0) {
+                    this.accel.x = this.defaultAccelX;
+                } else {
+                    this.accel.x = this.force.x;
+                }
             }
+
+            if (this.inputHandler.isKeyPressed('c') && this.onGround()) {
+                this.vel.y = this.defaultMaxJumpVel / 2;
+            }
+            if (this.inputHandler.isKeyPressed(' ') && !this.onGround()) {
+                this.vel.y = -this.defaultMaxJumpVel;
+            }
+            this.accel.y = -this.defaultGravity;
+        }
+        else {
+            if (this.inputHandler.isKeyPressed('w')) {
+                this.accel.z = this.defaultAccelZ;
+            } else if (this.inputHandler.isKeyPressed('s')) {
+                this.accel.z = -this.defaultAccelZ;
+                // this.updateMovementTmp('running');
+            } else {
+                if (Math.abs(this.vel.z) < this.defaultMinVel) {
+                    this.accel.z = 0;
+                    this.vel.z = 0;
+                } else if (this.vel.z > 0) {
+                    this.accel.z = -this.defaultDeaccel;
+                } else {
+                    this.accel.z = this.defaultDeaccel;
+                }
+                // this.updateMovementTmp('walking');
+            }
+
+            if (this.inputHandler.isKeyPressed('a')) {
+                this.accel.x = this.defaultAccelX;
+                this.accel.x += this.force.x;
+            } else if (this.inputHandler.isKeyPressed('d')) {
+                this.accel.x = -this.defaultAccelX;
+                this.accel.x += this.force.x;
+            } else {
+                if (Math.abs(this.vel.x) < this.defaultMinVel && this.force.x == 0) {
+                    this.accel.x = 0;
+                    this.vel.x = 0;
+                } else if (this.vel.x > 0 && this.force.x == 0) {
+                    this.accel.x = -this.defaultAccelX;
+                } else if (this.vel.x < 0 && this.force.x == 0) {
+                    this.accel.x = this.defaultAccelX;
+                } else {
+                    this.accel.x = this.force.x;
+                }
+            }
+
+            if (this.inputHandler.isKeyPressed(' ') && this.onGround()) {
+                this.vel.y = this.defaultMaxJumpVel / 2;
+            }
+            if (this.inputHandler.isKeyPressed('c') && !this.onGround()) {
+                this.vel.y = -this.defaultMaxJumpVel;
+            }
+            this.accel.y = -this.defaultGravity;
         }
 
-        if (this.inputHandler.isKeyPressed(' ') && this.onGround()) {
-            this.vel.y = this.defaultMaxJumpVel / 2;
-        }
-        if (this.inputHandler.isKeyPressed('c') && !this.onGround()) {
-            this.vel.y = -this.defaultMaxJumpVel;
-        }
-        this.accel.y = -this.defaultGravity;
 
     }
 
@@ -192,6 +240,9 @@ abstract class BaseCharacter extends MovableObject {
         if (this.condition == 'squashed') {
             this.updateMovementTmp('squashed');
         }
+        if (this.condition == 'confusion') {
+            this.updateMovementTmp('confusion');
+        }
     }
 
     updateCondition(condition: string): void {
@@ -199,22 +250,26 @@ abstract class BaseCharacter extends MovableObject {
         this.condition = condition;
         const newgltf = this.updateConditionMesh(condition);
         console.log('newgltf:', newgltf);
-        this.changeGLTF(newgltf);
-        this.initAnimation();
+        if (newgltf != this.gltf) {
+            this.changeGLTF(newgltf);
+            this.initAnimation();
+        }
         if (this.condition == 'dead') {
             this.rescale(0.5, 0.5, 0.5);
+            this.cameraShake(1, 200);
         } else if (this.condition == 'robotic') {
             if (this.name == 'spongeBob') {
                 this.rescale(2, 2, 1.5);
             } else {
                 this.rescale(1.3, 2.5, 1.3);
             }
+            this.cameraShake(1, 200);
         } else if (this.condition == 'dance') {
             this.camera.closeUp();
+            this.cameraShake(1, 200);
         } else if (this.condition == 'squashed') {
-            this.camera.shake(1, 200);
+            this.cameraShake(1, 200);
         }
-        this.cameraShake(1, 200);
     }
 
     updateMovement(delta: number = 0): void {

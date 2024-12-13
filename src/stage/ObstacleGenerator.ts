@@ -18,7 +18,7 @@ function traverseAndSetShadows(object: THREE.Object3D) {
 class ObstacleGenerator {
     seed: number = 0;
     gltfDict: { [key: string]: GLTF } = {};
-    themes: string[] = ['all', 'normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues' ,'food'];
+    themes: string[] = ['all', 'normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues', 'food'];
     themeDict: { [key: string]: string[] } = {};
     themeDecorateDict: { [key: string]: string[] } = {};
     sizeDict: { [key: string]: THREE.Vector3 } = {};
@@ -51,22 +51,24 @@ class ObstacleGenerator {
     initThemes() {
         // 这里各科调distribution !!!
         // this.themeDict['normal'] = ['bottom', 'hat', /*'clock', */'snailClock', 'swimmingRing'];
-        this.themeDict['normal'] = ['jelly_fish'];
+        // this.themeDict['normal'] = ['jelly_fish', 'phantom'];
+        this.themeDict['normal'] = ['phantom'];
         this.themeDict['bikini_bottom'] = ['squidwardHouseTSCP', 'pineapple_house', 'lightHouseTSCP', 'krabTSCP', 'bottom', 'chum_bucket'];
         this.themeDict['windy_food'] = ['burger', 'table', 'spatula', 'barrelTSCP'];
         this.themeDict['food'] = ['burger', 'burger', 'table', 'spatula', 'barrelTSCP'];
-        this.themeDict['vehicles'] = ['car2', 'bus2TSCP', 'train','train', 'boatTSCP', 'train'];
+        this.themeDict['vehicles'] = ['car2', 'bus2TSCP', 'train', 'train', 'boatTSCP', 'train'];
         this.themeDict['dungeon'] = ['tiki_wood'];
-        this.themeDict['statues'] = ['rock','rock','rock', 'patrickStatue', 'spongehengeTSCP'];
+        // this.themeDict['statues'] = ['rock', 'rock', 'rock', 'patrickStatue', 'spongehengeTSCP'];
+        this.themeDict['statues'] = ['shiba', 'cat', 'dog'];
 
         // decoration dict
-        this.themeDecorateDict['normal'] = ['swimmingRing', 'jellyNet','jellyfish3'];
-        this.themeDecorateDict['food'] = ['krabDollar','krabMenu', 'mrKrab', 'krabTable','spatula', 'barrelTSCP'];
+        this.themeDecorateDict['normal'] = ['swimmingRing', 'jellyNet', 'jellyfish3'];
+        this.themeDecorateDict['food'] = ['krabDollar', 'krabMenu', 'mrKrab', 'krabTable', 'spatula', 'barrelTSCP'];
         this.themeDecorateDict['bikini_bottom'] = ['building1TSCP', 'building2TSCP'];
         this.themeDecorateDict['windy_food'] = ['building1TSCP', 'building2TSCP'];
         this.themeDecorateDict['vehicles'] = ['building1TSCP', 'building2TSCP'];
         this.themeDecorateDict['dungeon'] = ['building1TSCP', 'building2TSCP'];
-        this.themeDecorateDict['statues'] = ['rock', 'tomb','patrickStatue','spongehengeTSCP'];
+        this.themeDecorateDict['statues'] = ['rock', 'tomb', 'patrickStatue', 'spongehengeTSCP'];
     }
 
     initSizeDict() {
@@ -103,10 +105,17 @@ class ObstacleGenerator {
 
         //statues
         this.sizeDict['rock'] = new THREE.Vector3(3, 3, 3);
+        this.sizeDict['shiba'] = new THREE.Vector3(2, 2, 2);
+        this.sizeDict['cat'] = new THREE.Vector3(3, 3, 3);
+        this.sizeDict['dog'] = new THREE.Vector3(3, 3, 3);
+
 
         //dungeon
         this.sizeDict['pillar'] = new THREE.Vector3(1.4, 4, 1.4);
         this.sizeDict['tiki_wood'] = new THREE.Vector3(1.75, 1.75, 1.75);
+        this.sizeDict['phantom'] = new THREE.Vector3(1, 1.5, 1);
+
+        //initial
         this.sizeDict['jelly_fish'] = new THREE.Vector3(1.2, 1.8, 1.2);
 
         //normal
@@ -135,7 +144,7 @@ class ObstacleGenerator {
         this.sizeDict['building1TSCP'] = new THREE.Vector3(2.5, 5, 2.5);
         this.sizeDict['building2TSCP'] = new THREE.Vector3(3, 6, 3);
 
-        
+
         console.log('generator initialized', this.themeDict);
     }
     initRotateDict() {
@@ -163,10 +172,15 @@ class ObstacleGenerator {
         this.rotateDict['tiki_wood'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotateDict['jelly_fish'] = new THREE.Vector3(0, Math.PI, 0);
         this.rotateDict['jellyNet'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['shiba'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['cat'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['dog'] = new THREE.Vector3(0, Math.PI, 0);
+        this.rotateDict['phantom'] = new THREE.Vector3(0, Math.PI, 0);
+
 
         this.rotateDict['mrKrab'] = new THREE.Vector3(0, Math.PI, 0);
-        this.rotateDict['krabPack'] = new THREE.Vector3(0, Math.PI/2, 0);
-        this.rotateDict['krabDollar'] = new THREE.Vector3(0, -Math.PI/2, 0);
+        this.rotateDict['krabPack'] = new THREE.Vector3(0, Math.PI / 2, 0);
+        this.rotateDict['krabDollar'] = new THREE.Vector3(0, -Math.PI / 2, 0);
         this.rotateDict['krabMenu'] = new THREE.Vector3(0, Math.PI, 0);
     }
     initVelDict() {
@@ -178,8 +192,12 @@ class ObstacleGenerator {
         this.velDict['boatTSCP'] = new THREE.Vector3(0.1, 0, 0);
         this.velDict['car2'] = new THREE.Vector3(0, 0, -2);
         this.velDict['rock'] = new THREE.Vector3(0, -4, 0);
+        this.velDict['shiba'] = new THREE.Vector3(0, -4, 0);
+        this.velDict['cat'] = new THREE.Vector3(0, -4, 0);
+        this.velDict['dog'] = new THREE.Vector3(0, -4, 0);
         this.velDict['tiki_wood'] = new THREE.Vector3(0, -1, 0);
         this.velDict['jelly_fish'] = new THREE.Vector3(1, 0, 0);
+        this.velDict['phantom'] = new THREE.Vector3(1, 0, 0);
     }
 
     randomObstacle(id: number = -1, theme: string = 'normal', size: THREE.Vector3 = NaN): BaseObstacle {

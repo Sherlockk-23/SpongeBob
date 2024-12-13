@@ -101,27 +101,27 @@ class Controller {
         this.scene.getScene().add(this.directionLight);
     }
 
-    getTheme(){
-        if(this.collectedStars < 1)
-           return 'normal';
-        else if(this.collectedStars < 4)
-           return 'food';
-        else if(this.collectedStars < 7)
+    getTheme() {
+        if (this.collectedStars < 1)
+            return 'normal';
+        else if (this.collectedStars < 4)
+            return 'food';
+        else if (this.collectedStars < 7)
             return 'dungeon';
-        else if(this.collectedStars < 11)
-           return 'windy_food';
-        else if(this.collectedStars < 15)
-           return 'vehicles';
-        else if(this.collectedStars < 20)
-           return 'bikini_bottom';
+        else if (this.collectedStars < 11)
+            return 'windy_food';
+        else if (this.collectedStars < 15)
+            return 'vehicles';
+        else if (this.collectedStars < 20)
+            return 'bikini_bottom';
         else
-              return 'statues';
+            return 'statues';
     }
 
     changeStage() {
         console.log('change stage');
         this.stageidx += 1;
-        this.stages.push(new Stage(this.scene, 'stage' + (this.stageidx + 1), this.stageidx, 
+        this.stages.push(new Stage(this.scene, 'stage' + (this.stageidx + 1), this.stageidx,
             this.obstacleGenerator, this.itemGenerator, this.textureDict, this.getTheme()));
         this.stages[this.stageidx].mesh.position.z =
             this.stages[this.stageidx - 1].mesh.position.z + this.stages[this.stageidx - 1].length;
@@ -172,7 +172,7 @@ class Controller {
                     this.uicontroller.swapItem('green');
                 } else if (item.name.includes('sauce')) {
                     this.uicontroller.swapItem('pink');
-                }else if(item.name.includes('star')){
+                } else if (item.name.includes('star')) {
                     this.collectedStars += 1;
                     const starCountElement = document.getElementById('star-count');
                     if (starCountElement) {
@@ -223,14 +223,36 @@ class Controller {
         }
     }
 
+    checkCollisonPhantom() {
+        for (let stage of this.stages) {
+            for (let obstacle of stage.nearestObstacles) {
+                if (checkCollision(this.character, obstacle) && obstacle.name.includes('phantom')) {
+                    const effect = {
+                        duration: 3,
+                        apply: (char: BaseCharacter) => {
+                            char.updateCondition('confusion');
+                            this.character.rotate('y', Math.PI);
+                        },
+                        remove: (char: BaseCharacter) => {
+                            char.updateCondition('normal');
+                            this.character.rotate('y', Math.PI);
+                        }
+                    };
+                    this.character.applyEffect('confusion', effect);
+                }
+            }
+        }
+
+    }
+
     checkSquash() {
         for (let stage of this.stages) {
             if (stage.theme == 'statues') {
                 for (let obstacle of stage.nearestObstacles) {
-                    if (!obstacle.name.includes('rock')) 
+                    if (!obstacle.name.includes('dog') && !obstacle.name.includes('cat'))
                         continue;
-                    if (this.character.mesh.position.z > stage.mesh.position.z+obstacle.mesh.position.z - 1.5
-                        && this.character.mesh.position.z < stage.mesh.position.z+obstacle.mesh.position.z + 1.5
+                    if (this.character.mesh.position.z > stage.mesh.position.z + obstacle.mesh.position.z - 1.5
+                        && this.character.mesh.position.z < stage.mesh.position.z + obstacle.mesh.position.z + 1.5
                         && this.character.mesh.position.y < obstacle.getBottomCenter().y
                         && this.character.mesh.position.y > obstacle.getBottomCenter().y - 2
                         && this.character.mesh.position.x > obstacle.mesh.position.x - 1.5
@@ -330,6 +352,7 @@ class Controller {
 
         this.checkSquash();
         this.checkPositionState();
+        this.checkCollisonPhantom();
 
         this.checkCollisionObstacles(this.stages[this.stageidx], delta);
         this.checkCollisionItems(this.stages[this.stageidx]);
