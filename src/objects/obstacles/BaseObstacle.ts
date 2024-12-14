@@ -49,11 +49,29 @@ class BaseObstacle extends MovableObject {
 
     rebound() {
         if (this.name.includes('tiki')) {
+            let random = Math.random();
             if (this.getTopCenter().y <= 0.15) {
-                this.vel.y = -this.vel.y;
+                if (random < 0.3) {
+                    this.vel.y = 1;
+                }
+                else if (random < 0.6) {
+                    this.vel.y = 0.8;
+                }
+                else {
+                    this.vel.y = 1.2;
+                }
+
             }
             if (this.getBottomCenter().y >= 0.1) {
-                this.vel.y = -this.vel.y;
+                if (random < 0.3) {
+                    this.vel.y = -1;
+                }
+                else if (random < 0.6) {
+                    this.vel.y = -0.8;
+                }
+                else {
+                    this.vel.y = -1.2;
+                }
             }
         }
     }
@@ -69,8 +87,8 @@ class BaseObstacle extends MovableObject {
         }
     }
 
-    jellyfish_and_phantomMotion() {
-        if (this.name.includes('jelly_fish') || this.name.includes('phantom')) {
+    jellyfishMotion() {
+        if (this.name.includes('jelly_fish')) {
             //move in a circle
             if (this.getBottomCenter().y <= 0 && this.getBottomCenter().x <= -3 && this.vel.y < 0) {
                 this.vel.y = 0;
@@ -119,6 +137,56 @@ class BaseObstacle extends MovableObject {
             }
         }
     }
+    phantomMotion() {
+        if (this.name.includes('phantom')) {
+            //move in a circle
+            if (this.getBottomCenter().y <= 1.5 && this.getBottomCenter().x <= -3 && this.vel.y < 0) {
+                this.vel.y = 0;
+                this.vel.x = 1;
+            }
+            else if (this.getBottomCenter().y <= 1.5 && this.getBottomCenter().x >= 3 && this.vel.x > 0) {
+                if (Math.random() < 0.5) {
+                    this.vel.y = 2;
+                    this.vel.x = 0;
+                }
+                else {
+                    this.vel.y = 0;
+                    this.vel.x = -1;
+                }
+            }
+            else if (this.getBottomCenter().y >= 3 && this.getBottomCenter().x >= 3 && this.vel.y > 0) {
+                this.vel.y = 0;
+                this.vel.x = -1.5;
+            }
+            else if (this.getBottomCenter().y >= 3 && this.getBottomCenter().x <= -3 && this.vel.x < 0) {
+                this.vel.y = -2;
+                this.vel.x = 0;
+            }
+            else if (this.getBottomCenter().y <= 1.5 && this.getBottomCenter().x <= -3 && this.vel.x < 0) {
+                if (Math.random() < 0.5) {
+                    this.vel.y = 0;
+                    this.vel.x = 1;
+                }
+                else {
+                    this.vel.y = 2;
+                    this.vel.x = 0;
+                }
+
+            }
+            else if (this.getBottomCenter().y >= 3 && this.getBottomCenter().x >= 3 && this.vel.x > 0) {
+                this.vel.y = -2;
+                this.vel.x = 0;
+            }
+            else if (this.getBottomCenter().y >= 3 && this.getBottomCenter().x <= -3 && this.vel.y > 0) {
+                this.vel.y = 0;
+                this.vel.x = 1.5;
+            }
+            else if (this.getBottomCenter().y <= 1.5 && this.getBottomCenter().x >= 3 && this.vel.y < 0) {
+                this.vel.y = 0;
+                this.vel.x = -1;
+            }
+        }
+    }
 
     tick(delta: number): void {
 
@@ -128,7 +196,8 @@ class BaseObstacle extends MovableObject {
         this.updateBoundingBox();
         this.ensureOnGround();
         this.rebound();
-        this.jellyfish_and_phantomMotion();
+        this.jellyfishMotion();
+        this.phantomMotion();
         this.oscillate();
     }
 }

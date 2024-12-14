@@ -56,7 +56,7 @@ class ObstacleGenerator {
         this.themeDict['windy_food'] = ['burger', 'table', 'spatula', 'barrelTSCP'];
         this.themeDict['food'] = ['burger', 'burger', 'table', 'spatula', 'barrelTSCP'];
         this.themeDict['vehicles'] = ['car2', 'bus2TSCP', 'train', 'train', 'boatTSCP', 'train'];
-        this.themeDict['dungeon'] = ['tiki_wood', 'tiki_wood', 'tiki_wood', 'tikiToren'];
+        this.themeDict['dungeon'] = ['tiki_wood', 'tiki_wood', 'tiki_wood', 'tiki_wood', 'tikiToren'];
         this.themeDict['statues'] = ['cat', 'dog', 'cat', 'dog', 'shiba', 'rabbit'];
         this.themeDict['final'] = ['car2', 'burger', 'lightHouseTSCP', 'jelly_fish', 'cat', 'dog'];
         this.themeDict['special'] = ['realBob'];
@@ -206,8 +206,8 @@ class ObstacleGenerator {
         this.velDict['boatTSCP'] = new THREE.Vector3(1, 0, 0);
         this.velDict['car2'] = new THREE.Vector3(0, 0, -2.5);
         this.velDict['rock'] = new THREE.Vector3(0, -4, 0);
-        this.velDict['cat'] = new THREE.Vector3(0, -4.6, 0);
-        this.velDict['dog'] = new THREE.Vector3(0, -4.5, 0);
+        this.velDict['cat'] = new THREE.Vector3(0, -4, 0);
+        this.velDict['dog'] = new THREE.Vector3(0, -4, 0);
         this.velDict['tiki_wood'] = new THREE.Vector3(0, -1, 0);
         // this.velDict['tikiToren'] = new THREE.Vector3(0, -1, 0);
         this.velDict['jelly_fish'] = new THREE.Vector3(1, 0, 0);
@@ -251,19 +251,19 @@ class ObstacleGenerator {
         for (let i = 0; i < 3; i++) {
             let noise = (Math.random() - 0.5) * 1.5;
             if (Math.random() > 0.5) noise = -noise;
-            if(name.includes('tiki')){
+            if (name.includes('tiki')) {
                 // if(Math.random()>0.8)
                 //     noise/=3;
                 // else
                 //     noise = 0;
                 vel.setComponent(i, vel.getComponent(i) * Math.exp(noise));
-            }else
+            } else
                 vel.setComponent(i, vel.getComponent(i) * Math.exp(noise));
             if (name.includes('phantom') || name.includes('jelly_fish')) {
                 if (Math.random() > 0.5) {
-                   vel.setComponent(i, -vel.getComponent(i));
+                    vel.setComponent(i, -vel.getComponent(i));
                 }
-             }
+            }
         }
         obstacle.vel = vel;
 

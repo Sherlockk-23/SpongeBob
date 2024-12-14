@@ -63,7 +63,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        this.theme = 'dungeon';
+        // this.theme = 'statues';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -394,22 +394,32 @@ class Stage extends MovableObject {
         }
 
         if (this.theme == 'statues') {
-            for (let i = 0; i < numObstacles * 2; i++) {
+            for (let i = 0; i < numObstacles * 1.5; i++) {
                 const obstacle = this.obstacleGenerator.randomObstacle(i, this.theme);
-                const position = this.findValidPosition(obstacle, trackWidth, i * 4, 4);
-                if (position) {
-                    this.obstacles.push(obstacle);
-                    this.mesh.add(obstacle.mesh);
-                    if (obstacle.name.includes('dog') || obstacle.name.includes('cat')) {
-                        obstacle.setPosition(position.x, position.y + 30, position.z);
-                        this.addGroundImage(position.x, position.y, position.z);
-                    }
-                    else
-                        obstacle.setPosition(position.x, position.y, position.z);
-                } else {
-                    // If we couldn't place the obstacle, clean it up
-                    obstacle.destruct();
+                const obstacleSpacing = 2; // Change this to change density
+                const position = new THREE.Vector3(Math.random() * trackWidth - trackWidth / 2,
+                    0, i * obstacleSpacing + Math.random() * obstacleSpacing);
+                this.obstacles.push(obstacle);
+                this.mesh.add(obstacle.mesh);
+                if (obstacle.name.includes('dog') || obstacle.name.includes('cat')) {
+                    obstacle.setPosition(position.x, position.y + 30, position.z);
+                    this.addGroundImage(position.x, position.y, position.z);
                 }
+                else
+                    obstacle.setPosition(position.x, position.y, position.z);
+                // if (position) {
+                //     this.obstacles.push(obstacle);
+                //     this.mesh.add(obstacle.mesh);
+                //     if (obstacle.name.includes('dog') || obstacle.name.includes('cat')) {
+                //         obstacle.setPosition(position.x, position.y + 30, position.z);
+                //         this.addGroundImage(position.x, position.y, position.z);
+                //     }
+                //     else
+                //         obstacle.setPosition(position.x, position.y, position.z);
+                // } else {
+                //     // If we couldn't place the obstacle, clean it up
+                //     obstacle.destruct();
+                // }
             }
         }
         else if (this.theme == 'dungeon') {
@@ -483,9 +493,9 @@ class Stage extends MovableObject {
             const y = 0.5 + Math.random() * 1.5;
             const z = i * itemSpacing + Math.random() * itemSpacing;
 
-            if(this.theme == 'dungeon')
-                item.setPosition(x, y+1, z);
-            else 
+            if (this.theme == 'dungeon')
+                item.setPosition(x, y + 1, z);
+            else
                 item.setPosition(x, y, z);
             // item.addBoundingBoxHelper(this.scene);
         }
@@ -501,9 +511,9 @@ class Stage extends MovableObject {
             const y = 0.5 + Math.random() * 1.5;
             const z = i * starSpacing + Math.random() * starSpacing;
 
-            if(this.theme == 'dungeon')
-                item.setPosition(x, y+1, z);
-            else 
+            if (this.theme == 'dungeon')
+                item.setPosition(x, y + 1, z);
+            else
                 item.setPosition(x, y, z);
         }
 

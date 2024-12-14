@@ -66,6 +66,7 @@ class ItemGenerator {
         // const { random, newSeed } = seededRandom(this.seed);
         // this.seed = newSeed;
         const random = Math.random();
+        const random_ = Math.random();
         name = this.themeDict[theme][Math.floor(random * this.themeDict[theme].length)];
         //name = 'guess_box';
         if (name.includes('soda')) {
@@ -80,13 +81,13 @@ class ItemGenerator {
             item = new highJumpItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
         }
         else {
-            if (random < 0.25) {
+            if (random_ < 0.25) {
                 item = new highJumpItem('sodaTSCP' + '_' + id, cloneGLTF(this.gltfDict[name]));
             }
-            else if (random < 0.5) {
+            else if (random_ < 0.5) {
                 item = new speedupItem('sauceTSCP' + '_' + id, cloneGLTF(this.gltfDict[name]));
             }
-            else if (random < 0.75) {
+            else if (random_ < 0.75) {
                 item = new roboticItem('xbox_controller_lp' + '_' + id, cloneGLTF(this.gltfDict[name]));
             }
             else {
