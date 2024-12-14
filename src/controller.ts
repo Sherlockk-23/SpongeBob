@@ -38,7 +38,7 @@ class Controller {
     stageidx: number = 0;
 
     totalTime: number = 0;
-    enemyMinVel: number = 0.4;
+    enemyMinVel: number = 0.8;
     enemyMaxVel: number = 3;
     enemyDist: number = 15;
     enemyPos: number = -20;
@@ -198,6 +198,11 @@ class Controller {
         if (this.character.waiting_effect[0] == '') {
             this.uicontroller.swapItem('none');
         }
+        
+        // let EffectKeys = Object.keys(this.character.effects);
+        // if (EffectKeys.length > 0) {
+        //     this.uicontroller.showSentence(EffectKeys[0], 'notice', 1000);
+        // }
     }
 
     checkCollisionObstacles(stage: Stage, delta: number) {
@@ -251,6 +256,7 @@ class Controller {
                         }
                     };
                     this.character.applyEffect('confusion', effect);
+                    // this.uicontroller.showSentence('Confusion! Reverse your operations!', 'notice', 1000);
                 }
             }
         }
@@ -343,6 +349,38 @@ class Controller {
         if (this.character.getBottomCenter().z + 70 > this.stages[this.stageidx].length + this.stages[this.stageidx].mesh.position.z) {
             this.changeStage();
         }
+
+        if(this.character.getBottomCenter().z < this.stages[this.stageidx].mesh.position.z + 5&& 
+           this.character.getBottomCenter().z > this.stages[this.stageidx].mesh.position.z){
+            let stageName = this.stages[this.stageidx].theme;
+            if(stageName == 'normal'){
+                stageName = 'JellyGoRound';
+            }else if(stageName == 'food'){
+                stageName = 'KrabRestaurant';
+            }else if(stageName == 'vehicles'){
+                stageName = 'BoatingSchool';
+            }else if(stageName == 'windy_food'){
+                stageName = 'Burger\'s Revenge';
+            }else if(stageName == 'dungeon'){
+                stageName = 'Dungeon';
+            }else if(stageName == 'statues'){
+                stageName = 'Rain Cats and Dogs';
+            }else if(stageName == 'bikini_bottom'){
+                stageName = 'Bikini Bottom';
+            }else if(stageName == 'final'){
+                stageName = 'Let\'s Rock';
+            }else{
+                let number = Math.random();
+                if(number > 0.7){
+                    stageName = 'THeRe y0U 2ee.mE...';
+                }else if(number > 0.4){
+                    stageName = 'Thanks for your accompany.';
+                }else{
+                    stageName = 'You Are Not Supposed To Be Here.';
+                }
+            }
+            this.uicontroller.showSentence(stageName, 'title', 1000);
+        }
     }
 
     updateFog() {
@@ -357,7 +395,7 @@ class Controller {
             this.enterSpecialStageLol = true;
         if (this.character.mesh.position.z < this.enemyPos - 5)
             this.enterSpecialStageLol = true;
-        if (this.character.mesh.position.z < -5)
+        if (this.character.mesh.position.z < -6)
             this.enterSpecialStageLol = true;
 
         if (this.enterSpecialStageLol && !this.alreadyEnteredSpecialStage) {

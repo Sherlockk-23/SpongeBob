@@ -95,6 +95,7 @@ class Game {
         this.start();
         this.pause();
         await this.uiController.countdown(5);
+        this.uiController.showSentence("Go!", 'title',1000);
         this.status = "playing";
         this.resume();
 

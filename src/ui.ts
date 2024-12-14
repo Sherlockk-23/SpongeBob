@@ -1,21 +1,14 @@
-
-
 class UIController {
   sceneContainer: HTMLElement;
-
   pause_popup: HTMLElement;
-
   lose_popup: HTMLElement;
   overlay: HTMLElement;
-
   loading: HTMLElement;
   loadingIcon: HTMLImageElement;
-
   countdownElement: HTMLElement;
-
   itemIcon: HTMLImageElement;
   current_item: string;
-
+  sentenceElement: HTMLElement;
 
   constructor() {
     this.sceneContainer = document.getElementById('scene-container') as HTMLElement;
@@ -23,12 +16,12 @@ class UIController {
     this.overlay = document.getElementById('overlay') as HTMLElement;
     this.loading = document.getElementById('loading') as HTMLElement;
     this.loadingIcon = document.getElementById('loading-icon') as HTMLImageElement;
-
     this.itemIcon = document.getElementById('item-icon') as HTMLImageElement;
-
     this.pause_popup = document.getElementById('pause-popup') as HTMLElement;
-
     this.countdownElement = document.getElementById('countdown') as HTMLElement;
+    this.sentenceElement = document.createElement('div');
+    this.sentenceElement.id = 'sentence-element';
+    document.body.appendChild(this.sentenceElement);
 
     const returnButton = document.getElementById('return-button') as HTMLElement;
     if (returnButton) {
@@ -56,32 +49,25 @@ class UIController {
     this.itemIcon.src = `assets_/pics/items/${item}.png`;
   }
 
-
   lose() {
-    // Display the lose popup and overlay
-    displayElement(this.overlay, 0, 0.5, false, 500); // Dim the background
-    displayElement(this.lose_popup, 0, 1, true, 500); // Show the popup
+    displayElement(this.overlay, 0, 0.5, false, 500);
+    displayElement(this.lose_popup, 0, 1, true, 500);
   }
 
   restart() {
-    // Hide the lose popup and overlay
     fadeElement(this.overlay, 0.5, 0, true, 500);
     fadeElement(this.lose_popup, 1, 0, true, 500);
   }
 
   pause() {
-    // Display the pause popup and overlay
     console.log("pause in ui");
-    displayElement(this.overlay, 0, 0.5, false, 500); // Dim the background
-    displayElement(this.pause_popup, 0, 1, true, 500); // Show the popup
-
+    displayElement(this.overlay, 0, 0.5, false, 500);
+    displayElement(this.pause_popup, 0, 1, true, 500);
   }
 
   resume() {
-    // Hide the pause popup and overlay
     fadeElement(this.overlay, 0.5, 0, true, 500);
     fadeElement(this.pause_popup, 1, 0, true, 500);
-
   }
 
   async countdown(count: number) {
@@ -94,7 +80,36 @@ class UIController {
   }
 
   returnToMain() {
-    window.location.href = 'Character.html'; // Navigate to index.html
+    window.location.href = 'Instructions.html';
+  }
+
+  async showSentence(text: string, type: 'title' | 'notice', duration: number = 3000) {
+    this.sentenceElement.innerText = text;
+    this.sentenceElement.style.display = 'block';
+    this.sentenceElement.style.opacity = '0';
+    this.sentenceElement.style.fontFamily = 'Arial, sans-serif'; // Change font
+    this.sentenceElement.style.fontWeight = 'bold'; // Bold text
+    this.sentenceElement.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 0.5)'; // Add shadow
+  
+    if (type === 'title') {
+      this.sentenceElement.style.position = 'fixed';
+      this.sentenceElement.style.top = '10%';
+      this.sentenceElement.style.left = '50%';
+      this.sentenceElement.style.transform = 'translateX(-50%)';
+      this.sentenceElement.style.fontSize = '5vh';
+      this.sentenceElement.style.color = 'green';
+    } else if (type === 'notice') {
+      this.sentenceElement.style.position = 'fixed';
+      this.sentenceElement.style.bottom = '10%';
+      this.sentenceElement.style.left = '50%';
+      this.sentenceElement.style.transform = 'translateX(-50%)';
+      this.sentenceElement.style.fontSize = '3vh';
+      this.sentenceElement.style.color = 'red';
+    }
+  
+    displayElement(this.sentenceElement, 0, 1, false, 500);
+    await new Promise(resolve => setTimeout(resolve, duration));
+    fadeElement(this.sentenceElement, 1, 0, true, 500);
   }
 }
 
@@ -104,23 +119,19 @@ const startButton = document.getElementById("start-button");
 
 if (startButton) {
   startButton.addEventListener("click", () => {
-    // Hide the button
     startButton.style.display = "none";
-    // Call a function to start the game
     startGame();
   });
 }
 
 function startGame() {
-  // Assuming `game` is initialized in this file or elsewhere
   console.log("Game Starting...");
-  // Dispatch custom logic to notify the game logic to start
   window.dispatchEvent(new Event("gameStart"));
 }
 
 function fadeElement(element: HTMLElement, init_opacity: number = 1, final_opacity: number = 0, remove: boolean = true, duration: number = 500) {
-  var op = init_opacity;  // initial opacity
-  const timeInterval = 10; // in ms
+  var op = init_opacity;
+  const timeInterval = 10;
   var decrement = (init_opacity - final_opacity) * timeInterval / duration;
   var timer = setInterval(function () {
     if (op <= final_opacity) {
@@ -131,7 +142,6 @@ function fadeElement(element: HTMLElement, init_opacity: number = 1, final_opaci
         element.style.display = 'none';
       }
     }
-    //   console.log("element is ",element);
     element.style.opacity = op.toString();
     element.style.filter = 'alpha(opacity=' + op * 100 + ")";
     op -= decrement;
@@ -139,8 +149,8 @@ function fadeElement(element: HTMLElement, init_opacity: number = 1, final_opaci
 }
 
 function displayElement(element: HTMLElement, init_opacity: number = 0, final_opacity: number = 1, removed: boolean = true, duration: number = 500) {
-  var op = init_opacity;  // initial opacity
-  const timeInterval = 10; // in ms
+  var op = init_opacity;
+  const timeInterval = 10;
   var increment = (final_opacity - init_opacity) * timeInterval / duration;
   if (removed) {
     element.style.display = 'block';
@@ -151,7 +161,6 @@ function displayElement(element: HTMLElement, init_opacity: number = 0, final_op
       element.style.filter = 'alpha(opacity=' + final_opacity * 100 + ")";
       clearInterval(timer);
     }
-    //   console.log("element is ",element);
     element.style.opacity = op.toString();
     element.style.filter = 'alpha(opacity=' + op * 100 + ")";
     op += increment;
