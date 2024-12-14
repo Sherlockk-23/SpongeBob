@@ -483,7 +483,10 @@ class Stage extends MovableObject {
             const y = 0.5 + Math.random() * 1.5;
             const z = i * itemSpacing + Math.random() * itemSpacing;
 
-            item.setPosition(x, y, z);
+            if(this.theme == 'dungeon')
+                item.setPosition(x, y+1, z);
+            else 
+                item.setPosition(x, y, z);
             // item.addBoundingBoxHelper(this.scene);
         }
 
@@ -498,7 +501,10 @@ class Stage extends MovableObject {
             const y = 0.5 + Math.random() * 1.5;
             const z = i * starSpacing + Math.random() * starSpacing;
 
-            item.setPosition(x, y, z);
+            if(this.theme == 'dungeon')
+                item.setPosition(x, y+1, z);
+            else 
+                item.setPosition(x, y, z);
         }
 
         this.items.sort((a, b) => a.getBottomCenter().z - b.getBottomCenter().z);

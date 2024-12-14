@@ -16,7 +16,7 @@ function updateMovableBoundary(character: BaseCharacter, obstacle: BaseObject, m
     let delta = 0.1;
     // for tiki, make it broader
     if(obstacle.name.includes('tiki')){
-        delta = 0.2;
+        delta = 0.15;
     }
     for (const direction in movableBoundary) {
         const boundary = movableBoundary[direction];
@@ -28,6 +28,7 @@ function updateMovableBoundary(character: BaseCharacter, obstacle: BaseObject, m
             if (obstacleBbox.min.z + delta < bbox.max.z) continue;
             bbox.max.z += obstacleBbox.min.z - bbox.max.z + delta;
             bbox.min.z += obstacleBbox.min.z - bbox.min.z + delta;
+            bbox.min.y += 0.1;
             if (bbox.intersectsBox(obstacleBbox)) {
                 movableBoundary[direction] = Math.min(obstacleBbox.min.z, movableBoundary[direction]);
             }
@@ -35,6 +36,7 @@ function updateMovableBoundary(character: BaseCharacter, obstacle: BaseObject, m
             if (obstacleBbox.max.z - delta > bbox.min.z) continue;
             bbox.max.z += obstacleBbox.max.z - bbox.max.z - delta;
             bbox.min.z += obstacleBbox.max.z - bbox.min.z - delta;
+            bbox.min.y += 0.1;
             if (bbox.intersectsBox(obstacleBbox)) {
                 movableBoundary[direction] = Math.max(obstacleBbox.max.z, movableBoundary[direction]);
             }
@@ -42,6 +44,7 @@ function updateMovableBoundary(character: BaseCharacter, obstacle: BaseObject, m
             if (obstacleBbox.max.x - delta > bbox.min.x) continue;
             bbox.max.x += obstacleBbox.max.x - bbox.max.x - delta;
             bbox.min.x += obstacleBbox.max.x - bbox.min.x - delta;
+            bbox.min.y += 0.1;
             if (bbox.intersectsBox(obstacleBbox)) {
                 movableBoundary[direction] = Math.max(obstacleBbox.max.x, movableBoundary[direction]);
             }
@@ -50,6 +53,7 @@ function updateMovableBoundary(character: BaseCharacter, obstacle: BaseObject, m
             if (obstacleBbox.min.x + delta < bbox.max.x) continue;
             bbox.max.x += obstacleBbox.min.x - bbox.max.x + delta;
             bbox.min.x += obstacleBbox.min.x - bbox.min.x + delta;
+            bbox.min.y += 0.1;
             if (bbox.intersectsBox(obstacleBbox)) {
                 movableBoundary[direction] = Math.min(obstacleBbox.min.x, movableBoundary[direction]);
             }
