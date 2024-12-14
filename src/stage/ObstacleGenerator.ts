@@ -18,7 +18,7 @@ function traverseAndSetShadows(object: THREE.Object3D) {
 class ObstacleGenerator {
     seed: number = 0;
     gltfDict: { [key: string]: GLTF } = {};
-    themes: string[] = ['all', 'normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues', 'food', 'special', 'phantom','final'];
+    themes: string[] = ['all', 'normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues', 'food', 'special', 'phantom', 'final'];
     themeDict: { [key: string]: string[] } = {};
     themeDecorateDict: { [key: string]: string[] } = {};
     sizeDict: { [key: string]: THREE.Vector3 } = {};
@@ -58,7 +58,7 @@ class ObstacleGenerator {
         this.themeDict['vehicles'] = ['car2', 'bus2TSCP', 'train', 'train', 'boatTSCP', 'train'];
         this.themeDict['dungeon'] = ['tiki_wood', 'tiki_wood', 'tiki_wood', 'tikiToren'];
         this.themeDict['statues'] = ['cat', 'dog', 'cat', 'dog', 'shiba', 'rabbit'];
-        this.themeDict['final'] = ['car2','burger','lightHouseTSCP','jelly_fish','cat','dog'];
+        this.themeDict['final'] = ['car2', 'burger', 'lightHouseTSCP', 'jelly_fish', 'cat', 'dog'];
         this.themeDict['special'] = ['realBob'];
 
         // decoration dict
@@ -67,8 +67,8 @@ class ObstacleGenerator {
         this.themeDecorateDict['bikini_bottom'] = ['building1TSCP', 'building2TSCP'];
         this.themeDecorateDict['windy_food'] = ['building1TSCP', 'building2TSCP'];
         this.themeDecorateDict['vehicles'] = ['building1TSCP', 'building2TSCP'];
-        this.themeDecorateDict['dungeon'] = ['patrickStatue', 'spongehengeTSCP','tomb'];
-        this.themeDecorateDict['statues'] = ['cow','rabbit'];
+        this.themeDecorateDict['dungeon'] = ['patrickStatue', 'spongehengeTSCP', 'tomb'];
+        this.themeDecorateDict['statues'] = ['cow', 'rabbit'];
         this.themeDecorateDict['final'] = ['mrKrab'];
     }
 
@@ -203,11 +203,11 @@ class ObstacleGenerator {
         });
         this.velDict['train'] = new THREE.Vector3(0, 0, -1.5);
         this.velDict['bus2TSCP'] = new THREE.Vector3(0, 0, -1);
-        this.velDict['boatTSCP'] = new THREE.Vector3(0.1, 0, 0);
-        this.velDict['car2'] = new THREE.Vector3(0, 0, -2);
+        this.velDict['boatTSCP'] = new THREE.Vector3(1, 0, 0);
+        this.velDict['car2'] = new THREE.Vector3(0, 0, -2.5);
         this.velDict['rock'] = new THREE.Vector3(0, -4, 0);
-        this.velDict['cat'] = new THREE.Vector3(0, -4, 0);
-        this.velDict['dog'] = new THREE.Vector3(0, -4, 0);
+        this.velDict['cat'] = new THREE.Vector3(0, -4.6, 0);
+        this.velDict['dog'] = new THREE.Vector3(0, -4.5, 0);
         this.velDict['tiki_wood'] = new THREE.Vector3(0, -1, 0);
         this.velDict['tikiToren'] = new THREE.Vector3(0, -1, 0);
         this.velDict['jelly_fish'] = new THREE.Vector3(1, 0, 0);

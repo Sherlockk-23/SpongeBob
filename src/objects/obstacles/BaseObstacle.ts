@@ -58,24 +58,64 @@ class BaseObstacle extends MovableObject {
         }
     }
 
+    oscillate() {
+        if (this.name.includes('boatTSCP')) {
+            if (this.getBottomCenter().x <= -3) {
+                this.vel.x = 1;
+            }
+            if (this.getBottomCenter().x >= 3) {
+                this.vel.x = -1;
+            }
+        }
+    }
+
     jellyfish_and_phantomMotion() {
         if (this.name.includes('jelly_fish') || this.name.includes('phantom')) {
             //move in a circle
-            if (this.getBottomCenter().y <= 1.5 && this.getBottomCenter().x <= -3) {
+            if (this.getBottomCenter().y <= 0 && this.getBottomCenter().x <= -3 && this.vel.y < 0) {
                 this.vel.y = 0;
                 this.vel.x = 1;
             }
-            if (this.getBottomCenter().y <= 1.5 && this.getBottomCenter().x >= 3) {
-                this.vel.y = 1;
+            else if (this.getBottomCenter().y <= 0 && this.getBottomCenter().x >= 3 && this.vel.x > 0) {
+                if (Math.random() < 0.5) {
+                    this.vel.y = 2;
+                    this.vel.x = 0;
+                }
+                else {
+                    this.vel.y = 0;
+                    this.vel.x = -1;
+                }
+            }
+            else if (this.getBottomCenter().y >= 3 && this.getBottomCenter().x >= 3 && this.vel.y > 0) {
+                this.vel.y = 0;
+                this.vel.x = -1.5;
+            }
+            else if (this.getBottomCenter().y >= 3 && this.getBottomCenter().x <= -3 && this.vel.x < 0) {
+                this.vel.y = -2;
                 this.vel.x = 0;
             }
-            if (this.getBottomCenter().y >= 3 && this.getBottomCenter().x >= 3) {
+            else if (this.getBottomCenter().y <= 0 && this.getBottomCenter().x <= -3 && this.vel.x < 0) {
+                if (Math.random() < 0.5) {
+                    this.vel.y = 0;
+                    this.vel.x = 1;
+                }
+                else {
+                    this.vel.y = 2;
+                    this.vel.x = 0;
+                }
+
+            }
+            else if (this.getBottomCenter().y >= 3 && this.getBottomCenter().x >= 3 && this.vel.x > 0) {
+                this.vel.y = -2;
+                this.vel.x = 0;
+            }
+            else if (this.getBottomCenter().y >= 3 && this.getBottomCenter().x <= -3 && this.vel.y > 0) {
+                this.vel.y = 0;
+                this.vel.x = 1.5;
+            }
+            else if (this.getBottomCenter().y <= 0 && this.getBottomCenter().x >= 3 && this.vel.y < 0) {
                 this.vel.y = 0;
                 this.vel.x = -1;
-            }
-            if (this.getBottomCenter().y >= 3 && this.getBottomCenter().x <= -3) {
-                this.vel.y = -1;
-                this.vel.x = 0;
             }
         }
     }
@@ -89,6 +129,7 @@ class BaseObstacle extends MovableObject {
         this.ensureOnGround();
         this.rebound();
         this.jellyfish_and_phantomMotion();
+        this.oscillate();
     }
 }
 

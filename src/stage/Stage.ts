@@ -25,7 +25,7 @@ class Stage extends MovableObject {
     items: BaseItem[] = [];
     itemGenerator: ItemGenerator;
     theme: string = 'normal';
-    themes: string[] = ['normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues', 'special','final'];
+    themes: string[] = ['normal', 'bikini_bottom', 'windy_food', 'vehicles', 'dungeon', 'statues', 'special', 'final'];
     length: number = 200;
 
     scene: THREE.Scene;
@@ -63,7 +63,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        // this.theme = 'final';
+        this.theme = 'dungeon';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -364,8 +364,8 @@ class Stage extends MovableObject {
             }
         }
 
-        if(this.theme == 'final'){
-            for (let i = 0; i < numObstacles; i++) {
+        if (this.theme == 'final') {
+            for (let i = 0; i < numObstacles * 1.2; i++) {
                 const obstacle = this.obstacleGenerator.randomObstacle(i, this.theme);
                 const position = this.findValidPosition(obstacle, trackWidth, i * 4, 4);
                 if (position) {
@@ -394,7 +394,7 @@ class Stage extends MovableObject {
         }
 
         if (this.theme == 'statues') {
-            for (let i = 0; i < numObstacles; i++) {
+            for (let i = 0; i < numObstacles * 2; i++) {
                 const obstacle = this.obstacleGenerator.randomObstacle(i, this.theme);
                 const position = this.findValidPosition(obstacle, trackWidth, i * 4, 4);
                 if (position) {
@@ -435,7 +435,7 @@ class Stage extends MovableObject {
             }
         }
         else {
-            for (let i = 0; i < numObstacles; i++) {
+            for (let i = 0; i < numObstacles * 1.5; i++) {
                 const obstacle = this.obstacleGenerator.randomObstacle(i, this.theme);
 
                 // Try to find a valid position for the obstacle
