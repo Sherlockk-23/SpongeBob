@@ -48,7 +48,7 @@ abstract class BaseCharacter extends MovableObject {
     defaultMinVel: number = 0.1;
     defaultMaxJumpVel: number = 4.5;
     defaultDeaccel: number = 5;
-    defaultAccelZ: number = 4;
+    defaultAccelZ: number = 3;
     defaultAccelX: number = 4;
     defaultVelX: number = 3;
     defaultGravity: number = 8;
@@ -130,7 +130,7 @@ abstract class BaseCharacter extends MovableObject {
             }
 
             if (this.inputHandler.isKeyPressed(' ') && this.onGround()) {
-                this.vel.y = this.defaultMaxJumpVel / 2;
+                this.vel.y = this.defaultMaxJumpVel ;
             }
             if (this.inputHandler.isKeyPressed('c') && !this.onGround()) {
                 this.vel.y = -this.defaultMaxJumpVel;

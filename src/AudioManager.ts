@@ -11,6 +11,7 @@ export class AudioManager {
     private squeakAudio: Audio | null = null;
     private roboticAudio: Audio | null = null;
     private danceAudio: Audio | null = null;
+    private horrorAudio: Audio | null = null;
     warningAudio: Audio | null = null;
     private audioLoader: AudioLoader;
     private listener: AudioListener;
@@ -62,6 +63,38 @@ export class AudioManager {
             this.bgmAudio.play();
         } catch (error) {
             console.error('Error loading BGM:', error);
+        }
+    }
+
+    public async changeToHorrorBGM(): Promise<void> {
+        if (this.bgmAudio) {
+            this.bgmAudio.stop();
+        }
+        try {
+            this.bgmAudio = await this.loadAudio('assets_/audio/horror.mp3', true);
+            this.bgmAudio.play();
+        } catch (error) {
+            console.error('Error loading BGM:', error);
+        }
+    }
+
+    public async playHorrorSound(): Promise<void> {
+        let x = 0;
+        x = Math.floor(Math.random() * 4);
+        try {
+            if (!this.horrorAudio) {
+                const path = `assets_/audio/imSp${x}.mp3`;
+                this.horrorAudio = await this.loadAudio(path, false);
+            }
+
+            // If the sound is already playing, stop it first
+            if (this.horrorAudio.isPlaying) {
+                this.horrorAudio.stop();
+            }else{
+                this.horrorAudio.play();
+            }
+        } catch (error) {
+            console.error('Error playing horror sound:', error);
         }
     }
 
@@ -143,6 +176,15 @@ export class AudioManager {
             }
 
             this.windAudio.play();
+        } catch (error) {
+            console.error('Error playing windAudio: ', error);
+        }
+    }
+    public async stopWindSound(): Promise<void> {
+        try {
+            if (this.windAudio) {
+                this.windAudio.stop();
+            }
         } catch (error) {
             console.error('Error playing windAudio: ', error);
         }

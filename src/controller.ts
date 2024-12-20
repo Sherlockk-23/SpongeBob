@@ -205,11 +205,18 @@ class Controller {
         // }
     }
 
+    seeRealBob:boolean = false;
+
     checkCollisionObstacles(stage: Stage, delta: number) {
+        
         for (let obstacle of stage.nearestObstacles) {
             if (checkCollision(this.character, obstacle)) {
                 // document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by '+ obstacle.name } }));
                 console.log('collide with obstacle ' + obstacle.name);
+
+                if(obstacle.name.includes('realBob')){
+                    document.dispatchEvent(new CustomEvent("forcequit", { detail: { obstacle: 'killed by '+ obstacle.name } }));
+                }
 
                 if (this.character.condition == 'robotic') {
                     this.audioManager.playBreakSound();
@@ -217,7 +224,56 @@ class Controller {
                 } else if (obstacle.name.includes('bottom')) {
                     this.audioManager.playBoundingSound();
                     this.character.vel.y = this.character.defaultMaxJumpVel;
-                } else {
+                } else if(obstacle.name.includes('phantom')){
+                    const effect = {
+                        duration: 3,
+                        apply: (char: BaseCharacter) => {
+                            char.updateCondition('confusion');
+                            this.character.rotate('y', Math.PI);
+                        },
+                        remove: (char: BaseCharacter) => {
+                            char.updateCondition('normal');
+                            this.character.rotate('y', Math.PI);
+                        }
+                    };
+                    this.character.applyEffect('confusion', effect);
+                }else if(obstacle.name.includes('cat') || obstacle.name.includes('dog')){
+                    if (this.character.mesh.position.z > stage.mesh.position.z + obstacle.mesh.position.z - 1.5
+                        && this.character.mesh.position.z < stage.mesh.position.z + obstacle.mesh.position.z + 1.5
+                        && this.character.mesh.position.y < obstacle.getBottomCenter().y
+                        && this.character.mesh.position.y > obstacle.getBottomCenter().y - 2
+                        && this.character.mesh.position.x > obstacle.mesh.position.x - 1.5
+                        && this.character.mesh.position.x < obstacle.mesh.position.x + 1.5
+                    ) {
+                        const effect = {
+                            duration: 3,
+                            apply: (char: BaseCharacter) => {
+                                char.updateCondition('squashed');
+                            },
+                            remove: (char: BaseCharacter) => {
+                                char.updateCondition('normal');
+                            }
+                        };
+                        this.audioManager.playSqueakSound();
+                        this.character.applyEffect('squashed', effect)
+                    }
+                    if (!obstacle.colliding) {
+                        obstacle.colliding = true;
+                        obstacle.collidedCnt++;
+                    }
+                    if (obstacle.collidedCnt >= obstacle.collidedThreshold) {
+                        this.audioManager.playBreakSound();
+                        stage.removeObstacle(obstacle);
+                    }
+                    if (this.character.movement == 'punching') {
+                        obstacle.punchedTime += delta;
+                    }
+                    if (obstacle.punchedTime > 1.5) {
+                        this.audioManager.playBreakSound();
+                        stage.removeObstacle(obstacle);
+                    }
+                }
+                else {
                     if (!obstacle.colliding) {
                         obstacle.colliding = true;
                         obstacle.collidedCnt++;
@@ -238,62 +294,29 @@ class Controller {
                 obstacle.colliding = false;
             }
         }
-    }
 
-    checkCollisonPhantom() {
-        for (let stage of this.stages) {
-            for (let obstacle of stage.nearestObstacles) {
-                if (checkCollision(this.character, obstacle) && obstacle.name.includes('phantom')) {
-                    const effect = {
-                        duration: 3,
-                        apply: (char: BaseCharacter) => {
-                            char.updateCondition('confusion');
-                            this.character.rotate('y', Math.PI);
-                        },
-                        remove: (char: BaseCharacter) => {
-                            char.updateCondition('normal');
-                            this.character.rotate('y', Math.PI);
-                        }
-                    };
-                    this.character.applyEffect('confusion', effect);
-                    // this.uicontroller.showSentence('Confusion! Reverse your operations!', 'notice', 1000);
+        let _seeRealBob:boolean = false;
+        for(let stage_ in this.stages){
+            for (let obstacle of this.stages[stage_].nearestObstacles) {
+                if(obstacle.name.includes('realBob')){
+                        _seeRealBob = true;
                 }
             }
         }
-
-    }
-
-    checkSquash() {
-        for (let stage of this.stages) {
-            if (stage.theme == 'statues') {
-                for (let obstacle of stage.nearestObstacles) {
-                    if (!obstacle.name.includes('dog') && !obstacle.name.includes('cat'))
-                        continue;
-                    if (this.character.mesh.position.z > stage.mesh.position.z + obstacle.mesh.position.z - 1.5
-                        && this.character.mesh.position.z < stage.mesh.position.z + obstacle.mesh.position.z + 1.5
-                        && this.character.mesh.position.y < obstacle.getBottomCenter().y
-                        && this.character.mesh.position.y > obstacle.getBottomCenter().y - 2
-                        && this.character.mesh.position.x > obstacle.mesh.position.x - 1.5
-                        && this.character.mesh.position.x < obstacle.mesh.position.x + 1.5
-                    ) {
-                        const effect = {
-                            duration: 3,
-                            apply: (char: BaseCharacter) => {
-                                char.updateCondition('squashed');
-                            },
-                            remove: (char: BaseCharacter) => {
-                                char.updateCondition('normal');
-                            }
-                        };
-                        this.audioManager.playSqueakSound();
-                        this.character.applyEffect('squashed', effect)
-                    }
-                }
-            }
+        if(!this.seeRealBob && _seeRealBob){
+            this.audioManager.playHorrorSound();
+            this.seeRealBob = true;
+        }else if(!_seeRealBob){
+            this.seeRealBob = false;
         }
     }
+
+
+
+    inWindy:boolean = false;
 
     checkPositionState() {
+        let _inWindy:boolean = false;
         for (let stage of this.stages) {
             for (let interval of stage.specialIntervals) {
                 if (this.character.mesh.position.z > interval[0] + stage.mesh.position.z
@@ -318,6 +341,7 @@ class Controller {
                         particleSystem.createWindEffect(boxMin, boxMax, 50, 0.5, new THREE.Vector3(-2, 0, 0));
                         this.scene.getScene().add(particleSystem.particles);
                         particleSystem.addToUpdateList(this.scene.getScene());
+                        _inWindy = true;
                     }
                     if (interval[2] == 'wind_from_right') {
                         const effect = {
@@ -336,11 +360,20 @@ class Controller {
                         particleSystem.createWindEffect(boxMin, boxMax, 50, 0.5, new THREE.Vector3(2, 0, 0));
                         this.scene.getScene().add(particleSystem.particles);
                         particleSystem.addToUpdateList(this.scene.getScene());
-
+                        _inWindy = true;
                     }
+
+
                 }
             }
 
+        }
+        if(!this.inWindy && _inWindy){
+            this.audioManager.playWindSound();
+            this.inWindy = true;
+        }if(!_inWindy){
+            this.inWindy = false;
+            this.audioManager.stopWindSound();
         }
     }
 
@@ -415,6 +448,7 @@ class Controller {
             this.character.mesh.position.z = 0;
             this.stages.push(stage);
             this.stageidx = 0;
+            this.audioManager.changeToHorrorBGM();
         }
     }
 
@@ -429,9 +463,7 @@ class Controller {
         this.stages[this.stageidx].updateNearestList(this.character.mesh.position.clone(), 20);
         this.stages[this.stageidx].tick(delta);
 
-        this.checkSquash();
         this.checkPositionState();
-        this.checkCollisonPhantom();
 
         this.checkCollisionObstacles(this.stages[this.stageidx], delta);
         this.checkCollisionItems(this.stages[this.stageidx]);

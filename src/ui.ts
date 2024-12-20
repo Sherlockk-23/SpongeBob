@@ -49,6 +49,11 @@ class UIController {
     this.itemIcon.src = `assets_/pics/items/${item}.png`;
   }
 
+  waitReady() {
+    displayElement(this.overlay, 0, 0.5, false, 500);
+    
+  }
+
   lose() {
     displayElement(this.overlay, 0, 0.5, false, 500);
     displayElement(this.lose_popup, 0, 1, true, 500);

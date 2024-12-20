@@ -254,7 +254,7 @@ class Stage extends MovableObject {
             const obstacle = this.obstacleGenerator.centainObstacle('realBob');
             this.obstacles.push(obstacle);
             this.mesh.add(obstacle.mesh);
-            obstacle.setPosition(0, 0, 0);
+            obstacle.setPosition(0, 0, 50);
             this.obstaclePointerL = 0;
             this.obstaclePointerR = 1;
             return;
@@ -616,6 +616,8 @@ class Stage extends MovableObject {
         this.nearestItems.forEach((item) => {
             item.tick(delta);
         });
+        if(this.theme == 'special')
+            console.log('nearestObstacles:', this.nearestObstacles);
     }
 }
 

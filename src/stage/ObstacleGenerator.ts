@@ -61,6 +61,7 @@ class ObstacleGenerator {
         this.themeDict['final'] = ['car2', 'burger', 'lightHouseTSCP', 'jelly_fish', 'cat', 'dog'];
         this.themeDict['special'] = ['realBob'];
 
+
         // decoration dict
         this.themeDecorateDict['normal'] = ['swimmingRing', 'jellyNet', 'jellyfish3'];
         this.themeDecorateDict['food'] = ['krabDollar', 'krabMenu', 'mrKrab', 'krabTable', 'spatula', 'barrelTSCP'];
@@ -130,7 +131,7 @@ class ObstacleGenerator {
         this.sizeDict['jellyfish3'] = new THREE.Vector3(1.5, 2, 1.5);
 
         // special
-        this.sizeDict['realBob'] = new THREE.Vector3(10, 20, 8);
+        this.sizeDict['realBob'] = new THREE.Vector3(10, 18, 5);
 
 
         this.sizeDict['hat'] = new THREE.Vector3(0.2, 0.5, 0.2);
@@ -213,6 +214,8 @@ class ObstacleGenerator {
         this.velDict['jelly_fish'] = new THREE.Vector3(1, 0, 0);
         this.velDict['phantom'] = new THREE.Vector3(1, 0, 0);
 
+        this.velDict['realBob'] = new THREE.Vector3(0, 0, -4);
+
     }
 
     randomObstacle(id: number = -1, theme: string = 'normal', size: THREE.Vector3 = NaN): BaseObstacle {
@@ -257,7 +260,11 @@ class ObstacleGenerator {
                 // else
                 //     noise = 0;
                 vel.setComponent(i, vel.getComponent(i) * Math.exp(noise));
-            } else
+            } 
+            // else if(name.includes('realBob')) {
+            //     vel.setComponent(i, vel.getComponent(i));
+            // }
+            else
                 vel.setComponent(i, vel.getComponent(i) * Math.exp(noise));
             if (name.includes('phantom') || name.includes('jelly_fish')) {
                 if (Math.random() > 0.5) {
@@ -320,6 +327,18 @@ class ObstacleGenerator {
             size = this.sizeDict[name];
         }
         obstacle.rescale(size.x, size.y, size.z);
+        //rotate by rotateDict
+        if (this.rotateDict[name] == undefined) {
+            this.rotateDict[name] = new THREE.Vector3(0, 0, 0);
+        }
+        obstacle.rotate('x', this.rotateDict[name].x);
+        obstacle.rotate('y', this.rotateDict[name].y);
+        obstacle.rotate('z', this.rotateDict[name].z);
+        if (this.velDict[name] == undefined) {
+            this.velDict[name] = new THREE.Vector3(0, 0, 0);
+        }
+        let vel = this.velDict[name].clone();
+        obstacle.vel = vel;
         return obstacle;
     }
 

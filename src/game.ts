@@ -94,6 +94,10 @@ class Game {
         this.reset();
         this.start();
         this.pause();
+        // check if user is in this page, otherwise don't continue the following code
+        // while(true){
+        //     if(await this.startUntilBack()) break;
+        // }
         await this.uiController.countdown(5);
         this.uiController.showSentence("Go!", 'title',1000);
         this.status = "playing";
@@ -101,6 +105,19 @@ class Game {
 
         this.registerEventHandlers();
     }
+
+    // async startUntilBack():Promise<boolean> {
+    //     if(document.hidden){
+    //         return false;
+    //     }
+    //     await this.uiController.countdown(5);
+    //     this.uiController.showSentence("Go!", 'title',1000);
+    //     this.status = "playing";
+    //     this.resume();
+
+    //     this.registerEventHandlers();
+    //     return true;
+    // }
 
     reset() {
         this.Character.reset();
@@ -200,6 +217,13 @@ class Game {
             this.status = "gameover";
             this.uiController.lose();
             console.log("gameover", e.detail.obstacle);
+        })
+        document.addEventListener("forcequit", (e) => {
+            if (!(e instanceof CustomEvent)) return;
+            window.location.href = 'https://www.bilibili.com/bangumi/play/ss41012';
+            // console.log("forcequit", e.detail.obstacle);
+            // const link = "https://www.bilibili.com/bangumi/play/ss41012?from_spmid=666.25.series.0";
+            // window.open(link);
         })
     }
 
