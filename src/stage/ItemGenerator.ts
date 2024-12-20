@@ -65,9 +65,13 @@ class ItemGenerator {
         //name pick randomly from themeDict[theme] by this.seed()
         // const { random, newSeed } = seededRandom(this.seed);
         // this.seed = newSeed;
-        const random = Math.random();
+        let random = Math.random();
         const random_ = Math.random();
         name = this.themeDict[theme][Math.floor(random * this.themeDict[theme].length)];
+        while(name.includes('star')){
+            random = Math.random();
+            name = this.themeDict[theme][Math.floor(random * this.themeDict[theme].length)];
+        }
         //name = 'guess_box';
         if (name.includes('soda')) {
             item = new speedupItem(name + '_' + id, cloneGLTF(this.gltfDict[name]));
@@ -95,6 +99,7 @@ class ItemGenerator {
             }
             // console.log('debug random item generated', name, random);
         }
+        
 
         if (isNaN(size.x) || isNaN(size.y) || isNaN(size.z)) {
             size = this.sizeDict[name];
