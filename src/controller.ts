@@ -120,10 +120,26 @@ class Controller {
             return 'dungeon';
         else if (this.collectedStars < 20)
             return 'statues';
-        else if(this.collectedStars < 25)
+        else if (this.collectedStars < 25)
             return 'bikini_bottom';
         else
             return 'final';
+        // if (this.stageidx == 0)
+        //     return 'normal';
+        // else if (this.stageidx == 1)
+        //     return 'food';
+        // else if (this.stageidx == 2)
+        //     return 'vehicles';
+        // else if (this.stageidx == 3)
+        //     return 'windy_food';
+        // else if (this.stageidx == 4)
+        //     return 'dungeon';
+        // else if (this.stageidx == 5)
+        //     return 'statues';
+        // else if (this.stageidx == 6)
+        //     return 'bikini_bottom';
+        // else
+        //     return 'final';
     }
 
     changeStage() {
@@ -198,24 +214,24 @@ class Controller {
         if (this.character.waiting_effect[0] == '') {
             this.uicontroller.swapItem('none');
         }
-        
+
         // let EffectKeys = Object.keys(this.character.effects);
         // if (EffectKeys.length > 0) {
         //     this.uicontroller.showSentence(EffectKeys[0], 'notice', 1000);
         // }
     }
 
-    seeRealBob:boolean = false;
+    seeRealBob: boolean = false;
 
     checkCollisionObstacles(stage: Stage, delta: number) {
-        
+
         for (let obstacle of stage.nearestObstacles) {
             if (checkCollision(this.character, obstacle)) {
                 // document.dispatchEvent(new CustomEvent("gameover", { detail: { obstacle: 'killed by '+ obstacle.name } }));
                 console.log('collide with obstacle ' + obstacle.name);
 
-                if(obstacle.name.includes('realBob')){
-                    document.dispatchEvent(new CustomEvent("forcequit", { detail: { obstacle: 'killed by '+ obstacle.name } }));
+                if (obstacle.name.includes('realBob')) {
+                    document.dispatchEvent(new CustomEvent("forcequit", { detail: { obstacle: 'killed by ' + obstacle.name } }));
                 }
 
                 if (this.character.condition == 'robotic') {
@@ -223,8 +239,8 @@ class Controller {
                     stage.removeObstacle(obstacle);
                 } else if (obstacle.name.includes('bottom')) {
                     this.audioManager.playBoundingSound();
-                    this.character.vel.y = this.character.defaultMaxJumpVel;
-                } else if(obstacle.name.includes('phantom')){
+                    this.character.vel.y = this.character.defaultMaxJumpVel * 2;
+                } else if (obstacle.name.includes('phantom')) {
                     const effect = {
                         duration: 3,
                         apply: (char: BaseCharacter) => {
@@ -237,7 +253,7 @@ class Controller {
                         }
                     };
                     this.character.applyEffect('confusion', effect);
-                }else if(obstacle.name.includes('cat') || obstacle.name.includes('dog')){
+                } else if (obstacle.name.includes('cat') || obstacle.name.includes('dog')) {
                     if (this.character.mesh.position.z > stage.mesh.position.z + obstacle.mesh.position.z - 1.5
                         && this.character.mesh.position.z < stage.mesh.position.z + obstacle.mesh.position.z + 1.5
                         && this.character.mesh.position.y < obstacle.getBottomCenter().y
@@ -295,28 +311,28 @@ class Controller {
             }
         }
 
-        let _seeRealBob:boolean = false;
-        for(let stage_ in this.stages){
+        let _seeRealBob: boolean = false;
+        for (let stage_ in this.stages) {
             for (let obstacle of this.stages[stage_].nearestObstacles) {
-                if(obstacle.name.includes('realBob')){
-                        _seeRealBob = true;
+                if (obstacle.name.includes('realBob')) {
+                    _seeRealBob = true;
                 }
             }
         }
-        if(!this.seeRealBob && _seeRealBob){
+        if (!this.seeRealBob && _seeRealBob) {
             this.audioManager.playHorrorSound();
             this.seeRealBob = true;
-        }else if(!_seeRealBob){
+        } else if (!_seeRealBob) {
             this.seeRealBob = false;
         }
     }
 
 
 
-    inWindy:boolean = false;
+    inWindy: boolean = false;
 
     checkPositionState() {
-        let _inWindy:boolean = false;
+        let _inWindy: boolean = false;
         for (let stage of this.stages) {
             for (let interval of stage.specialIntervals) {
                 if (this.character.mesh.position.z > interval[0] + stage.mesh.position.z
@@ -368,10 +384,10 @@ class Controller {
             }
 
         }
-        if(!this.inWindy && _inWindy){
+        if (!this.inWindy && _inWindy) {
             this.audioManager.playWindSound();
             this.inWindy = true;
-        }if(!_inWindy){
+        } if (!_inWindy) {
             this.inWindy = false;
             this.audioManager.stopWindSound();
         }
@@ -383,32 +399,32 @@ class Controller {
             this.changeStage();
         }
 
-        if(this.character.getBottomCenter().z < this.stages[this.stageidx].mesh.position.z + 5&& 
-           this.character.getBottomCenter().z > this.stages[this.stageidx].mesh.position.z){
+        if (this.character.getBottomCenter().z < this.stages[this.stageidx].mesh.position.z + 5 &&
+            this.character.getBottomCenter().z > this.stages[this.stageidx].mesh.position.z) {
             let stageName = this.stages[this.stageidx].theme;
-            if(stageName == 'normal'){
+            if (stageName == 'normal') {
                 stageName = 'JellyGoRound';
-            }else if(stageName == 'food'){
+            } else if (stageName == 'food') {
                 stageName = 'KrabRestaurant';
-            }else if(stageName == 'vehicles'){
+            } else if (stageName == 'vehicles') {
                 stageName = 'BoatingSchool';
-            }else if(stageName == 'windy_food'){
+            } else if (stageName == 'windy_food') {
                 stageName = 'Burger\'s Revenge';
-            }else if(stageName == 'dungeon'){
+            } else if (stageName == 'dungeon') {
                 stageName = 'Dungeon';
-            }else if(stageName == 'statues'){
+            } else if (stageName == 'statues') {
                 stageName = 'Rain Cats and Dogs';
-            }else if(stageName == 'bikini_bottom'){
+            } else if (stageName == 'bikini_bottom') {
                 stageName = 'Bikini Bottom';
-            }else if(stageName == 'final'){
+            } else if (stageName == 'final') {
                 stageName = 'Let\'s Rock';
-            }else{
+            } else {
                 let number = Math.random();
-                if(number > 0.7){
+                if (number > 0.7) {
                     stageName = 'THeRe y0U 2ee.mE...';
-                }else if(number > 0.4){
+                } else if (number > 0.4) {
                     stageName = 'Thanks for your accompany.';
-                }else{
+                } else {
                     stageName = 'You Are Not Supposed To Be Here.';
                 }
             }

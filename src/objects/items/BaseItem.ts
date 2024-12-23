@@ -73,10 +73,10 @@ class highJumpItem extends BaseItem {
         this.effect = {
             duration: 10,
             apply: (char: BaseCharacter) => {
-                char.defaultMaxJumpVel *= 1.5; // 将跳跃速度增加50%
+                char.defaultMaxJumpVel *= 2; // 将跳跃速度增加50%
             },
             remove: (char: BaseCharacter) => {
-                char.defaultMaxJumpVel /= 1.5;
+                char.defaultMaxJumpVel /= 2;
             }
         };
     }

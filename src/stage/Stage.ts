@@ -10,7 +10,7 @@ import { BaseItem } from '../objects/items/BaseItem';
 import { ObstacleGenerator } from './ObstacleGenerator';
 import { ItemGenerator } from './ItemGenerator';
 
-const groundoffset = 20;
+const groundoffset = 10;
 const MAX_PLACEMENT_ATTEMPTS = 10;
 
 class Stage extends MovableObject {
@@ -43,6 +43,7 @@ class Stage extends MovableObject {
 
 
     static readonly LENGTH = 100;
+    // static readonly LENGTH = 80;
     static readonly WIDTH = 7;
     static readonly HEIGHT = 15;
     static readonly START_Z = 0;
@@ -63,7 +64,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        // this.theme = 'statues';
+        // this.theme = 'bikini_bottom';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -80,13 +81,11 @@ class Stage extends MovableObject {
         [texture, texwidth, texheight] = this.theme2texture(this.theme, false);
         this.dome = new Dome('dome', Stage.WIDTH * 5, this.length, texture, texwidth, texheight);
 
-
         this.ground.mesh.position.z = this.length / 2 - groundoffset;
         this.leftWall.mesh.position.z = this.length / 2 - groundoffset;
         this.rightWall.mesh.position.z = this.length / 2 - groundoffset;
         this.ceiling.mesh.position.z = this.length / 2 - groundoffset;
         this.dome.mesh.position.z = this.length / 2 - groundoffset;
-
 
         this.leftWall.setAsLeftWall();
         this.rightWall.setAsRightWall();
@@ -292,11 +291,11 @@ class Stage extends MovableObject {
 
         if (this.theme == 'windy_food' || this.theme == 'final') {
 
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 8; i++) {
                 if (Math.random() >= 0.5) {
                     const x = 6;
                     const y = -0.1;
-                    const z = i * 20;
+                    const z = i * 12.5;
                     if (Math.random() >= 0.5) {
                         const obstacle = this.obstacleGenerator.centainObstacle('mill1');
                         obstacle.rotate('y', Math.PI);
@@ -318,7 +317,7 @@ class Stage extends MovableObject {
                 else {
                     const x = -6;
                     const y = -0.1;
-                    const z = i * 20;
+                    const z = i * 12.5;
                     if (Math.random() >= 0.5) {
                         const obstacle = this.obstacleGenerator.centainObstacle('mill1');
                         this.obstacles.push(obstacle);
@@ -616,7 +615,7 @@ class Stage extends MovableObject {
         this.nearestItems.forEach((item) => {
             item.tick(delta);
         });
-        if(this.theme == 'special')
+        if (this.theme == 'special')
             console.log('nearestObstacles:', this.nearestObstacles);
     }
 }
