@@ -42,8 +42,8 @@ class Stage extends MovableObject {
     specialIntervals: [number, number, string][] = [];
 
 
-    static readonly LENGTH = 100;
-    // static readonly LENGTH = 80;
+    // static readonly LENGTH = 100;
+    static readonly LENGTH = 80;
     static readonly WIDTH = 7;
     static readonly HEIGHT = 15;
     static readonly START_Z = 0;
@@ -64,7 +64,7 @@ class Stage extends MovableObject {
             this.theme = this.themes[Math.floor(Math.random() * this.themes.length)];
         else
             this.theme = theme;
-        // this.theme = 'bikini_bottom';
+        // this.theme = 'windy_food';
         console.log('theme:', this.theme);
 
         const stagePosition = this.length * stageNumber;
@@ -291,11 +291,11 @@ class Stage extends MovableObject {
 
         if (this.theme == 'windy_food' || this.theme == 'final') {
 
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < 5; i++) {
                 if (Math.random() >= 0.5) {
                     const x = 6;
                     const y = -0.1;
-                    const z = i * 12.5;
+                    const z = i * 16;
                     if (Math.random() >= 0.5) {
                         const obstacle = this.obstacleGenerator.centainObstacle('mill1');
                         obstacle.rotate('y', Math.PI);
@@ -317,7 +317,7 @@ class Stage extends MovableObject {
                 else {
                     const x = -6;
                     const y = -0.1;
-                    const z = i * 12.5;
+                    const z = i * 16;
                     if (Math.random() >= 0.5) {
                         const obstacle = this.obstacleGenerator.centainObstacle('mill1');
                         this.obstacles.push(obstacle);
@@ -433,10 +433,19 @@ class Stage extends MovableObject {
                     obstacle.setPosition(x[j], y, z);
                 }
             }
-            for (let i = 0; i < this.length / 7.5; i++) {
+            // for (let i = 0; i < this.length / 7.5; i++) {
+            //     const x = 0;
+            //     const y = 1.5;
+            //     const z = i * 7.5;
+            //     const obstacle = this.obstacleGenerator.randomObstacle(i, 'phantom');
+            //     this.obstacles.push(obstacle);
+            //     this.mesh.add(obstacle.mesh);
+            //     obstacle.setPosition(x, y, z);
+            // }
+            for (let i = 0; i < this.length / 10; i++) {
                 const x = 0;
                 const y = 1.5;
-                const z = i * 7.5;
+                const z = i * 10;
                 const obstacle = this.obstacleGenerator.randomObstacle(i, 'phantom');
                 this.obstacles.push(obstacle);
                 this.mesh.add(obstacle.mesh);

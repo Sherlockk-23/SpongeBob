@@ -57,7 +57,7 @@ class ObstacleGenerator {
         this.themeDict['food'] = ['burger', 'burger', 'table', 'spatula', 'barrelTSCP'];
         this.themeDict['vehicles'] = ['car2', 'bus2TSCP', 'train', 'train', 'boatTSCP', 'train'];
         this.themeDict['dungeon'] = ['tiki_wood', 'tiki_wood', 'tiki_wood', 'tiki_wood', 'tikiToren'];
-        this.themeDict['statues'] = ['cat', 'dog', 'cat', 'dog', 'shiba', 'rabbit'];
+        this.themeDict['statues'] = ['cat', 'dog', 'cat', 'dog', 'cat', 'dog', 'cat', 'dog', 'shiba', 'rabbit'];
         this.themeDict['final'] = ['car2', 'burger', 'lightHouseTSCP', 'jelly_fish', 'cat', 'dog'];
         this.themeDict['special'] = ['realBob'];
 
@@ -260,7 +260,7 @@ class ObstacleGenerator {
                 // else
                 //     noise = 0;
                 vel.setComponent(i, vel.getComponent(i) * Math.exp(noise));
-            } 
+            }
             // else if(name.includes('realBob')) {
             //     vel.setComponent(i, vel.getComponent(i));
             // }
