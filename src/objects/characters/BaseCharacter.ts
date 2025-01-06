@@ -44,7 +44,7 @@ abstract class BaseCharacter extends MovableObject {
     punchingTime: number = 0;
 
     delta: number = 0.15;
-    defaultMaxVel: number = 3.5;
+    defaultMaxVel: number = 4.5;
     defaultMinVel: number = 0.1;
     defaultMaxJumpVel: number = 4.5;
     defaultDeaccel: number = 5;

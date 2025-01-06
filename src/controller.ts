@@ -108,40 +108,59 @@ class Controller {
         if (this.enterSpecialStageLol) {
             return 'special';
         }
-        // if (this.collectedStars < 1)
-        //     return 'normal';
-        // else if (this.collectedStars < 4)
-        //     return 'food';
-        // else if (this.collectedStars < 7)
-        //     return 'vehicles';
-        // else if (this.collectedStars < 11)
-        //     return 'windy_food';
-        // else if (this.collectedStars < 15)
-        //     return 'dungeon';
-        // else if (this.collectedStars < 20)
-        //     return 'statues';
-        // else if (this.collectedStars < 25)
-        //     return 'bikini_bottom';
-        // else
-        //     return 'final';
-        if (this.stageidx == 0)
+        if (this.collectedStars < 1)
             return 'normal';
-        else if (this.stageidx == 1)
+        else if (this.collectedStars < 4)
             return 'food';
-        // return 'dungeon';
-        else if (this.stageidx == 2)
+        else if (this.collectedStars < 7)
             return 'vehicles';
-        else if (this.stageidx == 3)
+        else if (this.collectedStars < 11)
             return 'windy_food';
-        else if (this.stageidx == 4)
+        else if (this.collectedStars < 15)
             return 'dungeon';
-        // return 'food';
-        else if (this.stageidx == 5)
+        else if (this.collectedStars < 20)
             return 'statues';
-        else if (this.stageidx == 6)
+        else if (this.collectedStars < 25)
             return 'bikini_bottom';
         else
             return 'final';
+        // if (this.stageidx == 0)
+        //     return 'normal';
+        // else if (this.stageidx == 1)
+        //     return 'food';
+        // // return 'dungeon';
+        // else if (this.stageidx == 2)
+        //     return 'vehicles';
+        // else if (this.stageidx == 3)
+        //     return 'windy_food';
+        // else if (this.stageidx == 4)
+        //     return 'dungeon';
+        // // return 'food';
+        // else if (this.stageidx == 5)
+        //     return 'statues';
+        // else if (this.stageidx == 6)
+        //     return 'bikini_bottom';
+        // else
+        //     return 'final';
+        // if (this.stageidx == 0)
+        //     return 'food';
+        // else if (this.stageidx == 1)
+        //     return 'vehicles';
+        // // return 'dungeon';
+        // else if (this.stageidx == 2)
+        //     return 'windy_food';
+        // else if (this.stageidx == 3)
+        //     return 'statues';
+        // else if (this.stageidx == 4)
+        //     return 'dungeon';
+        // // return 'food';
+        // else if (this.stageidx == 5)
+
+        //     return 'bikini_bottom';
+        // else if (this.stageidx == 6)
+        //     return 'final'
+        // else
+        //     return 'normal';
     }
 
     changeStage() {
